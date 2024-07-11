@@ -103,6 +103,7 @@ public class SwaggerConfig {
 		List<ExceptionStatus> exceptionStatusList = new ArrayList<>();
 		exceptionStatusList.addAll(
 				Arrays.asList(apiErrorCodeExample.autobiographyExceptionStatuses()));
+		exceptionStatusList.addAll(Arrays.asList(apiErrorCodeExample.interviewExceptionStatuses()));
 		return exceptionStatusList;
 	}
 
