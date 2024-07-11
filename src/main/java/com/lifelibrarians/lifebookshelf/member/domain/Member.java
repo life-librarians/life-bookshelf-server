@@ -8,7 +8,7 @@ import com.lifelibrarians.lifebookshelf.comment.domain.Comment;
 import com.lifelibrarians.lifebookshelf.like.Like;
 import com.lifelibrarians.lifebookshelf.notification.domain.NoticeHistory;
 import com.lifelibrarians.lifebookshelf.notification.domain.NotificationSubscribe;
-import jakarta.persistence.*;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Set;
 import lombok.AccessLevel;

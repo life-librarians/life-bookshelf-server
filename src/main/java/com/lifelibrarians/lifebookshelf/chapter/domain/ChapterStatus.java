@@ -1,30 +1,18 @@
 package com.lifelibrarians.lifebookshelf.chapter.domain;
 
 import com.lifelibrarians.lifebookshelf.member.domain.Member;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
+import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
-@Table(name = "ChapterStatuses")
-@EntityListeners(AuditingEntityListener.class)
+@Table(name = "chapterStatuses")
 @Getter
-@Setter
+@ToString(callSuper = true)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ChapterStatus {
 
 	@Id
@@ -42,13 +30,4 @@ public class ChapterStatus {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "current_chapter_id", nullable = false)
 	private Chapter currentChapter;
-
-	@CreatedDate
-	@Column(nullable = false, updatable = false)
-	private OffsetDateTime dateCreated;
-
-	@LastModifiedDate
-	@Column(nullable = false)
-	private OffsetDateTime lastUpdated;
-
 }

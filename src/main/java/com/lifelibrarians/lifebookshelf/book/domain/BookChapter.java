@@ -1,6 +1,6 @@
 package com.lifelibrarians.lifebookshelf.book.domain;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import java.util.Set;
 import lombok.AccessLevel;
 import lombok.Getter;

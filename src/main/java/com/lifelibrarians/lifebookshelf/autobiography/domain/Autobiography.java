@@ -3,7 +3,7 @@ package com.lifelibrarians.lifebookshelf.autobiography.domain;
 import com.lifelibrarians.lifebookshelf.chapter.domain.Chapter;
 import com.lifelibrarians.lifebookshelf.interview.domain.Interview;
 import com.lifelibrarians.lifebookshelf.member.domain.Member;
-import jakarta.persistence.*;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Set;
 import lombok.AccessLevel;

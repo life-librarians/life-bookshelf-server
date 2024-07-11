@@ -1,7 +1,7 @@
 package com.lifelibrarians.lifebookshelf.notification.domain;
 
 import com.lifelibrarians.lifebookshelf.member.domain.Member;
-import jakarta.persistence.*;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import lombok.AccessLevel;

@@ -4,7 +4,7 @@ import com.lifelibrarians.lifebookshelf.comment.domain.Comment;
 import com.lifelibrarians.lifebookshelf.like.Like;
 import com.lifelibrarians.lifebookshelf.member.domain.Member;
 import com.lifelibrarians.lifebookshelf.publication.domain.Publication;
-import jakarta.persistence.*;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Set;
 import lombok.AccessLevel;

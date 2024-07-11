@@ -1,6 +1,6 @@
 package com.lifelibrarians.lifebookshelf.interview.domain;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Set;
 import lombok.AccessLevel;

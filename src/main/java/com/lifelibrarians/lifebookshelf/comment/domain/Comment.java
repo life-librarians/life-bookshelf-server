@@ -2,7 +2,7 @@ package com.lifelibrarians.lifebookshelf.comment.domain;
 
 import com.lifelibrarians.lifebookshelf.book.domain.Book;
 import com.lifelibrarians.lifebookshelf.member.domain.Member;
-import jakarta.persistence.*;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Getter;
