@@ -47,8 +47,8 @@ public class InterviewController {
 	@GetMapping("/{interviewId}/conversations")
 	public InterviewConversationResponseDto getInterviewConversations(
 			@PathVariable("interviewId") @Parameter(description = "인터뷰 ID", example = "1") Long interviewId,
-			@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "10") int size
+			@RequestParam(value = "page", defaultValue = "0") int page,
+			@RequestParam(value = "size", defaultValue = "10") int size
 	) {
 		return InterviewConversationResponseDto.builder().build();
 	}
@@ -114,6 +114,6 @@ public class InterviewController {
 			@PathVariable("questionId") @Parameter(description = "질문 ID", example = "1") Long questionId,
 			@Valid @RequestBody InterviewQuestionUpdateCurrentQuestionRequestDto requestDto
 	) {
-		
+
 	}
 }
