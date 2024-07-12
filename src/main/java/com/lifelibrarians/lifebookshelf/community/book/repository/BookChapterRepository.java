@@ -1,6 +1,6 @@
-package com.lifelibrarians.lifebookshelf.book.repository;
+package com.lifelibrarians.lifebookshelf.community.book.repository;
 
-import com.lifelibrarians.lifebookshelf.book.domain.BookChapter;
+import com.lifelibrarians.lifebookshelf.community.book.domain.BookChapter;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 

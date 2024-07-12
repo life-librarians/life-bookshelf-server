@@ -104,6 +104,10 @@ public class SwaggerConfig {
 		exceptionStatusList.addAll(
 				Arrays.asList(apiErrorCodeExample.autobiographyExceptionStatuses()));
 		exceptionStatusList.addAll(Arrays.asList(apiErrorCodeExample.interviewExceptionStatuses()));
+		exceptionStatusList.addAll(Arrays.asList(apiErrorCodeExample.memberExceptionStatuses()));
+		exceptionStatusList.addAll(
+				Arrays.asList(apiErrorCodeExample.publicationExceptionStatuses()));
+		exceptionStatusList.addAll(Arrays.asList(apiErrorCodeExample.communityExceptionStatuses()));
 		return exceptionStatusList;
 	}
 
@@ -144,7 +148,7 @@ public class SwaggerConfig {
 	 */
 	private Example getSwaggerExample(ErrorReason errorReason) {
 		Example example = new Example();
-		example.setValue(errorReason.getMessage());
+		example.setValue(errorReason);
 		return example;
 	}
 

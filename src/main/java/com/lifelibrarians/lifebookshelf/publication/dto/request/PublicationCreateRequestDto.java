@@ -1,7 +1,6 @@
 package com.lifelibrarians.lifebookshelf.publication.dto.request;
 
-import com.lifelibrarians.lifebookshelf.publication.domain.TitlePositionType;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
+import com.lifelibrarians.lifebookshelf.publication.domain.TitlePosition;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -17,8 +16,8 @@ import lombok.ToString;
 public class PublicationCreateRequestDto {
 
 	@Schema(description = "제목 위치", example = "TOP")
-	private final TitlePositionType titlePosition;
+	private final TitlePosition titlePosition;
 
-	@ArraySchema(schema = @Schema(description = "챕터 ID 목록", example = "[1, 2, 3, 4, 5]"))
+	@Schema(description = "챕터 ID 목록", example = "[1, 2, 3, 4, 5]")
 	private final List<Long> chapterIds;
 }

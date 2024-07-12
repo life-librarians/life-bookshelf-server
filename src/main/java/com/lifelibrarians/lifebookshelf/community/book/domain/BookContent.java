@@ -1,4 +1,4 @@
-package com.lifelibrarians.lifebookshelf.book.domain;
+package com.lifelibrarians.lifebookshelf.community.book.domain;
 
 import javax.persistence.*;
 import lombok.AccessLevel;

@@ -1,8 +1,10 @@
 package com.lifelibrarians.lifebookshelf.exception.annotation;
 
 import com.lifelibrarians.lifebookshelf.autobiography.exception.AutobiographyExceptionStatus;
+import com.lifelibrarians.lifebookshelf.community.exception.CommunityExceptionStatus;
 import com.lifelibrarians.lifebookshelf.interview.exception.InterviewExceptionStatus;
 import com.lifelibrarians.lifebookshelf.member.exception.MemberExceptionStatus;
+import com.lifelibrarians.lifebookshelf.publication.exception.PublicationExceptionStatus;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -38,4 +40,8 @@ public @interface ApiErrorCodeExample {
 	InterviewExceptionStatus[] interviewExceptionStatuses() default {};
 
 	MemberExceptionStatus[] memberExceptionStatuses() default {};
+
+	PublicationExceptionStatus[] publicationExceptionStatuses() default {};
+
+	CommunityExceptionStatus[] communityExceptionStatuses() default {};
 }

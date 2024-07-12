@@ -1,6 +1,6 @@
-package com.lifelibrarians.lifebookshelf.comment.domain;
+package com.lifelibrarians.lifebookshelf.community.comment.domain;
 
-import com.lifelibrarians.lifebookshelf.book.domain.Book;
+import com.lifelibrarians.lifebookshelf.community.book.domain.Book;
 import com.lifelibrarians.lifebookshelf.member.domain.Member;
 import javax.persistence.*;
 import java.time.LocalDateTime;
