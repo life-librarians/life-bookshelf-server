@@ -3,7 +3,6 @@ package com.lifelibrarians.lifebookshelf.publication.domain;
 import com.lifelibrarians.lifebookshelf.book.domain.Book;
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,7 +25,7 @@ public class Publication {
 	private Integer price;
 
 	@Column(nullable = false)
-	private TitlePosition titlePosition;
+	private TitlePositionType titlePosition;
 
 	@Column(nullable = false)
 	private PublishStatus publishStatus;
@@ -51,7 +50,8 @@ public class Publication {
 	/* } 연관 정보 */
 
 	/* 생성자 { */
-	protected Publication(Integer price, TitlePosition titlePosition, PublishStatus publishStatus,
+	protected Publication(Integer price, TitlePositionType titlePosition,
+			PublishStatus publishStatus,
 			LocalDateTime requestedAt, LocalDateTime willPublishedAt, LocalDateTime publishedAt,
 			LocalDateTime deletedAt) {
 		this.price = price;
@@ -63,7 +63,7 @@ public class Publication {
 		this.deletedAt = deletedAt;
 	}
 
-	public static Publication of(Integer price, TitlePosition titlePosition,
+	public static Publication of(Integer price, TitlePositionType titlePosition,
 			PublishStatus publishStatus,
 			LocalDateTime requestedAt, LocalDateTime willPublishedAt, LocalDateTime publishedAt,
 			LocalDateTime deletedAt) {

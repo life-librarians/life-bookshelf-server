@@ -1,6 +1,7 @@
 package com.lifelibrarians.lifebookshelf.autobiography.dto.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,8 +27,8 @@ public class AutobiographyDetailResponseDto {
 	private final String coverImageUrl;
 
 	@Schema(description = "생성일시", example = "2023-01-01T00:00:00Z")
-	private final String createdAt;
+	private final LocalDateTime createdAt;
 
 	@Schema(description = "수정일시", example = "2023-01-02T00:00:00Z")
-	private final String updatedAt;
+	private final LocalDateTime updatedAt;
 }

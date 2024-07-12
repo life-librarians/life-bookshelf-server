@@ -2,6 +2,7 @@ package com.lifelibrarians.lifebookshelf.interview.dto.response;
 
 import com.lifelibrarians.lifebookshelf.interview.domain.ConversationType;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,5 +25,5 @@ public class InterviewConversationDto {
 	private final ConversationType conversationType;
 
 	@Schema(description = "생성일시", example = "2023-01-01T00:00:00Z")
-	private final String createdAt;
+	private final LocalDateTime createdAt;
 }

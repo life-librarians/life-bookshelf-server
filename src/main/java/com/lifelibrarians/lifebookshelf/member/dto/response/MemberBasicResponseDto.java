@@ -2,6 +2,7 @@ package com.lifelibrarians.lifebookshelf.member.dto.response;
 
 import com.lifelibrarians.lifebookshelf.member.domain.GenderType;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,7 +19,7 @@ public class MemberBasicResponseDto {
 	private final String name;
 
 	@Schema(description = "생년월일", example = "2000-01-01")
-	private final String bornedAt;
+	private final LocalDate bornedAt;
 
 	@Schema(description = "성별", example = "MALE")
 	private final GenderType gender;
