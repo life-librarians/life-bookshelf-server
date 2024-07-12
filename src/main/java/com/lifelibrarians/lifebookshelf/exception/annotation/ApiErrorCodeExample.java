@@ -2,6 +2,7 @@ package com.lifelibrarians.lifebookshelf.exception.annotation;
 
 import com.lifelibrarians.lifebookshelf.autobiography.exception.AutobiographyExceptionStatus;
 import com.lifelibrarians.lifebookshelf.interview.exception.InterviewExceptionStatus;
+import com.lifelibrarians.lifebookshelf.member.exception.MemberExceptionStatus;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -35,4 +36,6 @@ public @interface ApiErrorCodeExample {
 	AutobiographyExceptionStatus[] autobiographyExceptionStatuses() default {};
 
 	InterviewExceptionStatus[] interviewExceptionStatuses() default {};
+
+	MemberExceptionStatus[] memberExceptionStatuses() default {};
 }

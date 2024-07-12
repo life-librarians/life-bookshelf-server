@@ -1,7 +1,7 @@
 package com.lifelibrarians.lifebookshelf.member.domain;
 
 
-public enum Gender {
+public enum GenderType {
 
 	MALE,
 	FEMALE,

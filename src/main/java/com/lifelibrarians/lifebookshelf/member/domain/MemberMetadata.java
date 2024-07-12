@@ -28,7 +28,7 @@ public class MemberMetadata {
 	private LocalDate bornedAt;
 
 	@Column(nullable = false)
-	private Gender gender;
+	private GenderType gender;
 
 	@Column(nullable = false)
 	private Boolean hasChildren;
@@ -47,7 +47,8 @@ public class MemberMetadata {
 	/* } 연관 정보 */
 
 	/* 생성자 { */
-	protected MemberMetadata(String name, LocalDate bornedAt, Gender gender, Boolean hasChildren,
+	protected MemberMetadata(String name, LocalDate bornedAt, GenderType gender,
+			Boolean hasChildren,
 			LocalDateTime createdAt, LocalDateTime updatedAt, Member member) {
 		this.name = name;
 		this.bornedAt = bornedAt;
@@ -58,7 +59,7 @@ public class MemberMetadata {
 		this.member = member;
 	}
 
-	public static MemberMetadata of(String name, LocalDate bornedAt, Gender gender,
+	public static MemberMetadata of(String name, LocalDate bornedAt, GenderType gender,
 			Boolean hasChildren, LocalDateTime createdAt, LocalDateTime updatedAt, Member member) {
 		return new MemberMetadata(name, bornedAt, gender, hasChildren, createdAt, updatedAt,
 				member);
