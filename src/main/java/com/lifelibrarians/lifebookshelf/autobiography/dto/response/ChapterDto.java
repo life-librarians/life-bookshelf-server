@@ -1,6 +1,5 @@
-package com.lifelibrarians.lifebookshelf.autobiography.dto;
+package com.lifelibrarians.lifebookshelf.autobiography.dto.response;
 
-import com.lifelibrarians.lifebookshelf.autobiography.dto.request.SubchapterDto;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDateTime;
@@ -29,6 +28,6 @@ public class ChapterDto {
 	@Schema(description = "챕터 생성 날짜", example = "2023-01-01T00:00:00")
 	private final LocalDateTime chapterCreatedAt;
 
-	@ArraySchema(schema = @Schema(implementation = com.lifelibrarians.lifebookshelf.autobiography.dto.SubchapterDto.class))
+	@ArraySchema(schema = @Schema(implementation = com.lifelibrarians.lifebookshelf.autobiography.dto.response.SubchapterDto.class))
 	private final List<SubchapterDto> subChapters;
 }

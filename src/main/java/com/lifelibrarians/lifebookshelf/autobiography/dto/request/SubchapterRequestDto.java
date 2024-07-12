@@ -11,7 +11,7 @@ import lombok.ToString;
 @Getter
 @Schema(description = "자서전 서브챕터 정보")
 @ToString
-public class SubchapterDto {
+public class SubchapterRequestDto {
 
 	@Schema(description = "서브챕터 번호", example = "1.1")
 	private final String number;

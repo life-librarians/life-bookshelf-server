@@ -1,6 +1,5 @@
 package com.lifelibrarians.lifebookshelf.autobiography.dto.request;
 
-import com.lifelibrarians.lifebookshelf.autobiography.dto.AutobiographyPreviewDto;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
@@ -25,6 +24,6 @@ public class AutobiographyCreateRequestDto {
 	@Schema(description = "사전지정 커버 이미지 URL", example = "covers-images/random-string/image.png")
 	private final String preSignedCoverImageUrl;
 
-	@ArraySchema(schema = @Schema(implementation = InterviewQuestionDto.class))
-	private final List<InterviewQuestionDto> interviewQuestions;
+	@ArraySchema(schema = @Schema(implementation = InterviewQuestionRequestDto.class))
+	private final List<InterviewQuestionRequestDto> interviewQuestions;
 }

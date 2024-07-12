@@ -15,6 +15,6 @@ import lombok.ToString;
 @ToString
 public class ChapterCreateRequestDto {
 
-	@ArraySchema(schema = @Schema(implementation = com.lifelibrarians.lifebookshelf.autobiography.dto.request.ChapterDto.class))
-	private final List<ChapterDto> chapters;
+	@ArraySchema(schema = @Schema(implementation = ChapterRequestDto.class))
+	private final List<ChapterRequestDto> chapters;
 }

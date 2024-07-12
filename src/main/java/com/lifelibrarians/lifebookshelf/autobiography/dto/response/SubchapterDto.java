@@ -1,4 +1,4 @@
-package com.lifelibrarians.lifebookshelf.autobiography.dto;
+package com.lifelibrarians.lifebookshelf.autobiography.dto.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDateTime;
