@@ -78,9 +78,10 @@ public class AuthService {
 	public void unregister(Long memberId) {
 		Member member = memberRepository.findById(memberId)
 				.orElseThrow(AuthExceptionStatus.MEMBER_NOT_FOUND::toServiceException);
-		LocalDateTime now = LocalDateTime.now();
 //		TODO: Soft Delete를 적용하여, 추후 영구 삭제 스케줄러를 적용할 수 있도록 함.
-		member.softDelete(now);
-		memberRepository.save(member);
+//		LocalDateTime now = LocalDateTime.now();
+//		member.softDelete(now);
+//		memberRepository.save(member);
+		memberRepository.delete(member);
 	}
 }

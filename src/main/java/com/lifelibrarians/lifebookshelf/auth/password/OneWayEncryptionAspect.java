@@ -10,7 +10,7 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class OneWayEncryptionAspect {
 
-	private final BCryptPasswordEncoder bCryptPasswordEncoder;
+	private final PasswordEncoder passwordEncoder;
 
 	/**
 	 * @param oneWayEncryption 단방향 암호화 어노테이션
@@ -45,7 +45,7 @@ public class OneWayEncryptionAspect {
 						String toEncode = getFieldFromTarget(arg, targetField, String.class);
 						try {
 							setFieldToTarget(arg, targetField,
-									bCryptPasswordEncoder.encode(toEncode));
+									passwordEncoder.encode(toEncode));
 						} catch (Exception e) {
 							throw AuthExceptionStatus.PASSWORD_FORMAT_ERROR.toControllerException();
 						}
