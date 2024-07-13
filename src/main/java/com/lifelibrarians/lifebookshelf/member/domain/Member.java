@@ -113,4 +113,19 @@ public class Member {
 				nicknameUpdatedAt, deletedAt);
 	}
 	/* } 생성자 */
+
+	/* 연관 관계 편의 메서드 { */
+	public void addSocialMember(SocialMember socialMember) {
+		this.socialMember = socialMember;
+	}
+
+	public void addPasswordMember(PasswordMember passwordMember) {
+		this.passwordMember = passwordMember;
+	}
+
+	public void softDelete(LocalDateTime now) {
+		this.deletedAt = now;
+	}
+
+	/* } 연관 관계 편의 메서드 */
 }

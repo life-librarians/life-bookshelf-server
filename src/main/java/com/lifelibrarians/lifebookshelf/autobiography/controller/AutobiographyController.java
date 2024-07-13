@@ -54,7 +54,7 @@ public class AutobiographyController {
 	@PostMapping("/chapters")
 	@ResponseStatus(HttpStatus.CREATED)
 	public void createChapters(
-			@LoginMemberInfo MemberSessionDto userSessionDto,
+			@LoginMemberInfo MemberSessionDto memberSessionDto,
 			@Valid @RequestBody ChapterCreateRequestDto requestDto
 	) {
 
@@ -67,7 +67,7 @@ public class AutobiographyController {
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/chapeters")
 	public ChapterListResponseDto getChapters(
-			@LoginMemberInfo MemberSessionDto userSessionDto,
+			@LoginMemberInfo MemberSessionDto memberSessionDto,
 			@RequestParam(value = "page", defaultValue = "0") int page,
 			@RequestParam(value = "size", defaultValue = "10") int size
 	) {
@@ -87,7 +87,7 @@ public class AutobiographyController {
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/chapters/{chapterId}")
 	public AutobiographyListResponseDto getChapterAutobiographies(
-			@LoginMemberInfo MemberSessionDto userSessionDto,
+			@LoginMemberInfo MemberSessionDto memberSessionDto,
 			@PathVariable("chapterId") @Parameter(description = "챕터 ID") Long chapterId
 	) {
 		return AutobiographyListResponseDto.builder().build();
@@ -112,7 +112,7 @@ public class AutobiographyController {
 	@PostMapping("/chapters/{chapterId}")
 	@ResponseStatus(HttpStatus.CREATED)
 	public void createAutobiography(
-			@LoginMemberInfo MemberSessionDto userSessionDto,
+			@LoginMemberInfo MemberSessionDto memberSessionDto,
 			@Valid @RequestBody AutobiographyCreateRequestDto requestDto,
 			@PathVariable("chapterId") @Parameter(description = "챕터 ID") Long chapterId
 	) {
@@ -132,7 +132,7 @@ public class AutobiographyController {
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/{autobiographyId}")
 	public AutobiographyDetailResponseDto getAutobiography(
-			@LoginMemberInfo MemberSessionDto userSessionDto,
+			@LoginMemberInfo MemberSessionDto memberSessionDto,
 			@PathVariable("autobiographyId") @Parameter(description = "자서전 ID") Long autobiographyId
 	) {
 		return AutobiographyDetailResponseDto.builder().build();
@@ -153,7 +153,7 @@ public class AutobiographyController {
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping(value = "/{autobiographyId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public void updateAutobiography(
-			@LoginMemberInfo MemberSessionDto userSessionDto,
+			@LoginMemberInfo MemberSessionDto memberSessionDto,
 			@PathVariable("autobiographyId") @Parameter(description = "자서전 ID") Long autobiographyId,
 			@Valid @ModelAttribute AutobiographyUpdateRequestDto requestDto
 	) {
@@ -173,7 +173,7 @@ public class AutobiographyController {
 	@PreAuthorize("isAuthenticated()")
 	@DeleteMapping("/{autobiographyId}")
 	public void deleteAutobiography(
-			@LoginMemberInfo MemberSessionDto userSessionDto,
+			@LoginMemberInfo MemberSessionDto memberSessionDto,
 			@PathVariable("autobiographyId") @Parameter(description = "자서전 ID") Long autobiographyId
 	) {
 

@@ -37,7 +37,7 @@ public class NotificationController {
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/subscriptions")
 	public SubscribingNotificationListResponseDto getSubscriptions(
-			@LoginMemberInfo MemberSessionDto userSessionDto
+			@LoginMemberInfo MemberSessionDto memberSessionDto
 	) {
 		return SubscribingNotificationListResponseDto.builder().build();
 	}
@@ -49,7 +49,7 @@ public class NotificationController {
 	@PreAuthorize("isAuthenticated()")
 	@PutMapping("/subscriptions")
 	public SubscribingNotificationListResponseDto updateSubscriptions(
-			@LoginMemberInfo MemberSessionDto userSessionDto,
+			@LoginMemberInfo MemberSessionDto memberSessionDto,
 			@Valid @RequestBody SubscribingNotificationUpdateRequestDto requestDto
 	) {
 		return SubscribingNotificationListResponseDto.builder().build();
@@ -62,7 +62,7 @@ public class NotificationController {
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/histories")
 	public NotificationHistoryListResponseDto getHistories(
-			@LoginMemberInfo MemberSessionDto userSessionDto,
+			@LoginMemberInfo MemberSessionDto memberSessionDto,
 			@RequestParam(value = "page", defaultValue = "0") int page,
 			@RequestParam(value = "size", defaultValue = "10") int size
 	) {
@@ -76,7 +76,7 @@ public class NotificationController {
 	@PreAuthorize("isAuthenticated()")
 	@PutMapping("/histories")
 	public NotificationHistoryListResponseDto updateHistories(
-			@LoginMemberInfo MemberSessionDto userSessionDto,
+			@LoginMemberInfo MemberSessionDto memberSessionDto,
 			@Valid @RequestBody NotificationHistoryReadRequestDto requestDto
 	) {
 		return NotificationHistoryListResponseDto.builder().build();
@@ -89,7 +89,7 @@ public class NotificationController {
 	@PreAuthorize("isAuthenticated()")
 	@DeleteMapping("/histories")
 	public void deleteHistories(
-			@LoginMemberInfo MemberSessionDto userSessionDto,
+			@LoginMemberInfo MemberSessionDto memberSessionDto,
 			@Valid @RequestBody NotificationHistoryDeleteRequestDto requestDto
 	) {
 	}

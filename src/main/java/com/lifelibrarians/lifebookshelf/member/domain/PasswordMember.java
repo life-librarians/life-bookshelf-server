@@ -35,5 +35,10 @@ public class PasswordMember {
 	public static PasswordMember of(String password) {
 		return new PasswordMember(password);
 	}
+
 	/* } 생성자 */
+	
+	public boolean matchPassword(String password) {
+		return this.password.equals(password);
+	}
 }

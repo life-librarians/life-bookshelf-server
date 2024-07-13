@@ -16,6 +16,6 @@ import lombok.experimental.FieldNameConstants;
 @FieldNameConstants
 public class MemberSessionDto {
 
-	private final Long userId;
+	private final Long memberId;
 	private final List<MemberRole> roles;
 }

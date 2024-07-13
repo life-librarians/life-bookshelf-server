@@ -42,7 +42,7 @@ public class PublicationController {
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/me")
 	public PublicationListResponseDto getMyPublications(
-			@LoginMemberInfo MemberSessionDto userSessionDto,
+			@LoginMemberInfo MemberSessionDto memberSessionDto,
 			@Parameter(description = "페이지 번호", example = "0") int page,
 			@Parameter(description = "페이지 크기", example = "10") int size
 	) {
@@ -63,7 +63,7 @@ public class PublicationController {
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public void requestPublication(
-			@LoginMemberInfo MemberSessionDto userSessionDto,
+			@LoginMemberInfo MemberSessionDto memberSessionDto,
 			@Valid @RequestBody PublicationCreateRequestDto requestDto
 	) {
 	}
@@ -81,7 +81,7 @@ public class PublicationController {
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/{publicationId}/progress")
 	public PublicationProgressResponseDto getPublicationProgress(
-			@LoginMemberInfo MemberSessionDto userSessionDto
+			@LoginMemberInfo MemberSessionDto memberSessionDto
 	) {
 		return PublicationProgressResponseDto.builder().build();
 	}
@@ -99,7 +99,7 @@ public class PublicationController {
 	@PreAuthorize("isAuthenticated()")
 	@DeleteMapping("/{bookId}")
 	public void deleteBook(
-			@LoginMemberInfo MemberSessionDto userSessionDto,
+			@LoginMemberInfo MemberSessionDto memberSessionDto,
 			@PathVariable("bookId") @Parameter(description = "책 ID", example = "1") Long bookId
 	) {
 	}

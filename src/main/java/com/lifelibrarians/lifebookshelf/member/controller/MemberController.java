@@ -41,7 +41,7 @@ public class MemberController {
 	@PreAuthorize("isAuthenticated()")
 	@PutMapping(value = "/me", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public void updateMember(
-			@LoginMemberInfo MemberSessionDto userSessionDto,
+			@LoginMemberInfo MemberSessionDto memberSessionDto,
 			@Valid @ModelAttribute MemberUpdateRequestDto requestDto
 	) {
 
@@ -51,7 +51,7 @@ public class MemberController {
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/me")
 	public MemberBasicResponseDto getMember(
-			@LoginMemberInfo MemberSessionDto userSessionDto
+			@LoginMemberInfo MemberSessionDto memberSessionDto
 	) {
 		return MemberBasicResponseDto.builder().build();
 	}

@@ -10,6 +10,7 @@ import com.lifelibrarians.lifebookshelf.auth.exception.AuthExceptionStatus;
 import com.lifelibrarians.lifebookshelf.auth.jwt.LoginMemberInfo;
 import com.lifelibrarians.lifebookshelf.auth.password.annotation.OneWayEncryption;
 import com.lifelibrarians.lifebookshelf.auth.password.annotation.TargetMapping;
+import com.lifelibrarians.lifebookshelf.auth.service.AuthService;
 import com.lifelibrarians.lifebookshelf.exception.annotation.ApiErrorCodeExample;
 import com.lifelibrarians.lifebookshelf.log.Logging;
 import io.swagger.v3.oas.annotations.Operation;
@@ -36,6 +37,9 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "인증 (Auth)", description = "인증 관련 API")
 @Logging
 public class AuthController {
+
+	private final AuthService authService;
+
 
 	@Operation(summary = "이메일 회원가입", description = "이메일 회원가입을 요청합니다.")
 	@ApiResponses(value = {
@@ -102,7 +106,7 @@ public class AuthController {
 	public JwtLoginTokenDto loginEmail(
 			@Valid @ModelAttribute EmailLoginRequestDto requestDto
 	) {
-		return JwtLoginTokenDto.builder().build();
+		return authService.loginEmail(requestDto);
 	}
 
 	@Operation(summary = "비밀번호 초기화 요청", description = "비밀번호 초기화를 요청합니다.")
@@ -137,7 +141,8 @@ public class AuthController {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@PreAuthorize("isAuthenticated()")
 	public void unregister(
-			@LoginMemberInfo MemberSessionDto userSessionDto
+			@LoginMemberInfo MemberSessionDto memberSessionDto
 	) {
+		authService.unregister(memberSessionDto.getMemberId());
 	}
 }

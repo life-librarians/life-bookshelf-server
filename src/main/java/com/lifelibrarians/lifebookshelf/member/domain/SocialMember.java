@@ -38,5 +38,6 @@ public class SocialMember {
 	public static SocialMember of(String oauthId, OauthType oauthType) {
 		return new SocialMember(oauthId, oauthType);
 	}
+
 	/* } 생성자 */
 }

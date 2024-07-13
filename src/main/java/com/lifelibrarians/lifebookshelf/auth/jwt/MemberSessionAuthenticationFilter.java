@@ -70,7 +70,7 @@ public class MemberSessionAuthenticationFilter extends OncePerRequestFilter {
 			throw new JwtAuthenticationTokenException("Jwt에 필요한 정보가 없습니다.");
 		}
 		return MemberSessionDto.builder()
-				.userId(userId)
+				.memberId(userId)
 				.roles(roles)
 				.build();
 	}
