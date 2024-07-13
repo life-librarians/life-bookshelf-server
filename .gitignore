@@ -38,3 +38,4 @@ bin/
 /.nb-gradle/
 
 application-*.yml
+!application-*yml.example

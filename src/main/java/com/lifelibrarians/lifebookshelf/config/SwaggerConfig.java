@@ -33,7 +33,7 @@ import org.springframework.web.method.HandlerMethod;
 @Configuration
 @OpenAPIDefinition(
 		servers = @io.swagger.v3.oas.annotations.servers.Server(url = "${swagger.base-url}"),
-		info = @Info(title = "ExchangeDiary API", version = "v1"),
+		info = @Info(title = "Life Bookshelf API", version = "v1"),
 		security = @SecurityRequirement(name = "bearerAuth")
 )
 @SecurityScheme(
