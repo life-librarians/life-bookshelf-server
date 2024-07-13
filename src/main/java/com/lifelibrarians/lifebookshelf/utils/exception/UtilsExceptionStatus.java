@@ -1,4 +1,4 @@
-package com.lifelibrarians.lifebookshelf.publication.exception;
+package com.lifelibrarians.lifebookshelf.utils.exception;
 
 import com.lifelibrarians.lifebookshelf.exception.ControllerException;
 import com.lifelibrarians.lifebookshelf.exception.DomainException;
@@ -10,10 +10,14 @@ import lombok.ToString;
 
 @AllArgsConstructor
 @ToString
-public enum PublicationExceptionStatus implements ExceptionStatus {
+public enum UtilsExceptionStatus implements ExceptionStatus {
 
-	PUBLICATION_NOT_FOUND(404, "PUB001", "존재하지 않는 출판 ID입니다."),
-	PUBLICATION_NOT_OWNER(403, "PUB002", "해당 출판에 대한 권한이 없습니다.");
+	INVALID_FILE(400, "UTILS001", "올바르지 않은 파일입니다."),
+	INVALID_FILE_EXTENSION(400, "UTILS002", "올바르지 않은 확장자입니다."),
+	INVALID_FILE_URL(400, "UTILS003", "올바르지 않은 파일 경로입니다."),
+	INVALID_IMAGE_TYPE(400, "UTILS004", "올바르지 않은 이미지 타입입니다."),
+	NON_MAPPED_TARGET(500, "UTILS005", "매핑되지 않은 타겟입니다."),
+	NON_MAPPED_FIELD(500, "UTILS006", "매핑되지 않은 필드입니다.");
 
 	private final int statusCode;
 	private final String code;

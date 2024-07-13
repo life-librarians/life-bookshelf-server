@@ -1,5 +1,8 @@
 package com.lifelibrarians.lifebookshelf.community.exception;
 
+import com.lifelibrarians.lifebookshelf.exception.ControllerException;
+import com.lifelibrarians.lifebookshelf.exception.DomainException;
+import com.lifelibrarians.lifebookshelf.exception.ServiceException;
 import com.lifelibrarians.lifebookshelf.exception.status.ExceptionStatus;
 import com.lifelibrarians.lifebookshelf.exception.status.ErrorReason;
 import lombok.AllArgsConstructor;
@@ -30,5 +33,20 @@ public enum CommunityExceptionStatus implements ExceptionStatus {
 				.code(code)
 				.message(message)
 				.build();
+	}
+
+	@Override
+	public ControllerException toControllerException() {
+		return new ControllerException(this);
+	}
+
+	@Override
+	public ServiceException toServiceException() {
+		return new ServiceException(this);
+	}
+
+	@Override
+	public DomainException toDomainException() {
+		return new DomainException(this);
 	}
 }

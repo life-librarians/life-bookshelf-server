@@ -1,5 +1,6 @@
 package com.lifelibrarians.lifebookshelf.exception.annotation;
 
+import com.lifelibrarians.lifebookshelf.auth.exception.AuthExceptionStatus;
 import com.lifelibrarians.lifebookshelf.autobiography.exception.AutobiographyExceptionStatus;
 import com.lifelibrarians.lifebookshelf.community.exception.CommunityExceptionStatus;
 import com.lifelibrarians.lifebookshelf.interview.exception.InterviewExceptionStatus;
@@ -33,7 +34,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ApiErrorCodeExample {
 
-//	AuthExceptionStatus[] authExceptionStatuses() default {};
+	AuthExceptionStatus[] authExceptionStatuses() default {};
 
 	AutobiographyExceptionStatus[] autobiographyExceptionStatuses() default {};
 
