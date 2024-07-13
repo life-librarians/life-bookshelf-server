@@ -102,6 +102,8 @@ public class SwaggerConfig {
 			ApiErrorCodeExample apiErrorCodeExample) {
 		List<ExceptionStatus> exceptionStatusList = new ArrayList<>();
 		exceptionStatusList.addAll(
+				Arrays.asList(apiErrorCodeExample.authExceptionStatuses()));
+		exceptionStatusList.addAll(
 				Arrays.asList(apiErrorCodeExample.autobiographyExceptionStatuses()));
 		exceptionStatusList.addAll(Arrays.asList(apiErrorCodeExample.interviewExceptionStatuses()));
 		exceptionStatusList.addAll(Arrays.asList(apiErrorCodeExample.memberExceptionStatuses()));

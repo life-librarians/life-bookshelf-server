@@ -1,7 +1,7 @@
 package com.lifelibrarians.lifebookshelf.config;
 
-import static org.springframework.security.config.Customizer.withDefaults;
-
+import com.lifelibrarians.lifebookshelf.auth.jwt.JwtAuthenticationConverter;
+import com.lifelibrarians.lifebookshelf.auth.jwt.MemberSessionAuthenticationFilter;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,12 +12,10 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthenticationFilter;
 import org.springframework.security.oauth2.server.resource.web.DefaultBearerTokenResolver;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
@@ -31,42 +29,43 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableWebSecurity
 public class SecurityConfig {
 
-	//	private final AuthenticationManager jwtAuthenticationManager;
-//	private final AccessDeniedHandler jwtAccessDeniedHandler;
-//	private final AuthenticationEntryPoint jwtAuthenticationEntryPoint;
-//	private final JwtAuthenticationConverter jwtAuthenticationConverter;
-//	private final JwtDecoder jwtDecoder;
+	private final AuthenticationManager jwtAuthenticationManager;
+	private final AccessDeniedHandler jwtAccessDeniedHandler;
+	private final AuthenticationEntryPoint jwtAuthenticationEntryPoint;
+	private final JwtAuthenticationConverter jwtAuthenticationConverter;
+	private final JwtDecoder jwtDecoder;
 	@Value("${swagger.base-url}")
 	private String baseUrl;
+	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
 //      @formatter:off
 		return httpSecurity
 				.cors()
-				.configurationSource(corsConfigurationSource())
+					.configurationSource(corsConfigurationSource())
 				.and()
 				.csrf().disable()
-				.authorizeRequests()
-				.anyRequest().permitAll()
+					.authorizeRequests()
+					.anyRequest().permitAll()
 				.and()
 				.sessionManagement()
-				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//				.and()
-//				.oauth2ResourceServer()
-//				.bearerTokenResolver(new DefaultBearerTokenResolver())
-//				.jwt()
-//				.jwtAuthenticationConverter(jwtAuthenticationConverter)
-//				.decoder(jwtDecoder)
-//				.authenticationManager(jwtAuthenticationManager)
+					.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 				.and()
-//				.accessDeniedHandler(jwtAccessDeniedHandler)
-//				.authenticationEntryPoint(jwtAuthenticationEntryPoint)
-//				.and()
+				.oauth2ResourceServer()
+					.bearerTokenResolver(new DefaultBearerTokenResolver())
+					.jwt()
+						.jwtAuthenticationConverter(jwtAuthenticationConverter)
+						.decoder(jwtDecoder)
+						.authenticationManager(jwtAuthenticationManager)
+					.and()
+					.accessDeniedHandler(jwtAccessDeniedHandler)
+					.authenticationEntryPoint(jwtAuthenticationEntryPoint)
+				.and()
 				.formLogin().disable()
-//				.addFilterAfter(
-//						new UserSessionAuthenticationFilter(), BearerTokenAuthenticationFilter.class
-//				)
+					.addFilterAfter(
+							new MemberSessionAuthenticationFilter(), BearerTokenAuthenticationFilter.class
+					)
 				.build();
 //      @formatter:on
 	}
