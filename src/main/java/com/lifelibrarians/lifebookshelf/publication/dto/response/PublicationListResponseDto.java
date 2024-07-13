@@ -7,12 +7,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
+import lombok.experimental.FieldNameConstants;
 
 @Builder
 @AllArgsConstructor
 @Getter
 @Schema(description = "출판 목록 조회 응답")
 @ToString
+@FieldNameConstants
 public class PublicationListResponseDto {
 
 	@ArraySchema(schema = @Schema(implementation = PublicationPreviewDto.class))

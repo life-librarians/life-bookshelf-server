@@ -6,12 +6,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
+import lombok.experimental.FieldNameConstants;
 
 @Builder
 @AllArgsConstructor
 @Getter
 @Schema(description = "알림 내역 DTO")
 @ToString
+@FieldNameConstants
 public class NotificationHistoryDto {
 
 	@Schema(description = "알림 내역 ID", example = "1")

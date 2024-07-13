@@ -1,7 +1,7 @@
 package com.lifelibrarians.lifebookshelf.community.book.domain;
 
 import com.lifelibrarians.lifebookshelf.community.comment.domain.Comment;
-import com.lifelibrarians.lifebookshelf.community.like.Like;
+import com.lifelibrarians.lifebookshelf.community.like.domain.Like;
 import com.lifelibrarians.lifebookshelf.member.domain.Member;
 import com.lifelibrarians.lifebookshelf.publication.domain.Publication;
 import javax.persistence.*;

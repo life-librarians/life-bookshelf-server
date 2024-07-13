@@ -7,12 +7,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
+import lombok.experimental.FieldNameConstants;
 
 @Builder
 @AllArgsConstructor
 @Getter
 @Schema(description = "구독중인 알림 DTO")
 @ToString
+@FieldNameConstants
 public class SubscribingNotificationDto {
 
 	@Schema(description = "알림 ID", example = "1")

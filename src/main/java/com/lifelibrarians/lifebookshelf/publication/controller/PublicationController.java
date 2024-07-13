@@ -1,5 +1,7 @@
 package com.lifelibrarians.lifebookshelf.publication.controller;
 
+import com.lifelibrarians.lifebookshelf.auth.dto.MemberSessionDto;
+import com.lifelibrarians.lifebookshelf.auth.jwt.LoginMemberInfo;
 import com.lifelibrarians.lifebookshelf.autobiography.exception.AutobiographyExceptionStatus;
 import com.lifelibrarians.lifebookshelf.community.exception.CommunityExceptionStatus;
 import com.lifelibrarians.lifebookshelf.exception.annotation.ApiErrorCodeExample;
@@ -29,7 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/v1/publications")
-@Tag(name = "출판", description = "출판 관련 API")
+@Tag(name = "출판 (Publication)", description = "출판 관련 API")
 @Logging
 public class PublicationController {
 
@@ -40,6 +42,7 @@ public class PublicationController {
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/me")
 	public PublicationListResponseDto getMyPublications(
+			@LoginMemberInfo MemberSessionDto userSessionDto,
 			@Parameter(description = "페이지 번호", example = "0") int page,
 			@Parameter(description = "페이지 크기", example = "10") int size
 	) {
@@ -60,6 +63,7 @@ public class PublicationController {
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public void requestPublication(
+			@LoginMemberInfo MemberSessionDto userSessionDto,
 			@Valid @RequestBody PublicationCreateRequestDto requestDto
 	) {
 	}
@@ -76,7 +80,9 @@ public class PublicationController {
 	)
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/{publicationId}/progress")
-	public PublicationProgressResponseDto getPublicationProgress() {
+	public PublicationProgressResponseDto getPublicationProgress(
+			@LoginMemberInfo MemberSessionDto userSessionDto
+	) {
 		return PublicationProgressResponseDto.builder().build();
 	}
 
@@ -93,6 +99,7 @@ public class PublicationController {
 	@PreAuthorize("isAuthenticated()")
 	@DeleteMapping("/{bookId}")
 	public void deleteBook(
+			@LoginMemberInfo MemberSessionDto userSessionDto,
 			@PathVariable("bookId") @Parameter(description = "책 ID", example = "1") Long bookId
 	) {
 	}

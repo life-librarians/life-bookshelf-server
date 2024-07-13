@@ -1,5 +1,7 @@
 package com.lifelibrarians.lifebookshelf.notification.controller;
 
+import com.lifelibrarians.lifebookshelf.auth.dto.MemberSessionDto;
+import com.lifelibrarians.lifebookshelf.auth.jwt.LoginMemberInfo;
 import com.lifelibrarians.lifebookshelf.log.Logging;
 import com.lifelibrarians.lifebookshelf.notification.dto.request.NotificationHistoryDeleteRequestDto;
 import com.lifelibrarians.lifebookshelf.notification.dto.request.NotificationHistoryReadRequestDto;
@@ -24,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/v1/notifications")
-@Tag(name = "알림", description = "알림 관련 API")
+@Tag(name = "알림 (Notification)", description = "알림 관련 API")
 @Logging
 public class NotificationController {
 
@@ -34,7 +36,9 @@ public class NotificationController {
 	})
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/subscriptions")
-	public SubscribingNotificationListResponseDto getSubscriptions() {
+	public SubscribingNotificationListResponseDto getSubscriptions(
+			@LoginMemberInfo MemberSessionDto userSessionDto
+	) {
 		return SubscribingNotificationListResponseDto.builder().build();
 	}
 
@@ -45,6 +49,7 @@ public class NotificationController {
 	@PreAuthorize("isAuthenticated()")
 	@PutMapping("/subscriptions")
 	public SubscribingNotificationListResponseDto updateSubscriptions(
+			@LoginMemberInfo MemberSessionDto userSessionDto,
 			@Valid @RequestBody SubscribingNotificationUpdateRequestDto requestDto
 	) {
 		return SubscribingNotificationListResponseDto.builder().build();
@@ -57,6 +62,7 @@ public class NotificationController {
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/histories")
 	public NotificationHistoryListResponseDto getHistories(
+			@LoginMemberInfo MemberSessionDto userSessionDto,
 			@RequestParam(value = "page", defaultValue = "0") int page,
 			@RequestParam(value = "size", defaultValue = "10") int size
 	) {
@@ -70,6 +76,7 @@ public class NotificationController {
 	@PreAuthorize("isAuthenticated()")
 	@PutMapping("/histories")
 	public NotificationHistoryListResponseDto updateHistories(
+			@LoginMemberInfo MemberSessionDto userSessionDto,
 			@Valid @RequestBody NotificationHistoryReadRequestDto requestDto
 	) {
 		return NotificationHistoryListResponseDto.builder().build();
@@ -82,6 +89,7 @@ public class NotificationController {
 	@PreAuthorize("isAuthenticated()")
 	@DeleteMapping("/histories")
 	public void deleteHistories(
+			@LoginMemberInfo MemberSessionDto userSessionDto,
 			@Valid @RequestBody NotificationHistoryDeleteRequestDto requestDto
 	) {
 	}

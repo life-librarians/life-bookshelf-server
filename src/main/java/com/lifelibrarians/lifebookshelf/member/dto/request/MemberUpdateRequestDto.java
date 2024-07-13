@@ -7,12 +7,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
+import lombok.experimental.FieldNameConstants;
 
 @Builder
 @AllArgsConstructor
 @Getter
 @Schema(description = "회원 정보 수정 요청 DTO")
 @ToString
+@FieldNameConstants
 public class MemberUpdateRequestDto {
 
 	@Schema(description = "이름", example = "John Doe")

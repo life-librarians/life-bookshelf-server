@@ -1,4 +1,4 @@
-package com.lifelibrarians.lifebookshelf.community.like;
+package com.lifelibrarians.lifebookshelf.community.like.domain;
 
 import com.lifelibrarians.lifebookshelf.community.book.domain.Book;
 import com.lifelibrarians.lifebookshelf.member.domain.Member;

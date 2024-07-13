@@ -1,5 +1,7 @@
 package com.lifelibrarians.lifebookshelf.interview.controller;
 
+import com.lifelibrarians.lifebookshelf.auth.dto.MemberSessionDto;
+import com.lifelibrarians.lifebookshelf.auth.jwt.LoginMemberInfo;
 import com.lifelibrarians.lifebookshelf.autobiography.exception.AutobiographyExceptionStatus;
 import com.lifelibrarians.lifebookshelf.exception.annotation.ApiErrorCodeExample;
 import com.lifelibrarians.lifebookshelf.interview.dto.request.InterviewQuestionUpdateCurrentQuestionRequestDto;
@@ -29,7 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/v1/interviews")
-@Tag(name = "인터뷰", description = "인터뷰 관련 API")
+@Tag(name = "인터뷰 (Interview)", description = "인터뷰 관련 API")
 @Logging
 public class InterviewController {
 
@@ -46,6 +48,7 @@ public class InterviewController {
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/{interviewId}/conversations")
 	public InterviewConversationResponseDto getInterviewConversations(
+			@LoginMemberInfo MemberSessionDto userSessionDto,
 			@PathVariable("interviewId") @Parameter(description = "인터뷰 ID", example = "1") Long interviewId,
 			@RequestParam(value = "page", defaultValue = "0") int page,
 			@RequestParam(value = "size", defaultValue = "10") int size
@@ -66,6 +69,7 @@ public class InterviewController {
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/{interviewId}/questions")
 	public InterviewQuestionResponseDto getInterviewQuestions(
+			@LoginMemberInfo MemberSessionDto userSessionDto,
 			@PathVariable("interviewId") @Parameter(description = "인터뷰 ID", example = "1") Long interviewId
 	) {
 		return InterviewQuestionResponseDto.builder().build();
@@ -87,6 +91,7 @@ public class InterviewController {
 	@PostMapping("/{interviewId}/conversations")
 	@ResponseStatus(HttpStatus.CREATED)
 	public void sendConversation(
+			@LoginMemberInfo MemberSessionDto userSessionDto,
 			@PathVariable("interviewId") @Parameter(description = "인터뷰 ID", example = "1") Long interviewId,
 			@Valid @RequestBody InterviewConversationCreateRequestDto requestDto
 	) {
@@ -110,6 +115,7 @@ public class InterviewController {
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/{interviewId}/questions/{questionId}/current-question")
 	public void updateCurrentQuestion(
+			@LoginMemberInfo MemberSessionDto userSessionDto,
 			@PathVariable("interviewId") @Parameter(description = "인터뷰 ID", example = "1") Long interviewId,
 			@PathVariable("questionId") @Parameter(description = "질문 ID", example = "1") Long questionId,
 			@Valid @RequestBody InterviewQuestionUpdateCurrentQuestionRequestDto requestDto

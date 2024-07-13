@@ -1,5 +1,7 @@
 package com.lifelibrarians.lifebookshelf.member.controller;
 
+import com.lifelibrarians.lifebookshelf.auth.dto.MemberSessionDto;
+import com.lifelibrarians.lifebookshelf.auth.jwt.LoginMemberInfo;
 import com.lifelibrarians.lifebookshelf.exception.annotation.ApiErrorCodeExample;
 import com.lifelibrarians.lifebookshelf.log.Logging;
 import com.lifelibrarians.lifebookshelf.member.dto.request.MemberUpdateRequestDto;
@@ -11,8 +13,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/v1/members")
-@Tag(name = "회원", description = "회원 관련 API")
+@Tag(name = "회원 (Member)", description = "회원 관련 API")
 @Logging
 public class MemberController {
 
@@ -35,9 +39,10 @@ public class MemberController {
 			}
 	)
 	@PreAuthorize("isAuthenticated()")
-	@PutMapping("/me")
+	@PutMapping(value = "/me", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public void updateMember(
-			@Valid @RequestBody MemberUpdateRequestDto requestDto
+			@LoginMemberInfo MemberSessionDto userSessionDto,
+			@Valid @ModelAttribute MemberUpdateRequestDto requestDto
 	) {
 
 	}
@@ -45,7 +50,9 @@ public class MemberController {
 	@Operation(summary = "회원 정보 조회", description = "회원 정보를 조회합니다.")
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/me")
-	public MemberBasicResponseDto getMember() {
+	public MemberBasicResponseDto getMember(
+			@LoginMemberInfo MemberSessionDto userSessionDto
+	) {
 		return MemberBasicResponseDto.builder().build();
 	}
 }

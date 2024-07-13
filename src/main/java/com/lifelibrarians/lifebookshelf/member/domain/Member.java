@@ -5,7 +5,7 @@ import com.lifelibrarians.lifebookshelf.community.book.domain.Book;
 import com.lifelibrarians.lifebookshelf.chapter.domain.Chapter;
 import com.lifelibrarians.lifebookshelf.chapter.domain.ChapterStatus;
 import com.lifelibrarians.lifebookshelf.community.comment.domain.Comment;
-import com.lifelibrarians.lifebookshelf.community.like.Like;
+import com.lifelibrarians.lifebookshelf.community.like.domain.Like;
 import com.lifelibrarians.lifebookshelf.notification.domain.NoticeHistory;
 import com.lifelibrarians.lifebookshelf.notification.domain.NotificationSubscribe;
 import javax.persistence.*;

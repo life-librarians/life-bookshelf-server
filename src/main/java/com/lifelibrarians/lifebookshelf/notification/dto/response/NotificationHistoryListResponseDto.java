@@ -7,12 +7,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
+import lombok.experimental.FieldNameConstants;
 
 @Builder
 @AllArgsConstructor
 @Getter
 @Schema(description = "알림 내역 목록 응답")
 @ToString
+@FieldNameConstants
 public class NotificationHistoryListResponseDto {
 
 	@ArraySchema(schema = @Schema(implementation = NotificationHistoryDto.class))

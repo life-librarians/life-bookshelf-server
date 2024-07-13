@@ -1,5 +1,7 @@
 package com.lifelibrarians.lifebookshelf.autobiography.controller;
 
+import com.lifelibrarians.lifebookshelf.auth.dto.MemberSessionDto;
+import com.lifelibrarians.lifebookshelf.auth.jwt.LoginMemberInfo;
 import com.lifelibrarians.lifebookshelf.autobiography.dto.request.AutobiographyCreateRequestDto;
 import com.lifelibrarians.lifebookshelf.autobiography.dto.request.AutobiographyUpdateRequestDto;
 import com.lifelibrarians.lifebookshelf.autobiography.dto.request.ChapterCreateRequestDto;
@@ -18,9 +20,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,7 +36,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/v1/autobiographies")
-@Tag(name = "자서전", description = "자서전 관련 API")
+@Tag(name = "자서전 (Autobiography)", description = "자서전 관련 API")
 @Logging
 public class AutobiographyController {
 
@@ -50,6 +54,7 @@ public class AutobiographyController {
 	@PostMapping("/chapters")
 	@ResponseStatus(HttpStatus.CREATED)
 	public void createChapters(
+			@LoginMemberInfo MemberSessionDto userSessionDto,
 			@Valid @RequestBody ChapterCreateRequestDto requestDto
 	) {
 
@@ -62,6 +67,7 @@ public class AutobiographyController {
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/chapeters")
 	public ChapterListResponseDto getChapters(
+			@LoginMemberInfo MemberSessionDto userSessionDto,
 			@RequestParam(value = "page", defaultValue = "0") int page,
 			@RequestParam(value = "size", defaultValue = "10") int size
 	) {
@@ -81,6 +87,7 @@ public class AutobiographyController {
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/chapters/{chapterId}")
 	public AutobiographyListResponseDto getChapterAutobiographies(
+			@LoginMemberInfo MemberSessionDto userSessionDto,
 			@PathVariable("chapterId") @Parameter(description = "챕터 ID") Long chapterId
 	) {
 		return AutobiographyListResponseDto.builder().build();
@@ -105,6 +112,7 @@ public class AutobiographyController {
 	@PostMapping("/chapters/{chapterId}")
 	@ResponseStatus(HttpStatus.CREATED)
 	public void createAutobiography(
+			@LoginMemberInfo MemberSessionDto userSessionDto,
 			@Valid @RequestBody AutobiographyCreateRequestDto requestDto,
 			@PathVariable("chapterId") @Parameter(description = "챕터 ID") Long chapterId
 	) {
@@ -124,6 +132,7 @@ public class AutobiographyController {
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/{autobiographyId}")
 	public AutobiographyDetailResponseDto getAutobiography(
+			@LoginMemberInfo MemberSessionDto userSessionDto,
 			@PathVariable("autobiographyId") @Parameter(description = "자서전 ID") Long autobiographyId
 	) {
 		return AutobiographyDetailResponseDto.builder().build();
@@ -142,10 +151,11 @@ public class AutobiographyController {
 			}
 	)
 	@PreAuthorize("isAuthenticated()")
-	@PostMapping("/{autobiographyId}")
+	@PostMapping(value = "/{autobiographyId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public void updateAutobiography(
+			@LoginMemberInfo MemberSessionDto userSessionDto,
 			@PathVariable("autobiographyId") @Parameter(description = "자서전 ID") Long autobiographyId,
-			@Valid @RequestBody AutobiographyUpdateRequestDto requestDto
+			@Valid @ModelAttribute AutobiographyUpdateRequestDto requestDto
 	) {
 
 	}
@@ -163,9 +173,10 @@ public class AutobiographyController {
 	@PreAuthorize("isAuthenticated()")
 	@DeleteMapping("/{autobiographyId}")
 	public void deleteAutobiography(
+			@LoginMemberInfo MemberSessionDto userSessionDto,
 			@PathVariable("autobiographyId") @Parameter(description = "자서전 ID") Long autobiographyId
 	) {
-		
+
 	}
 }
 

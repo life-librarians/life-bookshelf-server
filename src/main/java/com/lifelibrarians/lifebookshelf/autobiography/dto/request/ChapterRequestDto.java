@@ -7,12 +7,14 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 import java.util.List;
+import lombok.experimental.FieldNameConstants;
 
 @Builder
 @AllArgsConstructor
 @Getter
 @Schema(description = "자서전 챕터 정보")
 @ToString
+@FieldNameConstants
 public class ChapterRequestDto {
 
 	@Schema(description = "챕터 번호", example = "1")

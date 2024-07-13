@@ -7,12 +7,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
+import lombok.experimental.FieldNameConstants;
 
 @Builder
 @AllArgsConstructor
 @Getter
 @Schema(description = "자서전 생성 요청 DTO")
 @ToString
+@FieldNameConstants
 public class AutobiographyCreateRequestDto {
 
 	@Schema(description = "자서전 제목", example = "My New Autobiography")

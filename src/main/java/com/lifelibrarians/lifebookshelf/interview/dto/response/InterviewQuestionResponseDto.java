@@ -8,12 +8,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
+import lombok.experimental.FieldNameConstants;
 
 @Builder
 @AllArgsConstructor
 @Getter
 @Schema(description = "인터뷰 질문 목록 응답")
 @ToString
+@FieldNameConstants
 public class InterviewQuestionResponseDto {
 
 	@Schema(description = "현재 질문 ID", example = "1")

@@ -6,12 +6,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
+import lombok.experimental.FieldNameConstants;
 
 @Builder
 @AllArgsConstructor
 @Getter
 @Schema(description = "자서전 상세 정보")
 @ToString
+@FieldNameConstants
 public class PublicationPreviewDto {
 
 	@Schema(description = "책 ID", example = "1")

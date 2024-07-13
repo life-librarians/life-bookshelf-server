@@ -1,5 +1,6 @@
-package com.lifelibrarians.lifebookshelf.community.like;
+package com.lifelibrarians.lifebookshelf.community.like.repository;
 
+import com.lifelibrarians.lifebookshelf.community.like.domain.Like;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 

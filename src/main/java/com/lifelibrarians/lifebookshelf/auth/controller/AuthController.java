@@ -3,9 +3,11 @@ package com.lifelibrarians.lifebookshelf.auth.controller;
 import com.lifelibrarians.lifebookshelf.auth.dto.EmailLoginRequestDto;
 import com.lifelibrarians.lifebookshelf.auth.dto.JwtLoginTokenDto;
 import com.lifelibrarians.lifebookshelf.auth.dto.EmailRegisterRequestDto;
+import com.lifelibrarians.lifebookshelf.auth.dto.MemberSessionDto;
 import com.lifelibrarians.lifebookshelf.auth.dto.PasswordResetRequestDto;
 import com.lifelibrarians.lifebookshelf.auth.dto.VerifyEmailRequestDto;
 import com.lifelibrarians.lifebookshelf.auth.exception.AuthExceptionStatus;
+import com.lifelibrarians.lifebookshelf.auth.jwt.LoginMemberInfo;
 import com.lifelibrarians.lifebookshelf.auth.password.annotation.OneWayEncryption;
 import com.lifelibrarians.lifebookshelf.auth.password.annotation.TargetMapping;
 import com.lifelibrarians.lifebookshelf.exception.annotation.ApiErrorCodeExample;
@@ -31,7 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/v1/auth")
-@Tag(name = "인증", description = "인증 관련 API")
+@Tag(name = "인증 (Auth)", description = "인증 관련 API")
 @Logging
 public class AuthController {
 
@@ -134,6 +136,8 @@ public class AuthController {
 	@DeleteMapping(value = "/unregister")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@PreAuthorize("isAuthenticated()")
-	public void unregister() {
+	public void unregister(
+			@LoginMemberInfo MemberSessionDto userSessionDto
+	) {
 	}
 }
