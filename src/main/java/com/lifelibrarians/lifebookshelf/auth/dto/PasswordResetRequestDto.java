@@ -10,14 +10,11 @@ import lombok.experimental.FieldNameConstants;
 @Builder
 @AllArgsConstructor
 @Getter
-@Schema(description = "회원가입 요청 DTO")
+@Schema(description = "비밀번호 초기화 요청 DTO")
 @ToString
 @FieldNameConstants
-public class RegisterRequestDto {
+public class PasswordResetRequestDto {
 
 	@Schema(description = "이메일", example = "example@gmail.com")
 	private final String email;
-
-	@Schema(description = "비밀번호", example = "securepassword")
-	private final String password;
 }
