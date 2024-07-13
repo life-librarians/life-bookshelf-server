@@ -1,6 +1,6 @@
 package com.lifelibrarians.lifebookshelf.auth.password;
 
-import com.lifelibrarians.lifebookshelf.auth.exception.AuthExceptionStatus;
+import com.lifelibrarians.lifebookshelf.exception.status.AuthExceptionStatus;
 import com.lifelibrarians.lifebookshelf.auth.password.annotation.OneWayEncryption;
 import com.lifelibrarians.lifebookshelf.auth.password.annotation.TargetMapping;
 import com.lifelibrarians.lifebookshelf.utils.exception.UtilsExceptionStatus;

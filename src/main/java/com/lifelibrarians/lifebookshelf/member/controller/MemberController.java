@@ -6,7 +6,7 @@ import com.lifelibrarians.lifebookshelf.exception.annotation.ApiErrorCodeExample
 import com.lifelibrarians.lifebookshelf.log.Logging;
 import com.lifelibrarians.lifebookshelf.member.dto.request.MemberUpdateRequestDto;
 import com.lifelibrarians.lifebookshelf.member.dto.response.MemberBasicResponseDto;
-import com.lifelibrarians.lifebookshelf.member.exception.MemberExceptionStatus;
+import com.lifelibrarians.lifebookshelf.exception.status.MemberExceptionStatus;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -18,7 +18,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 

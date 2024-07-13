@@ -8,9 +8,9 @@ import com.lifelibrarians.lifebookshelf.autobiography.dto.request.ChapterCreateR
 import com.lifelibrarians.lifebookshelf.autobiography.dto.response.AutobiographyDetailResponseDto;
 import com.lifelibrarians.lifebookshelf.autobiography.dto.response.AutobiographyListResponseDto;
 import com.lifelibrarians.lifebookshelf.autobiography.dto.response.ChapterListResponseDto;
-import com.lifelibrarians.lifebookshelf.autobiography.exception.AutobiographyExceptionStatus;
+import com.lifelibrarians.lifebookshelf.exception.status.AutobiographyExceptionStatus;
 import com.lifelibrarians.lifebookshelf.exception.annotation.ApiErrorCodeExample;
-import com.lifelibrarians.lifebookshelf.interview.exception.InterviewExceptionStatus;
+import com.lifelibrarians.lifebookshelf.exception.status.InterviewExceptionStatus;
 import com.lifelibrarians.lifebookshelf.log.Logging;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

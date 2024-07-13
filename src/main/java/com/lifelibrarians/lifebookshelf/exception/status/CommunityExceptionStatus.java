@@ -1,4 +1,4 @@
-package com.lifelibrarians.lifebookshelf.community.exception;
+package com.lifelibrarians.lifebookshelf.exception.status;
 
 import com.lifelibrarians.lifebookshelf.exception.ControllerException;
 import com.lifelibrarians.lifebookshelf.exception.DomainException;

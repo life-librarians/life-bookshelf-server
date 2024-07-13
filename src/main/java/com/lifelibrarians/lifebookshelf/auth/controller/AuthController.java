@@ -6,7 +6,7 @@ import com.lifelibrarians.lifebookshelf.auth.dto.EmailRegisterRequestDto;
 import com.lifelibrarians.lifebookshelf.auth.dto.MemberSessionDto;
 import com.lifelibrarians.lifebookshelf.auth.dto.PasswordResetRequestDto;
 import com.lifelibrarians.lifebookshelf.auth.dto.VerifyEmailRequestDto;
-import com.lifelibrarians.lifebookshelf.auth.exception.AuthExceptionStatus;
+import com.lifelibrarians.lifebookshelf.exception.status.AuthExceptionStatus;
 import com.lifelibrarians.lifebookshelf.auth.jwt.LoginMemberInfo;
 import com.lifelibrarians.lifebookshelf.auth.password.annotation.OneWayEncryption;
 import com.lifelibrarians.lifebookshelf.auth.password.annotation.TargetMapping;

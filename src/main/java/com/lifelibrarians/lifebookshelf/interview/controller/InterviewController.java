@@ -2,13 +2,13 @@ package com.lifelibrarians.lifebookshelf.interview.controller;
 
 import com.lifelibrarians.lifebookshelf.auth.dto.MemberSessionDto;
 import com.lifelibrarians.lifebookshelf.auth.jwt.LoginMemberInfo;
-import com.lifelibrarians.lifebookshelf.autobiography.exception.AutobiographyExceptionStatus;
+import com.lifelibrarians.lifebookshelf.exception.status.AutobiographyExceptionStatus;
 import com.lifelibrarians.lifebookshelf.exception.annotation.ApiErrorCodeExample;
 import com.lifelibrarians.lifebookshelf.interview.dto.request.InterviewQuestionUpdateCurrentQuestionRequestDto;
 import com.lifelibrarians.lifebookshelf.interview.dto.request.InterviewConversationCreateRequestDto;
 import com.lifelibrarians.lifebookshelf.interview.dto.response.InterviewConversationResponseDto;
 import com.lifelibrarians.lifebookshelf.interview.dto.response.InterviewQuestionResponseDto;
-import com.lifelibrarians.lifebookshelf.interview.exception.InterviewExceptionStatus;
+import com.lifelibrarians.lifebookshelf.exception.status.InterviewExceptionStatus;
 import com.lifelibrarians.lifebookshelf.log.Logging;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

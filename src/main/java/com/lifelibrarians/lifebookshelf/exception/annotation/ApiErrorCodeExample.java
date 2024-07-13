@@ -1,11 +1,11 @@
 package com.lifelibrarians.lifebookshelf.exception.annotation;
 
-import com.lifelibrarians.lifebookshelf.auth.exception.AuthExceptionStatus;
-import com.lifelibrarians.lifebookshelf.autobiography.exception.AutobiographyExceptionStatus;
-import com.lifelibrarians.lifebookshelf.community.exception.CommunityExceptionStatus;
-import com.lifelibrarians.lifebookshelf.interview.exception.InterviewExceptionStatus;
-import com.lifelibrarians.lifebookshelf.member.exception.MemberExceptionStatus;
-import com.lifelibrarians.lifebookshelf.publication.exception.PublicationExceptionStatus;
+import com.lifelibrarians.lifebookshelf.exception.status.AuthExceptionStatus;
+import com.lifelibrarians.lifebookshelf.exception.status.AutobiographyExceptionStatus;
+import com.lifelibrarians.lifebookshelf.exception.status.CommunityExceptionStatus;
+import com.lifelibrarians.lifebookshelf.exception.status.InterviewExceptionStatus;
+import com.lifelibrarians.lifebookshelf.exception.status.MemberExceptionStatus;
+import com.lifelibrarians.lifebookshelf.exception.status.PublicationExceptionStatus;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

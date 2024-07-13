@@ -2,14 +2,14 @@ package com.lifelibrarians.lifebookshelf.publication.controller;
 
 import com.lifelibrarians.lifebookshelf.auth.dto.MemberSessionDto;
 import com.lifelibrarians.lifebookshelf.auth.jwt.LoginMemberInfo;
-import com.lifelibrarians.lifebookshelf.autobiography.exception.AutobiographyExceptionStatus;
-import com.lifelibrarians.lifebookshelf.community.exception.CommunityExceptionStatus;
+import com.lifelibrarians.lifebookshelf.exception.status.AutobiographyExceptionStatus;
+import com.lifelibrarians.lifebookshelf.exception.status.CommunityExceptionStatus;
 import com.lifelibrarians.lifebookshelf.exception.annotation.ApiErrorCodeExample;
 import com.lifelibrarians.lifebookshelf.log.Logging;
 import com.lifelibrarians.lifebookshelf.publication.dto.request.PublicationCreateRequestDto;
 import com.lifelibrarians.lifebookshelf.publication.dto.response.PublicationListResponseDto;
 import com.lifelibrarians.lifebookshelf.publication.dto.response.PublicationProgressResponseDto;
-import com.lifelibrarians.lifebookshelf.publication.exception.PublicationExceptionStatus;
+import com.lifelibrarians.lifebookshelf.exception.status.PublicationExceptionStatus;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

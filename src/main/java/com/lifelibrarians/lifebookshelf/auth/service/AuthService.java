@@ -2,7 +2,7 @@ package com.lifelibrarians.lifebookshelf.auth.service;
 
 import com.lifelibrarians.lifebookshelf.auth.dto.EmailLoginRequestDto;
 import com.lifelibrarians.lifebookshelf.auth.dto.JwtLoginTokenDto;
-import com.lifelibrarians.lifebookshelf.auth.exception.AuthExceptionStatus;
+import com.lifelibrarians.lifebookshelf.exception.status.AuthExceptionStatus;
 import com.lifelibrarians.lifebookshelf.auth.jwt.JwtTokenProvider;
 import com.lifelibrarians.lifebookshelf.log.Logging;
 import com.lifelibrarians.lifebookshelf.member.domain.LoginType;
