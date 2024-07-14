@@ -20,19 +20,4 @@ public class ChapterListResponseDto {
 
 	@ArraySchema(schema = @Schema(implementation = ChapterDto.class))
 	private final List<ChapterDto> results;
-
-	@Schema(description = "현재 페이지", example = "1")
-	private final int currentPage;
-
-	@Schema(description = "전체 요소 수", example = "4")
-	private final int totalElements;
-
-	@Schema(description = "전체 페이지 수", example = "1")
-	private final int totalPages;
-
-	@Schema(description = "다음 페이지 존재 여부", example = "false")
-	private final boolean hasNextPage;
-
-	@Schema(description = "이전 페이지 존재 여부", example = "false")
-	private final boolean hasPreviousPage;
 }

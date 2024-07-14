@@ -20,6 +20,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -69,12 +70,14 @@ public class AutobiographyController {
 	})
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/chapeters")
+	// FIXME: 페이지네이션 지원 여부에 대해 고민이 필요합니다. 우선, page와 size를 제공하더라도 페이지네이션 관련 응답을 제공하지 않습니다.
 	public ChapterListResponseDto getChapters(
 			@LoginMemberInfo MemberSessionDto memberSessionDto,
 			@RequestParam(value = "page", defaultValue = "0") int page,
 			@RequestParam(value = "size", defaultValue = "10") int size
 	) {
-		return ChapterListResponseDto.builder().build();
+		return autobiographyFacadeService.getChapters(memberSessionDto.getMemberId(),
+				PageRequest.of(page, size));
 	}
 
 	@Operation(summary = "특정 챕터의 자서전 목록 조회", description = "특정 챕터의 자서전 목록을 조회합니다.")
