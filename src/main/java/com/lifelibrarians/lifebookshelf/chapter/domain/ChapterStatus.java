@@ -48,5 +48,10 @@ public class ChapterStatus {
 
 	/* } 생성자 */
 
+	public void updateChapter(Chapter chapter, LocalDateTime now) {
+		this.currentChapter = chapter;
+		this.updatedAt = now;
+	}
+
 
 }

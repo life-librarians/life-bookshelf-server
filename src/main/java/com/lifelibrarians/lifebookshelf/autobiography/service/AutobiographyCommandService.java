@@ -16,6 +16,8 @@ import com.lifelibrarians.lifebookshelf.log.Logging;
 import com.lifelibrarians.lifebookshelf.member.domain.Member;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -94,6 +96,15 @@ public class AutobiographyCommandService {
 				.collect(Collectors.toList());
 
 		interviewQuestionRepository.saveAll(interviewQuestions);
+
+		Optional<ChapterStatus> chapterStatusOptional = chapterStatusRepository.findByMemberId(
+				member.getId());
+		if (chapterStatusOptional.isPresent()) {
+			ChapterStatus chapterStatus = chapterStatusOptional.get();
+			if (chapterStatus.getCurrentChapter().getId() + 1 == chapter.getId()) {
+				chapterStatus.updateChapter(chapter, now);
+			}
+		}
 	}
 
 	public void patchAutobiography(Long memberId, Long autobiographyId,
