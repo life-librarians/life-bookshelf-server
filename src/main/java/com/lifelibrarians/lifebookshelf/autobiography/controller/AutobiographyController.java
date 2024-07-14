@@ -8,6 +8,7 @@ import com.lifelibrarians.lifebookshelf.autobiography.dto.request.ChapterCreateR
 import com.lifelibrarians.lifebookshelf.autobiography.dto.response.AutobiographyDetailResponseDto;
 import com.lifelibrarians.lifebookshelf.autobiography.dto.response.AutobiographyListResponseDto;
 import com.lifelibrarians.lifebookshelf.autobiography.dto.response.ChapterListResponseDto;
+import com.lifelibrarians.lifebookshelf.autobiography.service.AutobiographyFacadeService;
 import com.lifelibrarians.lifebookshelf.exception.status.AutobiographyExceptionStatus;
 import com.lifelibrarians.lifebookshelf.exception.annotation.ApiErrorCodeExample;
 import com.lifelibrarians.lifebookshelf.exception.status.InterviewExceptionStatus;
@@ -40,6 +41,8 @@ import org.springframework.web.bind.annotation.RestController;
 @Logging
 public class AutobiographyController {
 
+	private final AutobiographyFacadeService autobiographyFacadeService;
+
 	@Operation(summary = "자서전 챕터 목록 생성", description = "자서전 챕터 목록을 생성합니다.")
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "201", description = "created"),
@@ -57,7 +60,7 @@ public class AutobiographyController {
 			@LoginMemberInfo MemberSessionDto memberSessionDto,
 			@Valid @RequestBody ChapterCreateRequestDto requestDto
 	) {
-
+		autobiographyFacadeService.createChapters(memberSessionDto.getMemberId(), requestDto);
 	}
 
 	@Operation(summary = "자서전 챕터 목록 조회", description = "자서전 챕터 목록을 조회합니다.")

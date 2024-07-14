@@ -8,6 +8,7 @@ import java.util.Set;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 @Entity
@@ -23,13 +24,19 @@ public class Chapter {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(nullable = false)
-	private Integer number;
+	@Column
+	private Long parentChapterId;
 
 	@Column(nullable = false)
+	@Setter
+	private String number;
+
+	@Column(nullable = false)
+	@Setter
 	private String name;
 
 	@Column(nullable = false)
+	@Setter
 	private LocalDateTime createdAt;
 	/* } 고유 정보 */
 
@@ -46,14 +53,18 @@ public class Chapter {
 	/* } 연관 정보 */
 
 	/* 생성자 { */
-	protected Chapter(Integer number, String name, LocalDateTime createdAt) {
+	protected Chapter(String number, String name, LocalDateTime createdAt, Long parentChapterId,
+			Member member) {
 		this.number = number;
 		this.name = name;
 		this.createdAt = createdAt;
+		this.parentChapterId = parentChapterId;
+		this.member = member;
 	}
 
-	public static Chapter of(Integer number, String name, LocalDateTime createdAt) {
-		return new Chapter(number, name, createdAt);
+	public static Chapter of(String number, String name, LocalDateTime createdAt,
+			Long parentChapterId, Member member) {
+		return new Chapter(number, name, createdAt, parentChapterId, member);
 	}
 	/* } 생성자 */
 }

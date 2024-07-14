@@ -1,8 +1,9 @@
 package com.lifelibrarians.lifebookshelf.autobiography.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
@@ -10,7 +11,6 @@ import java.util.List;
 import lombok.experimental.FieldNameConstants;
 
 @Builder
-@AllArgsConstructor
 @Getter
 @Schema(description = "자서전 챕터 정보")
 @ToString
@@ -25,4 +25,13 @@ public class ChapterRequestDto {
 
 	@ArraySchema(schema = @Schema(implementation = SubchapterRequestDto.class))
 	private final List<SubchapterRequestDto> subchapters;
+
+	@JsonCreator
+	public ChapterRequestDto(@JsonProperty("number") String number,
+			@JsonProperty("name") String name,
+			@JsonProperty("subchapters") List<SubchapterRequestDto> subchapters) {
+		this.number = number;
+		this.name = name;
+		this.subchapters = subchapters;
+	}
 }

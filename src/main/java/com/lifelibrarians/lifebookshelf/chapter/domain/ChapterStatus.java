@@ -15,6 +15,7 @@ import lombok.ToString;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ChapterStatus {
 
+	/* 고유 정보 { */
 	@Id
 	@Column(nullable = false, updatable = false)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +23,9 @@ public class ChapterStatus {
 
 	@Column(nullable = false)
 	private LocalDateTime updatedAt;
+	/* } 고유 정보 */
 
+	/* 연관 정보 { */
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "member_id", nullable = false)
 	private Member member;
@@ -30,4 +33,20 @@ public class ChapterStatus {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "current_chapter_id", nullable = false)
 	private Chapter currentChapter;
+	/* } 연관 정보 */
+
+	/* 생성자 { */
+	protected ChapterStatus(LocalDateTime updatedAt, Member member, Chapter currentChapter) {
+		this.updatedAt = updatedAt;
+		this.member = member;
+		this.currentChapter = currentChapter;
+	}
+
+	public static ChapterStatus of(LocalDateTime updatedAt, Member member, Chapter currentChapter) {
+		return new ChapterStatus(updatedAt, member, currentChapter);
+	}
+
+	/* } 생성자 */
+
+
 }
