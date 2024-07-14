@@ -184,7 +184,8 @@ public class AutobiographyController {
 			@LoginMemberInfo MemberSessionDto memberSessionDto,
 			@PathVariable("autobiographyId") @Parameter(description = "자서전 ID") Long autobiographyId
 	) {
-
+		autobiographyFacadeService.deleteAutobiography(memberSessionDto.getMemberId(),
+				autobiographyId);
 	}
 }
 

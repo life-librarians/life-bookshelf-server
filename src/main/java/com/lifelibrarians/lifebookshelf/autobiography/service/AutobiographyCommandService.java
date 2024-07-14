@@ -107,4 +107,14 @@ public class AutobiographyCommandService {
 		autobiography.updateAutoBiography(requestDto.getTitle(), requestDto.getContent(),
 				requestDto.getPreSignedCoverImageUrl(), LocalDateTime.now());
 	}
+
+	public void deleteAutobiography(Long memberId, Long autobiographyId) {
+		Autobiography autobiography = autobiographyRepository.findById(autobiographyId)
+				.orElseThrow(
+						AutobiographyExceptionStatus.AUTOBIOGRAPHY_NOT_FOUND::toServiceException);
+		if (!autobiography.getMember().getId().equals(memberId)) {
+			throw AutobiographyExceptionStatus.AUTOBIOGRAPHY_NOT_OWNER.toServiceException();
+		}
+		autobiographyRepository.delete(autobiography);
+	}
 }
