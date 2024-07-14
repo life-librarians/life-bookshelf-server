@@ -107,7 +107,8 @@ public class AutobiographyQueryService {
 		List<Autobiography> autobiographies = autobiographyRepository.findByMemberId(memberId);
 		List<AutobiographyPreviewDto> autobiographyPreviewDtos = autobiographies.stream()
 				.map((Autobiography autobiography) -> autobiographyMapper.toAutobiographyPreviewDto(
-						autobiography, autobiography.getChapter().getId()))
+						autobiography,
+						autobiography.getChapter().getId()))
 				.collect(Collectors.toList());
 		return AutobiographyListResponseDto.builder()
 				.results(autobiographyPreviewDtos)
