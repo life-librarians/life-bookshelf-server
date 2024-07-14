@@ -9,4 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
 	Optional<Member> findByEmail(String email);
+
+	@Query("SELECT m FROM Member m LEFT OUTER JOIN FETCH m.memberMemberMetadata WHERE m.id = :memberId")
+	Optional<Member> findByIdWithMetadata(Long memberId);
 }

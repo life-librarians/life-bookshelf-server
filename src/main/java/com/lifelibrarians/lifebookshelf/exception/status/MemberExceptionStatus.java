@@ -3,8 +3,6 @@ package com.lifelibrarians.lifebookshelf.exception.status;
 import com.lifelibrarians.lifebookshelf.exception.ControllerException;
 import com.lifelibrarians.lifebookshelf.exception.DomainException;
 import com.lifelibrarians.lifebookshelf.exception.ServiceException;
-import com.lifelibrarians.lifebookshelf.exception.status.ErrorReason;
-import com.lifelibrarians.lifebookshelf.exception.status.ExceptionStatus;
 import lombok.AllArgsConstructor;
 import lombok.ToString;
 
@@ -12,7 +10,8 @@ import lombok.ToString;
 @ToString
 public enum MemberExceptionStatus implements ExceptionStatus {
 
-	MEMBER_NAME_LENGTH_EXCEEDED(400, "MEMBER001", "이름은 최대 64자까지 입력할 수 있습니다.");
+	MEMBER_NAME_LENGTH_EXCEEDED(400, "MEMBER001", "이름은 최대 64자까지 입력할 수 있습니다."),
+	MEMBER_METADATA_NOT_FOUND(404, "MEMBER002", "회원 메타데이터가 존재하지 않습니다.");
 
 	private final int statusCode;
 	private final String code;

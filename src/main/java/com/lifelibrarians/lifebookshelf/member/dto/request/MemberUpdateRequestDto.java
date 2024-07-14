@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 import lombok.experimental.FieldNameConstants;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Builder
 @AllArgsConstructor
@@ -21,6 +22,7 @@ public class MemberUpdateRequestDto {
 	private final String name;
 
 	@Schema(description = "생년월일", example = "2000-01-01")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private final LocalDate bornedAt;
 
 	@Schema(description = "성별", example = "MALE")

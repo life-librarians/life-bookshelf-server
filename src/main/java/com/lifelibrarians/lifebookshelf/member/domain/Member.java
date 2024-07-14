@@ -20,7 +20,7 @@ import lombok.ToString;
 @Table(name = "members")
 @Getter
 @ToString(callSuper = true, exclude = {"memberNotificationSubscribes", "memberAutobiographies",
-		"memberBooks", "memberComments", "memberLikes", "memberChapters", "memberMemberMetadatas",
+		"memberBooks", "memberComments", "memberLikes", "memberChapters", "memberMemberMetadata",
 		"memberNoticeHistories", "memberChapterStatuses", "socialMember", "passwordMember"}
 )
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -76,8 +76,8 @@ public class Member {
 	@OneToMany(mappedBy = "member")
 	private Set<Chapter> memberChapters;
 
-	@OneToMany(mappedBy = "member")
-	private Set<MemberMetadata> memberMemberMetadatas;
+	@OneToOne(mappedBy = "member")
+	private MemberMetadata memberMemberMetadata;
 
 	@OneToMany(mappedBy = "member")
 	private Set<NoticeHistory> memberNoticeHistories;
@@ -128,6 +128,11 @@ public class Member {
 
 	public void softDelete(LocalDateTime now) {
 		this.deletedAt = now;
+	}
+
+	public void setMemberMemberMetadata(MemberMetadata memberMetadata) {
+		this.memberMemberMetadata = memberMetadata;
+		memberMetadata.setMember(this);
 	}
 
 	/* } 연관 관계 편의 메서드 */

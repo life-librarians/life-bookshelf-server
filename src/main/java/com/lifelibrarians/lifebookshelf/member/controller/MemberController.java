@@ -7,6 +7,7 @@ import com.lifelibrarians.lifebookshelf.log.Logging;
 import com.lifelibrarians.lifebookshelf.member.dto.request.MemberUpdateRequestDto;
 import com.lifelibrarians.lifebookshelf.member.dto.response.MemberBasicResponseDto;
 import com.lifelibrarians.lifebookshelf.exception.status.MemberExceptionStatus;
+import com.lifelibrarians.lifebookshelf.member.service.MemberFacadeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -28,6 +29,8 @@ import org.springframework.web.bind.annotation.RestController;
 @Logging
 public class MemberController {
 
+	private final MemberFacadeService memberFacadeService;
+
 	@Operation(summary = "회원 정보 수정 요청", description = "회원 정보를 수정합니다.")
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "ok"),
@@ -43,15 +46,23 @@ public class MemberController {
 			@LoginMemberInfo MemberSessionDto memberSessionDto,
 			@Valid @ModelAttribute MemberUpdateRequestDto requestDto
 	) {
-
+		memberFacadeService.updateMember(memberSessionDto.getMemberId(), requestDto);
 	}
 
 	@Operation(summary = "회원 정보 조회", description = "회원 정보를 조회합니다.")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "ok"),
+	})
+	@ApiErrorCodeExample(
+			memberExceptionStatuses = {
+					MemberExceptionStatus.MEMBER_METADATA_NOT_FOUND
+			}
+	)
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/me")
 	public MemberBasicResponseDto getMember(
 			@LoginMemberInfo MemberSessionDto memberSessionDto
 	) {
-		return MemberBasicResponseDto.builder().build();
+		return memberFacadeService.getMember(memberSessionDto.getMemberId());
 	}
 }

@@ -41,7 +41,7 @@ public class MemberMetadata {
 	/* } 고유 정보 */
 
 	/* 연관 정보 { */
-	@ManyToOne(fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "member_id", nullable = false)
 	private Member member;
 	/* } 연관 정보 */
@@ -65,4 +65,15 @@ public class MemberMetadata {
 				member);
 	}
 	/* } 생성자 */
+
+	public void update(String name, LocalDate bornedAt, GenderType gender, boolean hasChildren) {
+		this.name = name;
+		this.bornedAt = bornedAt;
+		this.gender = gender;
+		this.hasChildren = hasChildren;
+	}
+
+	public void setMember(Member member) {
+		this.member = member;
+	}
 }
