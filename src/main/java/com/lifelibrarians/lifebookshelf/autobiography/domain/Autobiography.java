@@ -76,5 +76,19 @@ public class Autobiography {
 		return new Autobiography(title, content, coverImageUrl, createdAt, updatedAt, chapter,
 				member);
 	}
+
+	public void updateAutoBiography(String title, String content, String preSignedCoverImageUrl,
+			LocalDateTime now) {
+		if (title != null && !title.isEmpty()) {
+			this.title = title;
+		}
+		if (content != null && !content.isEmpty()) {
+			this.content = content;
+		}
+		if (preSignedCoverImageUrl != null && !preSignedCoverImageUrl.isEmpty()) {
+			this.coverImageUrl = preSignedCoverImageUrl;
+		}
+		this.updatedAt = now;
+	}
 	/* } 생성자 */
 }

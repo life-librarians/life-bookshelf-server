@@ -164,7 +164,8 @@ public class AutobiographyController {
 			@PathVariable("autobiographyId") @Parameter(description = "자서전 ID") Long autobiographyId,
 			@Valid @ModelAttribute AutobiographyUpdateRequestDto requestDto
 	) {
-
+		autobiographyFacadeService.patchAutobiography(memberSessionDto.getMemberId(),
+				autobiographyId, requestDto);
 	}
 
 	@Operation(summary = "자서전 삭제 요청", description = "특정 자서전을 삭제합니다.")

@@ -2,6 +2,7 @@ package com.lifelibrarians.lifebookshelf.autobiography.service;
 
 import com.lifelibrarians.lifebookshelf.autobiography.domain.Autobiography;
 import com.lifelibrarians.lifebookshelf.autobiography.dto.request.AutobiographyCreateRequestDto;
+import com.lifelibrarians.lifebookshelf.autobiography.dto.request.AutobiographyUpdateRequestDto;
 import com.lifelibrarians.lifebookshelf.autobiography.dto.request.ChapterCreateRequestDto;
 import com.lifelibrarians.lifebookshelf.autobiography.repository.AutobiographyRepository;
 import com.lifelibrarians.lifebookshelf.chapter.domain.Chapter;
@@ -93,5 +94,17 @@ public class AutobiographyCommandService {
 				.collect(Collectors.toList());
 
 		interviewQuestionRepository.saveAll(interviewQuestions);
+	}
+
+	public void patchAutobiography(Long memberId, Long autobiographyId,
+			AutobiographyUpdateRequestDto requestDto) {
+		Autobiography autobiography = autobiographyRepository.findById(autobiographyId)
+				.orElseThrow(
+						AutobiographyExceptionStatus.AUTOBIOGRAPHY_NOT_FOUND::toServiceException);
+		if (!autobiography.getMember().getId().equals(memberId)) {
+			throw AutobiographyExceptionStatus.AUTOBIOGRAPHY_NOT_OWNER.toServiceException();
+		}
+		autobiography.updateAutoBiography(requestDto.getTitle(), requestDto.getContent(),
+				requestDto.getPreSignedCoverImageUrl(), LocalDateTime.now());
 	}
 }
