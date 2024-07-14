@@ -1,6 +1,7 @@
 package com.lifelibrarians.lifebookshelf.autobiography.service;
 
 import com.lifelibrarians.lifebookshelf.autobiography.domain.Autobiography;
+import com.lifelibrarians.lifebookshelf.autobiography.dto.response.AutobiographyDetailResponseDto;
 import com.lifelibrarians.lifebookshelf.autobiography.dto.response.AutobiographyListResponseDto;
 import com.lifelibrarians.lifebookshelf.autobiography.dto.response.AutobiographyPreviewDto;
 import com.lifelibrarians.lifebookshelf.autobiography.dto.response.ChapterDto;
@@ -111,5 +112,15 @@ public class AutobiographyQueryService {
 		return AutobiographyListResponseDto.builder()
 				.results(autobiographyPreviewDtos)
 				.build();
+	}
+
+	public AutobiographyDetailResponseDto getAutobiography(Long memberId, Long autobiographyId) {
+		Autobiography autobiography = autobiographyRepository.findById(autobiographyId)
+				.orElseThrow(
+						AutobiographyExceptionStatus.AUTOBIOGRAPHY_NOT_FOUND::toServiceException);
+		if (!autobiography.getMember().getId().equals(memberId)) {
+			throw AutobiographyExceptionStatus.AUTOBIOGRAPHY_NOT_OWNER.toServiceException();
+		}
+		return autobiographyMapper.toAutobiographyDetailResponseDto(autobiography);
 	}
 }

@@ -141,7 +141,8 @@ public class AutobiographyController {
 			@LoginMemberInfo MemberSessionDto memberSessionDto,
 			@PathVariable("autobiographyId") @Parameter(description = "자서전 ID") Long autobiographyId
 	) {
-		return AutobiographyDetailResponseDto.builder().build();
+		return autobiographyFacadeService.getAutobiography(memberSessionDto.getMemberId(),
+				autobiographyId);
 	}
 
 	@Operation(summary = "자서전 수정 요청", description = "특정 자서전을 수정합니다.")

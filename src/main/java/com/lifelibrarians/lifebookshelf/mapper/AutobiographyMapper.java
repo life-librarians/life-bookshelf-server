@@ -1,6 +1,7 @@
 package com.lifelibrarians.lifebookshelf.mapper;
 
 import com.lifelibrarians.lifebookshelf.autobiography.domain.Autobiography;
+import com.lifelibrarians.lifebookshelf.autobiography.dto.response.AutobiographyDetailResponseDto;
 import com.lifelibrarians.lifebookshelf.autobiography.dto.response.AutobiographyPreviewDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -13,4 +14,7 @@ public interface AutobiographyMapper {
 			Autobiography autobiography,
 			Long chapterId
 	);
+
+	@Mapping(source = "autobiography.id", target = "autobiographyId")
+	AutobiographyDetailResponseDto toAutobiographyDetailResponseDto(Autobiography autobiography);
 }

@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 
-public interface AutobiographyRepository extends JpaRepository<Autobiography, String> {
+public interface AutobiographyRepository extends JpaRepository<Autobiography, Long> {
 
 	@Query("SELECT a FROM Autobiography a JOIN FETCH a.chapter WHERE a.member.id = :memberId")
 	List<Autobiography> findByMemberId(Long memberId);
