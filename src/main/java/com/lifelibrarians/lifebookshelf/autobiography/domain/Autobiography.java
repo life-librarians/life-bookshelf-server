@@ -41,7 +41,7 @@ public class Autobiography {
 	/* } 고유 정보 */
 
 	/* 연관 정보 { */
-	@ManyToOne(fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "chapter_id", nullable = false)
 	private Chapter chapter;
 

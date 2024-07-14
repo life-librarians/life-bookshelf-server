@@ -17,7 +17,7 @@ import lombok.experimental.FieldNameConstants;
 public class NotificationHistoryDto {
 
 	@Schema(description = "알림 내역 ID", example = "1")
-	private final int noticeHistoryId;
+	private final Long noticeHistoryId;
 
 	@Schema(description = "제목", example = "[공지 알림] 인생책방 시스템 점검 안내")
 	private final String title;

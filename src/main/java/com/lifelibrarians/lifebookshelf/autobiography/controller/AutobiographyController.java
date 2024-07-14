@@ -80,7 +80,7 @@ public class AutobiographyController {
 				PageRequest.of(page, size));
 	}
 
-	@Operation(summary = "특정 챕터의 자서전 목록 조회", description = "특정 챕터의 자서전 목록을 조회합니다.")
+	@Operation(summary = "전체 자서전 목록 조회", description = "자서전 목록을 조회합니다.")
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "ok"),
 	})
@@ -91,12 +91,11 @@ public class AutobiographyController {
 			}
 	)
 	@PreAuthorize("isAuthenticated()")
-	@GetMapping("/chapters/{chapterId}")
+	@GetMapping
 	public AutobiographyListResponseDto getChapterAutobiographies(
-			@LoginMemberInfo MemberSessionDto memberSessionDto,
-			@PathVariable("chapterId") @Parameter(description = "챕터 ID") Long chapterId
+			@LoginMemberInfo MemberSessionDto memberSessionDto
 	) {
-		return AutobiographyListResponseDto.builder().build();
+		return autobiographyFacadeService.getAutobiographies(memberSessionDto.getMemberId());
 	}
 
 	@Operation(summary = "자서전 생성 요청", description = "새 자서전을 생성합니다.")
@@ -122,7 +121,8 @@ public class AutobiographyController {
 			@Valid @RequestBody AutobiographyCreateRequestDto requestDto,
 			@PathVariable("chapterId") @Parameter(description = "챕터 ID") Long chapterId
 	) {
-
+		autobiographyFacadeService.createAutobiography(memberSessionDto.getMemberId(), requestDto,
+				chapterId);
 	}
 
 	@Operation(summary = "특정 자서전 상세 조회", description = "특정 자서전의 상세 정보를 조회합니다.")

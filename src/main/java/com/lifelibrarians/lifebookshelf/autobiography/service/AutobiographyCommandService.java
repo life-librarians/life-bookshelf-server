@@ -1,11 +1,16 @@
 package com.lifelibrarians.lifebookshelf.autobiography.service;
 
+import com.lifelibrarians.lifebookshelf.autobiography.domain.Autobiography;
+import com.lifelibrarians.lifebookshelf.autobiography.dto.request.AutobiographyCreateRequestDto;
 import com.lifelibrarians.lifebookshelf.autobiography.dto.request.ChapterCreateRequestDto;
+import com.lifelibrarians.lifebookshelf.autobiography.repository.AutobiographyRepository;
 import com.lifelibrarians.lifebookshelf.chapter.domain.Chapter;
 import com.lifelibrarians.lifebookshelf.chapter.domain.ChapterStatus;
 import com.lifelibrarians.lifebookshelf.chapter.repository.ChapterRepository;
 import com.lifelibrarians.lifebookshelf.chapter.repository.ChapterStatusRepository;
 import com.lifelibrarians.lifebookshelf.exception.status.AutobiographyExceptionStatus;
+import com.lifelibrarians.lifebookshelf.interview.domain.InterviewQuestion;
+import com.lifelibrarians.lifebookshelf.interview.repository.InterviewQuestionRepository;
 import com.lifelibrarians.lifebookshelf.log.Logging;
 import com.lifelibrarians.lifebookshelf.member.domain.Member;
 import java.time.LocalDateTime;
@@ -23,6 +28,8 @@ public class AutobiographyCommandService {
 
 	private final ChapterRepository chapterRepository;
 	private final ChapterStatusRepository chapterStatusRepository;
+	private final AutobiographyRepository autobiographyRepository;
+	private final InterviewQuestionRepository interviewQuestionRepository;
 
 	public void createChapters(Member member, ChapterCreateRequestDto chapterCreateRequestDto) {
 
@@ -60,5 +67,31 @@ public class AutobiographyCommandService {
 
 		ChapterStatus chapterStatus = ChapterStatus.of(now, member, rootChapters.get(0));
 		chapterStatusRepository.save(chapterStatus);
+	}
+
+	public void createAutobiography(Member member, AutobiographyCreateRequestDto requestDto,
+			Chapter chapter) {
+		LocalDateTime now = LocalDateTime.now();
+		Autobiography autobiography = Autobiography.of(
+				requestDto.getTitle(),
+				requestDto.getContent(),
+				// FIXME: 이미지 처리 필요
+				requestDto.getPreSignedCoverImageUrl(),
+				now,
+				now,
+				chapter,
+				member
+		);
+		autobiographyRepository.save(autobiography);
+
+		List<InterviewQuestion> interviewQuestions = requestDto.getInterviewQuestions().stream()
+				.map(interviewDto -> InterviewQuestion.of(
+						interviewDto.getOrder(),
+						interviewDto.getQuestionText(),
+						now
+				))
+				.collect(Collectors.toList());
+
+		interviewQuestionRepository.saveAll(interviewQuestions);
 	}
 }

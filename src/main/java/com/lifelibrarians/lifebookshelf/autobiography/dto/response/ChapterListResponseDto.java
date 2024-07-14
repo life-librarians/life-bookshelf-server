@@ -16,7 +16,7 @@ import lombok.ToString;
 public class ChapterListResponseDto {
 
 	@Schema(description = "현재 챕터 ID", example = "3")
-	private final int currentChapterId;
+	private final Long currentChapterId;
 
 	@ArraySchema(schema = @Schema(implementation = ChapterDto.class))
 	private final List<ChapterDto> results;

@@ -18,7 +18,7 @@ import lombok.experimental.FieldNameConstants;
 public class SubscribingNotificationDto {
 
 	@Schema(description = "알림 ID", example = "1")
-	private final int notificationId;
+	private final Long notificationId;
 
 	@Schema(description = "알림 유형", example = "ANNOUNCEMENT")
 	private final NoticeType noticeType;

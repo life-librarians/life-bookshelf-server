@@ -1,5 +1,6 @@
 package com.lifelibrarians.lifebookshelf.autobiography.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
@@ -10,7 +11,6 @@ import lombok.ToString;
 import lombok.experimental.FieldNameConstants;
 
 @Builder
-@AllArgsConstructor
 @Getter
 @Schema(description = "자서전 생성 요청 DTO")
 @ToString
@@ -28,4 +28,13 @@ public class AutobiographyCreateRequestDto {
 
 	@ArraySchema(schema = @Schema(implementation = InterviewQuestionRequestDto.class))
 	private final List<InterviewQuestionRequestDto> interviewQuestions;
+
+	@JsonCreator
+	public AutobiographyCreateRequestDto(String title, String content,
+			String preSignedCoverImageUrl, List<InterviewQuestionRequestDto> interviewQuestions) {
+		this.title = title;
+		this.content = content;
+		this.preSignedCoverImageUrl = preSignedCoverImageUrl;
+		this.interviewQuestions = interviewQuestions;
+	}
 }

@@ -15,7 +15,10 @@ import lombok.ToString;
 public class AutobiographyPreviewDto {
 
 	@Schema(description = "자서전 ID", example = "1")
-	private final int autobiographyId;
+	private final Long autobiographyId;
+
+	@Schema(description = "대응되는 챕터 ID", example = "1")
+	private final Long chapterId;
 
 	@Schema(description = "제목", example = "My Early Life")
 	private final String title;

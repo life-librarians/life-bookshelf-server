@@ -14,7 +14,8 @@ import lombok.ToString;
 @Entity
 @Table(name = "chapters")
 @Getter
-@ToString(callSuper = true)
+@ToString(callSuper = true, exclude = {"chapterAutobiography", "member",
+		"currentChapterChapterStatus"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Chapter {
 
@@ -41,15 +42,15 @@ public class Chapter {
 	/* } 고유 정보 */
 
 	/* 연관 정보 { */
-	@OneToMany(mappedBy = "chapter")
-	private Set<Autobiography> chapterAutobiographies;
+	@OneToOne(mappedBy = "chapter")
+	private Autobiography chapterAutobiography;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "member_id", nullable = false)
 	private Member member;
 
-	@OneToMany(mappedBy = "currentChapter")
-	private Set<ChapterStatus> currentChapterChapterStatuses;
+	@OneToOne(mappedBy = "currentChapter")
+	private ChapterStatus currentChapterChapterStatus;
 	/* } 연관 정보 */
 
 	/* 생성자 { */

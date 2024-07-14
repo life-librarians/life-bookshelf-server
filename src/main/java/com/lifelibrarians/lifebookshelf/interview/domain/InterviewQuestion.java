@@ -18,7 +18,8 @@ public class InterviewQuestion {
 	/* 고유 정보 { */
 	@Id
 	@Column(nullable = false, updatable = false)
-	private String id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
 	@Column(nullable = false, name = "\"order\"")
 	private Integer order;
@@ -36,17 +37,16 @@ public class InterviewQuestion {
 	/* } 연관 정보 */
 
 	/* 생성자 { */
-	protected InterviewQuestion(String id, Integer order, String questionText,
+	protected InterviewQuestion(Integer order, String questionText,
 			LocalDateTime createdAt) {
-		this.id = id;
 		this.order = order;
 		this.questionText = questionText;
 		this.createdAt = createdAt;
 	}
 
-	public static InterviewQuestion of(String id, Integer order, String questionText,
+	public static InterviewQuestion of(Integer order, String questionText,
 			LocalDateTime createdAt) {
-		return new InterviewQuestion(id, order, questionText, createdAt);
+		return new InterviewQuestion(order, questionText, createdAt);
 	}
 	/* } 생성자 */
 }

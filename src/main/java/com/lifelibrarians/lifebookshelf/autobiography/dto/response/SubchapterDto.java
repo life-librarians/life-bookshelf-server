@@ -15,7 +15,7 @@ import lombok.ToString;
 public class SubchapterDto {
 
 	@Schema(description = "서브챕터 ID", example = "3")
-	private final int chapterId;
+	private final Long chapterId;
 
 	@Schema(description = "서브챕터 번호", example = "1.1")
 	private final String chapterNumber;

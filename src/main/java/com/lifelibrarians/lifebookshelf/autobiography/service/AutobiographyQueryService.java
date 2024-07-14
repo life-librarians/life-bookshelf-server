@@ -1,14 +1,20 @@
 package com.lifelibrarians.lifebookshelf.autobiography.service;
 
+import com.lifelibrarians.lifebookshelf.autobiography.domain.Autobiography;
+import com.lifelibrarians.lifebookshelf.autobiography.dto.response.AutobiographyListResponseDto;
+import com.lifelibrarians.lifebookshelf.autobiography.dto.response.AutobiographyPreviewDto;
 import com.lifelibrarians.lifebookshelf.autobiography.dto.response.ChapterDto;
 import com.lifelibrarians.lifebookshelf.autobiography.dto.response.ChapterListResponseDto;
 import com.lifelibrarians.lifebookshelf.autobiography.dto.response.SubchapterDto;
+import com.lifelibrarians.lifebookshelf.autobiography.repository.AutobiographyRepository;
 import com.lifelibrarians.lifebookshelf.chapter.domain.Chapter;
 import com.lifelibrarians.lifebookshelf.chapter.domain.ChapterStatus;
 import com.lifelibrarians.lifebookshelf.chapter.repository.ChapterRepository;
 import com.lifelibrarians.lifebookshelf.chapter.repository.ChapterStatusRepository;
 import com.lifelibrarians.lifebookshelf.exception.status.AuthExceptionStatus;
+import com.lifelibrarians.lifebookshelf.exception.status.AutobiographyExceptionStatus;
 import com.lifelibrarians.lifebookshelf.log.Logging;
+import com.lifelibrarians.lifebookshelf.mapper.AutobiographyMapper;
 import com.lifelibrarians.lifebookshelf.member.domain.Member;
 import com.lifelibrarians.lifebookshelf.member.repository.MemberRepository;
 import java.util.List;
@@ -29,11 +35,29 @@ public class AutobiographyQueryService {
 	private final MemberRepository memberRepository;
 	private final ChapterRepository chapterRepository;
 	private final ChapterStatusRepository chapterStatusRepository;
+	private final AutobiographyRepository autobiographyRepository;
+	private final AutobiographyMapper autobiographyMapper;
 
 	public Member findMemberById(Long memberId) {
 		return memberRepository.findById(memberId)
 				.orElseThrow(AuthExceptionStatus.MEMBER_NOT_FOUND::toServiceException);
 	}
+
+	public Autobiography findAutobiographyChapterById(Long chapterId) {
+		return autobiographyRepository.findByChapterId(chapterId)
+				.orElseThrow(
+						AutobiographyExceptionStatus.AUTOBIOGRAPHY_NOT_FOUND::toServiceException);
+	}
+
+	public boolean isChapterHasAutobiography(Long chapterId) {
+		return autobiographyRepository.findByChapterId(chapterId).isPresent();
+	}
+
+	public Chapter findChapterById(Long chapterId) {
+		return chapterRepository.findById(chapterId)
+				.orElseThrow(AutobiographyExceptionStatus.CHAPTER_NOT_FOUND::toServiceException);
+	}
+
 
 	public ChapterListResponseDto getChapters(Long memberId, Pageable pageable) {
 		// Fetch paginated chapters with no parent (top-level chapters)
@@ -47,7 +71,7 @@ public class AutobiographyQueryService {
 		List<ChapterDto> chapterDtos = chapterPage.getContent().stream().map(chapter -> {
 			List<SubchapterDto> subchapterDtos = getSubchapterDtos(chapter.getId());
 			return ChapterDto.builder()
-					.chapterId(chapter.getId().intValue())
+					.chapterId(chapter.getId())
 					.chapterNumber(chapter.getNumber())
 					.chapterName(chapter.getName())
 					.chapterCreatedAt(chapter.getCreatedAt())
@@ -56,8 +80,8 @@ public class AutobiographyQueryService {
 		}).collect(Collectors.toList());
 
 		// Determine current chapter ID from status
-		int currentChapterId = chapterStatus.map(
-				status -> status.getCurrentChapter().getId().intValue()).orElse(0);
+		Long currentChapterId = chapterStatus.map(
+				status -> status.getCurrentChapter().getId()).orElse(0L);
 
 		// Create the response DTO
 		return ChapterListResponseDto.builder()
@@ -70,11 +94,22 @@ public class AutobiographyQueryService {
 		// Fetch subchapters using the parent chapter ID
 		List<Chapter> subchapters = chapterRepository.findByParentChapterId(parentChapterId);
 		return subchapters.stream().map(subchapter -> SubchapterDto.builder()
-				.chapterId(subchapter.getId().intValue())
+				.chapterId(subchapter.getId())
 				.chapterNumber(subchapter.getNumber())
 				.chapterName(subchapter.getName())
 				.chapterCreatedAt(subchapter.getCreatedAt())
 				.build()
 		).collect(Collectors.toList());
+	}
+
+	public AutobiographyListResponseDto getAutobiographies(Long memberId) {
+		List<Autobiography> autobiographies = autobiographyRepository.findByMemberId(memberId);
+		List<AutobiographyPreviewDto> autobiographyPreviewDtos = autobiographies.stream()
+				.map((Autobiography autobiography) -> autobiographyMapper.toAutobiographyPreviewDto(
+						autobiography, autobiography.getChapter().getId()))
+				.collect(Collectors.toList());
+		return AutobiographyListResponseDto.builder()
+				.results(autobiographyPreviewDtos)
+				.build();
 	}
 }

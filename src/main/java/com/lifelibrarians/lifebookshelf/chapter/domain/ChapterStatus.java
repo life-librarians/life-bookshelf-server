@@ -30,7 +30,7 @@ public class ChapterStatus {
 	@JoinColumn(name = "member_id", nullable = false)
 	private Member member;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "current_chapter_id", nullable = false)
 	private Chapter currentChapter;
 	/* } 연관 정보 */
