@@ -69,9 +69,41 @@ jobs:
 
           aws s3 cp deploy.zip s3://${{ secrets.AWS_S3_DEPLOY_MAIN_BUCKET_NAME }}/deploy.zip
 
-          aws deploy create-deployment \
-          --application-name ${{ secrets.AWS_CODEDEPLOY_MAIN_APP_NAME }} \
-          --deployment-config-name CodeDeployDefault.AllAtOnce \
-          --deployment-group-name ${{ secrets.AWS_CODEDEPLOY_MAIN_GROUP_NAME }} \
-          --file-exists-behavior OVERWRITE \
-          --s3-location bucket=${{ secrets.AWS_S3_DEPLOY_MAIN_BUCKET_NAME }},bundleType=zip,key=deploy.zip
+          DEPLOYMENT_ID=$(aws deploy create-deployment \
+            --application-name ${{ secrets.AWS_CODEDEPLOY_MAIN_APP_NAME }} \
+            --deployment-config-name CodeDeployDefault.AllAtOnce \
+            --deployment-group-name ${{ secrets.AWS_CODEDEPLOY_MAIN_GROUP_NAME }} \
+            --file-exists-behavior OVERWRITE \
+            --s3-location bucket=${{ secrets.AWS_S3_DEPLOY_MAIN_BUCKET_NAME }},bundleType=zip,key=deploy.zip \
+            --output text --query 'deploymentId')
+          echo "DEPLOYMENT_ID=$DEPLOYMENT_ID" >> $GITHUB_ENV
+
+      - name: Check Deployment Status and Notify
+        if: ${{ github.ref == 'refs/heads/main' }}
+        run: |
+          TIMEOUT=600
+          INTERVAL=15
+          ELAPSED=0
+
+          while [ $ELAPSED -le $TIMEOUT ]; do
+            STATUS=$(aws deploy get-deployment --deployment-id $DEPLOYMENT_ID --output text --query 'deploymentInfo.status')
+            if [[ "$STATUS" == "Succeeded" ]]; then
+              curl -H "Content-Type: application/json" \
+                   -d '{"content": "Deployment succeeded! 🚀"}' \
+                   ${{ secrets.DISCORD_WEBHOOK_URL }}
+              exit 0
+            elif [[ "$STATUS" == "Failed" || "$STATUS" == "Stopped" ]]; then
+              curl -H "Content-Type: application/json" \
+                   -d '{"content": "Deployment failed. 🚨"}' \
+                   ${{ secrets.DISCORD_WEBHOOK_URL }}
+              exit 1
+            fi
+            sleep $INTERVAL
+            let ELAPSED=ELAPSED+INTERVAL
+          done
+
+          curl -H "Content-Type: application/json" \
+               -d '{"content": "Deployment timed out. ⏲️"}' \
+               ${{ secrets.DISCORD_WEBHOOK_URL }}
+          exit 1
+        shell: bash
