@@ -23,6 +23,7 @@ public class SocialMember {
 	private String oauthId;
 
 	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
 	private OauthType oauthType;
 	/* } 고유 정보 */
 

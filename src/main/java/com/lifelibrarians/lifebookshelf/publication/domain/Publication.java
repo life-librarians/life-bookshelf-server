@@ -25,9 +25,11 @@ public class Publication {
 	private Integer price;
 
 	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
 	private TitlePosition titlePosition;
 
 	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
 	private PublishStatus publishStatus;
 
 	@Column(nullable = false)

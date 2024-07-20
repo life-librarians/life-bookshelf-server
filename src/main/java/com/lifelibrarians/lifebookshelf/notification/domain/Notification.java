@@ -22,6 +22,7 @@ public class Notification {
 	private Long id;
 
 	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
 	private NoticeType noticeType;
 
 	@Column(name = "\"description\"")

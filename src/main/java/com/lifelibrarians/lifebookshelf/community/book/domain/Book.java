@@ -33,7 +33,8 @@ public class Book {
 	private String coverImageUrl;
 
 	@Column(nullable = false)
-	private String visibleScope;
+	@Enumerated(EnumType.STRING)
+	private VisibleScope visibleScope;
 
 	@Column(nullable = false)
 	private Integer page;
@@ -67,7 +68,7 @@ public class Book {
 	/* } 연관 정보 */
 
 	/* 생성자 { */
-	protected Book(String title, String coverImageUrl, String visibleScope, Integer page,
+	protected Book(String title, String coverImageUrl, VisibleScope visibleScope, Integer page,
 			LocalDateTime createdAt, LocalDateTime deletedAt, Member member) {
 		this.title = title;
 		this.coverImageUrl = coverImageUrl;
@@ -78,7 +79,7 @@ public class Book {
 		this.member = member;
 	}
 
-	public static Book of(String title, String coverImageUrl, String visibleScope, Integer page,
+	public static Book of(String title, String coverImageUrl, VisibleScope visibleScope, Integer page,
 			LocalDateTime createdAt, LocalDateTime deletedAt, Member member) {
 		return new Book(title, coverImageUrl, visibleScope, page, createdAt, deletedAt, member);
 	}

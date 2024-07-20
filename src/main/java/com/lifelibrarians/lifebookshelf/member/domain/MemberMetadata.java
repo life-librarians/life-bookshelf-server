@@ -28,6 +28,7 @@ public class MemberMetadata {
 	private LocalDate bornedAt;
 
 	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
 	private GenderType gender;
 
 	@Column(nullable = false)
