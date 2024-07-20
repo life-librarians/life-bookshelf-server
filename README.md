@@ -64,8 +64,10 @@ API 문서를 확인할 수 있습니다.
 클릭합니다.
 
 ![img_2.png](img_2.png)
-데모 버전에서는 별도의 이메일 인증 없이 바로 인증 토큰을 얻을 수 있습니다.
 `accessToken` 을 복사해둡니다.
+
+> 데모 버전에서는 이메일 인증을 지원하지 않습니다. 회원가입 후, 직접 members 테이블의 role을 `PRE_MEMBER`에서 `MEMBER`로 수정해야 합니다.
+
 
 ![img_3.png](img_3.png)
 `Authorize` 버튼을 클릭하고 `Bearer` 뒤에 복사해둔 `accessToken` 을 붙여넣습니다.
