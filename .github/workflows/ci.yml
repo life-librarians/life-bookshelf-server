@@ -55,10 +55,8 @@ jobs:
           aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin $REGISTRY
           cp build/libs/*.jar deploy-main/
           cd deploy-main
-          docker build -t $REPOSITORY .
+          docker buildx build --platform linux/amd64,linux/arm64 -t $REGISTRY/$REPOSITORY:$IMAGE_TAG --push .
           rm *.jar
-          docker tag $REPOSITORY:$IMAGE_TAG $REGISTRY/$REPOSITORY:$IMAGE_TAG
-          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
 
       - name: Upload build file to S3 and trigger CodeDeploy
         if: ${{ github.ref == 'refs/heads/main' }}
