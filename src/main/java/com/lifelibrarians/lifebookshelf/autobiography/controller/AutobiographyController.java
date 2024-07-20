@@ -50,8 +50,10 @@ public class AutobiographyController {
 	})
 	@ApiErrorCodeExample(
 			autobiographyExceptionStatuses = {
-					AutobiographyExceptionStatus.CHAPTER_ALREADY_EXISTS,
+					AutobiographyExceptionStatus.SUBCHAPTER_NUMBER_INVALID,
+					AutobiographyExceptionStatus.CHAPTER_NUMBER_FORMAT_INVALID,
 					AutobiographyExceptionStatus.CHAPTER_NAME_LENGTH_EXCEEDED,
+					AutobiographyExceptionStatus.CHAPTER_ALREADY_EXISTS,
 			}
 	)
 	@PreAuthorize("isAuthenticated()")

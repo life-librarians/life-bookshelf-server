@@ -21,7 +21,10 @@ public enum AutobiographyExceptionStatus implements ExceptionStatus {
 	AUTOBIOGRAPHY_NOT_FOUND(404, "BIO008", "자서전 ID가 존재하지 않습니다."),
 	AUTOBIOGRAPHY_NOT_OWNER(403, "BIO009", "해당 자서전의 주인이 아닙니다."),
 	CHAPTER_ALREADY_HAS_AUTOBIOGRAPHY(
-			409, "BIO010", "해당 챕터는 이미 다른 자서전을 가지고 있습니다.");
+			409, "BIO010", "해당 챕터는 이미 다른 자서전을 가지고 있습니다."),
+	SUBCHAPTER_NUMBER_INVALID(400, "BIO011", "챕터의 subchapter의 number가 부모 chapter의 number로 시작해야 합니다."),
+	CHAPTER_NUMBER_FORMAT_INVALID(400, "BIO012", "챕터 번호는 1, 1.1, 1.1.1과 같은 형식이어야 합니다.");
+
 
 	private final int statusCode;
 	private final String code;
