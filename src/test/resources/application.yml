@@ -1,0 +1,48 @@
+spring:
+  config:
+    activate:
+      on-profile: test
+  datasource:
+    url: jdbc:h2:mem:testdb
+    username: sa
+    password: password
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    database-platform: org.hibernate.dialect.H2Dialect
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        globally_quoted_identifiers: true
+
+jwt:
+  key: blablablablablablablablablablablabla
+  expiration:
+    # 7일
+    access-token: 604800000
+    # 30일
+    refresh-token: 2592000000
+
+#Logging
+logging:
+  level:
+    com.lifelibrarians.lifebookshelf: DEBUG
+
+#Monitoring - Prometheus
+management:
+  endpoints:
+    web:
+      base-path: /actuator
+      exposure:
+        include: "*"
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+
+swagger:
+  base-url: http://localhost:8080
+
+
