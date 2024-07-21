@@ -799,9 +799,60 @@ public class AutobiographyControllerTest extends E2EMvcTest {
 		}
 	}
 
-//    3. 자서전의 주인이 아닌 경우 테스트
-//    4. 존재하지 않는 자서전 테스트
-//4. 자서전 삭제 요청
-//    1. 자서전의 주인이 아닌 경우 테스트
-//    2. 존재하지 않는 자서전 테스트
+	@Nested
+	@DisplayName("자서전 삭제 요청 (DELETE /api/v1/autobiographies/{autobiographyId}")
+	class DeleteAutobiography {
+
+		private final String url = URL_PREFIX;
+		private Member loginMember;
+
+		@BeforeEach
+		void setUp() {
+			loginMember = persistHelper
+					.persistAndReturn(TestMember.asDefaultEntity());
+			token = jwtTokenProvider.createMemberAccessToken(
+					loginMember.getId()).getTokenValue();
+		}
+
+		@Test
+		@DisplayName("실패 - 자신의 자서전이 아닌 경우, 자서전을 삭제할 수 없음")
+		void 실패_자신의_자서전이_아닌_경우_자서전을_삭제할_수_없음() throws Exception {
+			// given
+			Member otherMember = persistHelper
+					.persistAndReturn(TestMember.asDefaultEntity());
+			List<Chapter> chapters = persistHelper
+					.persistAndReturn(TestChapter.asDefaultEntities(otherMember));
+			Autobiography autobiography = persistHelper
+					.persistAndReturn(TestAutobiography.asDefaultEntity(otherMember, chapters.get(0)));
+
+			// when
+			MockHttpServletRequestBuilder requestBuilder = delete(
+					url + "/" + autobiography.getId())
+					.header(AUTHORIZE_VALUE, BEARER + token);
+			ResultActions resultActions = mockMvc.perform(requestBuilder);
+
+			// then
+			resultActions
+					.andExpect(status().isForbidden())
+					.andDo(print());
+		}
+
+		@Test
+		@DisplayName("실패 - 존재하지 않는 자서전을 삭제할 수 없음")
+		void 실패_존재하지_않는_자서전을_삭제할_수_없음() throws Exception {
+			// given
+			Long notExistAutobiographyId = 0L;
+
+			// when
+			MockHttpServletRequestBuilder requestBuilder = delete(
+					url + "/" + notExistAutobiographyId)
+					.header(AUTHORIZE_VALUE, BEARER + token);
+			ResultActions resultActions = mockMvc.perform(requestBuilder);
+
+			// then
+			resultActions
+					.andExpect(status().isNotFound())
+					.andDo(print());
+		}
+	}
 }
