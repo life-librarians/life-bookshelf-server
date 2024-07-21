@@ -4,7 +4,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import com.lifelibrarians.lifebookshelf.autobiography.dto.request.AutobiographyCreateRequestDto;
 import com.lifelibrarians.lifebookshelf.autobiography.dto.request.ChapterCreateRequestDto;
+import com.lifelibrarians.lifebookshelf.chapter.domain.Chapter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
@@ -21,7 +27,11 @@ import com.lifelibrarians.lifebookshelf.member.domain.Member;
 import utils.JsonMatcher;
 import utils.PersistHelper;
 import utils.test.E2EMvcTest;
+import utils.testdouble.autobiography.TestAutobiography;
+import utils.testdouble.chapter.TestAutobiographyCreateRequestDto;
+import utils.testdouble.chapter.TestChapter;
 import utils.testdouble.chapter.TestChapterCreateRequestDto;
+import utils.testdouble.chapter.TestChapterStatus;
 import utils.testdouble.member.TestMember;
 
 public class AutobiographyControllerTest extends E2EMvcTest {
@@ -308,13 +318,211 @@ public class AutobiographyControllerTest extends E2EMvcTest {
 				.andDo(print());
 	}
 
-//2. 자서전 생성 요청
-//    1. 자서전 제목 길이 제한 테스트
-//    2. 자서전 내용 길이 제한 테스트
-//    3. 챕터의 주인이 아닌 경우 테스트
-//    4. 존재하지 않는 챕터 테스트
-//    5. 이미 자서전을 가진 챕터 테스트
-//    6. 인터뷰 질문 텍스트 길이 제한 테스트
+	@Nested
+	@DisplayName("자서전 생성 (POST /api/v1/autobiographies")
+	class CreateAutobiography {
+
+		private final String url = URL_PREFIX;
+		private Member loginMember;
+
+		@BeforeEach
+		void setUp() {
+			loginMember = persistHelper
+					.persistAndReturn(TestMember.asDefaultEntity());
+			token = jwtTokenProvider.createMemberAccessToken(
+					loginMember.getId()).getTokenValue();
+		}
+
+		@Test
+		@DisplayName("실패 - 자서전 제목은 비어있을 수 없음")
+		void 실패_자서전_제목은_비어있을_수_없음() throws Exception {
+			// given
+			List<Chapter> chapters = TestChapter.asDefaultEntities(loginMember);
+			persistHelper.persist(chapters);
+			List<Chapter> subchapters = Stream.concat(
+					TestChapter.asDefaultSubchapterEntities(chapters.get(0), loginMember).stream(),
+					TestChapter.asDefaultSubchapterEntities(chapters.get(1), loginMember).stream()
+			).collect(Collectors.toList());
+			persistHelper.persist(subchapters);
+			persistHelper.persist(TestChapterStatus.asDefaultEntity(loginMember, subchapters.get(0)));
+
+			AutobiographyCreateRequestDto autobiographyCreateRequestDto = TestAutobiographyCreateRequestDto
+					.createEmptyTitleAutobiography();
+
+			// when
+			MockHttpServletRequestBuilder requestBuilder = post(url)
+					.header(AUTHORIZE_VALUE, BEARER + token)
+					.contentType(MediaType.APPLICATION_JSON_VALUE)
+					.content(objectMapper.writeValueAsString(autobiographyCreateRequestDto));
+			ResultActions resultActions = mockMvc.perform(requestBuilder);
+
+			// then
+			JsonMatcher response = JsonMatcher.create();
+			resultActions
+					.andExpect(status().isBadRequest())
+					.andExpect(response.get("code").isEquals("BIO005"))
+					.andDo(print());
+		}
+
+		@Test
+		@DisplayName("실패 - 자서전 제목은 64자를 초과할 수 없음")
+		void 실패_자서전_제목은_64자를_초과할_수_없음() throws Exception {
+			// given
+			List<Chapter> chapters = TestChapter.asDefaultEntities(loginMember);
+			persistHelper.persist(chapters);
+			List<Chapter> subchapters = Stream.concat(
+					TestChapter.asDefaultSubchapterEntities(chapters.get(0), loginMember).stream(),
+					TestChapter.asDefaultSubchapterEntities(chapters.get(1), loginMember).stream()
+			).collect(Collectors.toList());
+			persistHelper.persist(subchapters);
+			persistHelper.persist(TestChapterStatus.asDefaultEntity(loginMember, subchapters.get(0)));
+
+			AutobiographyCreateRequestDto autobiographyCreateRequestDto = TestAutobiographyCreateRequestDto
+					.createTooLongTitleAutobiography();
+
+			// when
+			MockHttpServletRequestBuilder requestBuilder = post(url)
+					.header(AUTHORIZE_VALUE, BEARER + token)
+					.contentType(MediaType.APPLICATION_JSON_VALUE)
+					.content(objectMapper.writeValueAsString(autobiographyCreateRequestDto));
+			ResultActions resultActions = mockMvc.perform(requestBuilder);
+
+			// then
+			JsonMatcher response = JsonMatcher.create();
+			resultActions
+					.andExpect(status().isBadRequest())
+					.andExpect(response.get("code").isEquals("BIO005"))
+					.andDo(print());
+		}
+
+		@Test
+		@DisplayName("실패 - 자서전 내용은 비어있을 수 없음")
+		void 실패_자서전_내용은_비어있을_수_없음() throws Exception {
+			// given
+			List<Chapter> chapters = TestChapter.asDefaultEntities(loginMember);
+			persistHelper.persist(chapters);
+			List<Chapter> subchapters = Stream.concat(
+					TestChapter.asDefaultSubchapterEntities(chapters.get(0), loginMember).stream(),
+					TestChapter.asDefaultSubchapterEntities(chapters.get(1), loginMember).stream()
+			).collect(Collectors.toList());
+			persistHelper.persist(subchapters);
+			persistHelper.persist(TestChapterStatus.asDefaultEntity(loginMember, subchapters.get(0)));
+
+			AutobiographyCreateRequestDto autobiographyCreateRequestDto = TestAutobiographyCreateRequestDto
+					.createEmptyContentAutobiography();
+
+			// when
+			MockHttpServletRequestBuilder requestBuilder = post(url)
+					.header(AUTHORIZE_VALUE, BEARER + token)
+					.contentType(MediaType.APPLICATION_JSON_VALUE)
+					.content(objectMapper.writeValueAsString(autobiographyCreateRequestDto));
+			ResultActions resultActions = mockMvc.perform(requestBuilder);
+
+			// then
+			JsonMatcher response = JsonMatcher.create();
+			resultActions
+					.andExpect(status().isBadRequest())
+					.andExpect(response.get("code").isEquals("BIO006"))
+					.andDo(print());
+		}
+
+		@Test
+		@DisplayName("실패 - 자서전 내용은 30000자를 초과할 수 없음")
+		void 실패_자서전_내용은_30000자를_초과할_수_없음() throws Exception {
+			// given
+			List<Chapter> chapters = TestChapter.asDefaultEntities(loginMember);
+			persistHelper.persist(chapters);
+			List<Chapter> subchapters = Stream.concat(
+					TestChapter.asDefaultSubchapterEntities(chapters.get(0), loginMember).stream(),
+					TestChapter.asDefaultSubchapterEntities(chapters.get(1), loginMember).stream()
+			).collect(Collectors.toList());
+			persistHelper.persist(subchapters);
+			persistHelper.persist(TestChapterStatus.asDefaultEntity(loginMember, subchapters.get(0)));
+
+			AutobiographyCreateRequestDto autobiographyCreateRequestDto = TestAutobiographyCreateRequestDto
+					.createTooLongContentAutobiography();
+
+			// when
+			MockHttpServletRequestBuilder requestBuilder = post(url)
+					.header(AUTHORIZE_VALUE, BEARER + token)
+					.contentType(MediaType.APPLICATION_JSON_VALUE)
+					.content(objectMapper.writeValueAsString(autobiographyCreateRequestDto));
+			ResultActions resultActions = mockMvc.perform(requestBuilder);
+
+			// then
+			JsonMatcher response = JsonMatcher.create();
+			resultActions
+					.andExpect(status().isBadRequest())
+					.andExpect(response.get("code").isEquals("BIO006"))
+					.andDo(print());
+		}
+
+		@Test
+		@DisplayName("실패 - 다음 챕터가 존재하지 않는 경우, 자서전을 생성할 수 없음")
+		void 실패_다음_챕터가_존재하지_않는_경우_자서전을_생성할_수_없음() throws Exception {
+			// given
+			List<Chapter> chapters = TestChapter.asDefaultEntities(loginMember);
+			persistHelper.persist(chapters);
+			List<Chapter> subchapters = new ArrayList<>();
+			for (Chapter chapter : chapters) {
+				subchapters.addAll(TestChapter.asDefaultSubchapterEntities(chapter, loginMember));
+			}
+			persistHelper.persist(subchapters);
+			subchapters.forEach(subchapter -> persistHelper.persist(
+					TestAutobiography.asDefaultEntity(loginMember, subchapter)));
+			persistHelper.persist(
+					TestChapterStatus.asDefaultEntity(loginMember, subchapters.get(subchapters.size() - 1)));
+
+			AutobiographyCreateRequestDto autobiographyCreateRequestDto = TestAutobiographyCreateRequestDto
+					.createValidAutobiography();
+
+			// when
+			MockHttpServletRequestBuilder requestBuilder = post(url)
+					.header(AUTHORIZE_VALUE, BEARER + token)
+					.contentType(MediaType.APPLICATION_JSON_VALUE)
+					.content(objectMapper.writeValueAsString(autobiographyCreateRequestDto));
+			ResultActions resultActions = mockMvc.perform(requestBuilder);
+
+			// then
+			JsonMatcher response = JsonMatcher.create();
+			resultActions
+					.andExpect(status().isNotFound())
+					.andExpect(response.get("code").isEquals("BIO015"))
+					.andDo(print());
+		}
+
+		@Test
+		@DisplayName("실패 - 인터뷰 질문 텍스트는 64자를 초과할 수 없음")
+		void 실패_인터뷰_질문_텍스트는_64자를_초과할_수_없음() throws Exception {
+			// given
+			List<Chapter> chapters = TestChapter.asDefaultEntities(loginMember);
+			persistHelper.persist(chapters);
+			List<Chapter> subchapters = Stream.concat(
+					TestChapter.asDefaultSubchapterEntities(chapters.get(0), loginMember).stream(),
+					TestChapter.asDefaultSubchapterEntities(chapters.get(1), loginMember).stream()
+			).collect(Collectors.toList());
+			persistHelper.persist(subchapters);
+			persistHelper.persist(TestChapterStatus.asDefaultEntity(loginMember, subchapters.get(0)));
+
+			AutobiographyCreateRequestDto autobiographyCreateRequestDto = TestAutobiographyCreateRequestDto
+					.createTooLongInterviewQuestionAutobiography();
+
+			// when
+			MockHttpServletRequestBuilder requestBuilder = post(url)
+					.header(AUTHORIZE_VALUE, BEARER + token)
+					.contentType(MediaType.APPLICATION_JSON_VALUE)
+					.content(objectMapper.writeValueAsString(autobiographyCreateRequestDto));
+			ResultActions resultActions = mockMvc.perform(requestBuilder);
+
+			// then
+			JsonMatcher response = JsonMatcher.create();
+			resultActions
+					.andExpect(status().isBadRequest())
+					.andExpect(response.get("code").isEquals("INTERVIEW005"))
+					.andDo(print());
+		}
+	}
+
 //3. 자서전 수정 요청
 //    1. 자서전 제목 길이 제한 테스트
 //    2. 자서전 내용 길이 제한 테스트

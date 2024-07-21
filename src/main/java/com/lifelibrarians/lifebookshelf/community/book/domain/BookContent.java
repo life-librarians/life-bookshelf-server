@@ -23,7 +23,7 @@ public class BookContent {
 	@Column(nullable = false)
 	private Integer pageNumber;
 
-	@Column(columnDefinition = "longtext")
+	@Column(length = 65535)
 	private String pageContent;
 	/* } 고유 정보 */
 

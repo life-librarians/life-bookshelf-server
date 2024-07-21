@@ -23,8 +23,12 @@ public class TestChapterStatus implements TestEntity<ChapterStatus, Long> {
 	@Builder.Default
 	private Chapter currentChapter = null;
 
-	public static ChapterStatus asDefaultEntity() {
-		return TestChapterStatus.builder().build().asEntity();
+	public static ChapterStatus asDefaultEntity(Member member, Chapter currentChapter) {
+		return TestChapterStatus.builder()
+				.updatedAt(DEFAULT_TIME)
+				.member(member)
+				.currentChapter(currentChapter)
+				.build().asEntity();
 	}
 
 	@Override

@@ -37,9 +37,11 @@ public class TestAutobiography implements TestEntity<Autobiography, Long> {
 		return TestAutobiography.builder().build().asEntity();
 	}
 
-	public static Autobiography asDefaultEntity(Member member) {
+	public static Autobiography asDefaultEntity(Member member, Chapter chapter) {
 		return TestAutobiography.builder()
-				.member(member).build().asEntity();
+				.member(member)
+				.chapter(chapter)
+				.build().asEntity();
 	}
 
 	@Override

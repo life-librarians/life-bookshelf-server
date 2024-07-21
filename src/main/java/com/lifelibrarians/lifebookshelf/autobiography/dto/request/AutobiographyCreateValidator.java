@@ -19,13 +19,26 @@ public class AutobiographyCreateValidator implements
 
 		// 자서전 내용 길이 제한 테스트
 		if (value.getContent() == null || value.getContent().isEmpty()
-				|| value.getContent().length() > 3000) {
+				|| value.getContent().length() > 30000) {
 			context.buildConstraintViolationWithTemplate(
 							"BIO006")
 					.addConstraintViolation();
 			return false;
 		}
 
+		// 인터뷰 질문 길이 제한 테스트
+		if (value.getInterviewQuestions() != null) {
+			for (InterviewQuestionRequestDto interviewQuestion : value.getInterviewQuestions()) {
+				if (interviewQuestion.getQuestionText() == null || interviewQuestion.getQuestionText()
+						.isEmpty()
+						|| interviewQuestion.getQuestionText().length() > 64) {
+					context.buildConstraintViolationWithTemplate(
+									"INTERVIEW005")
+							.addConstraintViolation();
+					return false;
+				}
+			}
+		}
 		return true;
 	}
 }

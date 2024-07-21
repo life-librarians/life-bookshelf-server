@@ -26,6 +26,13 @@ public class PersistHelper {
 		return this;
 	}
 
+	public <E> PersistHelper persist(E... entities) {
+		for (E entity : entities) {
+			this.em.persist(entity);
+		}
+		return this;
+	}
+
 	public PersistHelper and() {
 		return this;
 	}

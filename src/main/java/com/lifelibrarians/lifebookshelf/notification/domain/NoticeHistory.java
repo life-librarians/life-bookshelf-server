@@ -3,7 +3,6 @@ package com.lifelibrarians.lifebookshelf.notification.domain;
 import com.lifelibrarians.lifebookshelf.member.domain.Member;
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,7 +24,7 @@ public class NoticeHistory {
 	@Column(nullable = false)
 	private String title;
 
-	@Column
+	@Column(length = 65535)
 	private String content;
 
 	@Column(nullable = false)

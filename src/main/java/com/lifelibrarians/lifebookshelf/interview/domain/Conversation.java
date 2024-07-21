@@ -21,7 +21,7 @@ public class Conversation {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(columnDefinition = "longtext")
+	@Column(length = 65535)
 	private String content;
 
 	@Column(nullable = false)

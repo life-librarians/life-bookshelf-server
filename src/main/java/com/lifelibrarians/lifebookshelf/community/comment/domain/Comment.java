@@ -25,7 +25,7 @@ public class Comment {
 	@Column
 	private Long parentCommentId;
 
-	@Column(nullable = false, columnDefinition = "longtext")
+	@Column(length = 65535)
 	private String content;
 
 	@Column(nullable = false)

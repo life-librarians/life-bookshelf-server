@@ -110,9 +110,6 @@ public class AutobiographyController {
 			autobiographyExceptionStatuses = {
 					AutobiographyExceptionStatus.AUTOBIOGRAPHY_TITLE_LENGTH_EXCEEDED,
 					AutobiographyExceptionStatus.AUTOBIOGRAPHY_CONTENT_LENGTH_EXCEEDED,
-					AutobiographyExceptionStatus.CHAPTER_NOT_FOUND,
-					AutobiographyExceptionStatus.CHAPTER_NOT_OWNER,
-					AutobiographyExceptionStatus.CHAPTER_ALREADY_HAS_AUTOBIOGRAPHY,
 					AutobiographyExceptionStatus.NEXT_CHAPTER_NOT_FOUND
 			},
 			interviewExceptionStatuses = {

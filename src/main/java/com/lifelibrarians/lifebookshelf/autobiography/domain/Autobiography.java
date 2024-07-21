@@ -27,7 +27,7 @@ public class Autobiography {
 	@Column
 	private String title;
 
-	@Column(columnDefinition = "longtext")
+	@Column(length = 65535)
 	private String content;
 
 	@Column
