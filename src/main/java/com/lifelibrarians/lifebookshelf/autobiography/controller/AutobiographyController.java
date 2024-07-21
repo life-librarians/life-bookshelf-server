@@ -54,6 +54,8 @@ public class AutobiographyController {
 					AutobiographyExceptionStatus.CHAPTER_NUMBER_FORMAT_INVALID,
 					AutobiographyExceptionStatus.CHAPTER_NAME_LENGTH_EXCEEDED,
 					AutobiographyExceptionStatus.CHAPTER_ALREADY_EXISTS,
+					AutobiographyExceptionStatus.CHAPTER_SIZE_EXCEEDED,
+					AutobiographyExceptionStatus.CHAPTER_NUMBER_DUPLICATED,
 			}
 	)
 	@PreAuthorize("isAuthenticated()")

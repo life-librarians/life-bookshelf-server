@@ -3,8 +3,6 @@ package com.lifelibrarians.lifebookshelf.exception.status;
 import com.lifelibrarians.lifebookshelf.exception.ControllerException;
 import com.lifelibrarians.lifebookshelf.exception.DomainException;
 import com.lifelibrarians.lifebookshelf.exception.ServiceException;
-import com.lifelibrarians.lifebookshelf.exception.status.ErrorReason;
-import com.lifelibrarians.lifebookshelf.exception.status.ExceptionStatus;
 import lombok.AllArgsConstructor;
 import lombok.ToString;
 
@@ -13,7 +11,7 @@ import lombok.ToString;
 public enum AutobiographyExceptionStatus implements ExceptionStatus {
 
 	CHAPTER_ALREADY_EXISTS(409, "BIO001", "이미 존재하는 챕터입니다."),
-	CHAPTER_NAME_LENGTH_EXCEEDED(400, "BIO002", "챕터 이름은 최대 64자까지 입력할 수 있습니다."),
+	CHAPTER_NAME_LENGTH_EXCEEDED(400, "BIO002", "챕터 이름은 비어있을 수 없으며, 최대 64자까지 입력할 수 있습니다."),
 	CHAPTER_NOT_FOUND(404, "BIO003", "챕터 ID가 존재하지 않습니다."),
 	CHAPTER_NOT_OWNER(403, "BIO004", "해당 챕터의 주인이 아닙니다."),
 	AUTOBIOGRAPHY_TITLE_LENGTH_EXCEEDED(400, "BIO005", "자서전 제목은 최대 64자까지 입력할 수 있습니다."),
@@ -23,7 +21,9 @@ public enum AutobiographyExceptionStatus implements ExceptionStatus {
 	CHAPTER_ALREADY_HAS_AUTOBIOGRAPHY(
 			409, "BIO010", "해당 챕터는 이미 다른 자서전을 가지고 있습니다."),
 	SUBCHAPTER_NUMBER_INVALID(400, "BIO011", "챕터의 subchapter의 number가 부모 chapter의 number로 시작해야 합니다."),
-	CHAPTER_NUMBER_FORMAT_INVALID(400, "BIO012", "챕터 번호는 1, 1.1, 1.1.1과 같은 형식이어야 합니다.");
+	CHAPTER_NUMBER_FORMAT_INVALID(400, "BIO012", "챕터 번호는 1, 1.1, 1.1.1과 같은 형식이어야 합니다."),
+	CHAPTER_SIZE_EXCEEDED(400, "BIO013", "챕터는 최소 1개, 최대 16개까지 생성할 수 있습니다."),
+	CHAPTER_NUMBER_DUPLICATED(400, "BIO014", "챕터 번호는 중복될 수 없습니다.");
 
 
 	private final int statusCode;

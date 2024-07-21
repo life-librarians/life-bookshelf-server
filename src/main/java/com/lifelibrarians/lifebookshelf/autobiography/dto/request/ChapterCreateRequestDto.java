@@ -2,6 +2,7 @@ package com.lifelibrarians.lifebookshelf.autobiography.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.lifelibrarians.lifebookshelf.autobiography.validate.ChapterCreateValidation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
@@ -15,6 +16,7 @@ import lombok.experimental.FieldNameConstants;
 @Schema(description = "자서전 챕터 생성 요청")
 @ToString
 @FieldNameConstants
+@ChapterCreateValidation
 public class ChapterCreateRequestDto {
 
 	@ArraySchema(schema = @Schema(implementation = ChapterRequestDto.class))
