@@ -277,7 +277,7 @@ public class AutobiographyControllerTest extends E2EMvcTest {
 		// then
 		JsonMatcher response = JsonMatcher.create();
 		resultActions
-				.andExpect(status().isBadRequest())
+				.andExpect(status().isConflict())
 				.andExpect(response.get("code").isEquals("BIO001"))
 				.andDo(print());
 	}
