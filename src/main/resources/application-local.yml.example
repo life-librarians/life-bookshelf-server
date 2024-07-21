@@ -25,6 +25,20 @@ spring:
         show_sql: true
         dialect: org.hibernate.dialect.MariaDBDialect
 
+cloud:
+  aws:
+    s3:
+      bucket: lifebookshelf-image-bucket
+      endpoint: http://localhost:4566
+      expiration: 3600000
+    credentials:
+      access-key: test
+      secret-key: test
+    region:
+      static: us-east-1
+    stack:
+      auto: false
+
 jwt:
   key: 0190ab45-7e42-7a3f-9dec-726ddf778076
   expiration:
@@ -53,4 +67,8 @@ management:
 swagger:
   base-url: http://localhost:8080
 
-
+images:
+  path:
+    profile: profile-images/
+    bio-cover: bio-cover-images/
+    book-cover: book-cover-images/

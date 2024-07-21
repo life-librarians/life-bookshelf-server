@@ -7,8 +7,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class LifebookshelfApplication {
 
-    public static void main(final String[] args) {
-        SpringApplication.run(LifebookshelfApplication.class, args);
-    }
+	public static void main(final String[] args) {
+		System.setProperty("com.amazonaws.sdk.disableEc2Metadata", "true");
+		SpringApplication.run(LifebookshelfApplication.class, args);
+	}
 
 }

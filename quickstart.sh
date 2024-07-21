@@ -16,6 +16,6 @@ docker compose down --rmi all
 docker compose up --build -d
 
 chmod +x ./gradlew
-./gradlew build -x test
+./gradlew build -x test -Pprofile=local
 
 ./gradlew bootRun

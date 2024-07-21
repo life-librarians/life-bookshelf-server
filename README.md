@@ -31,7 +31,7 @@ example 파일을 복사하여 `application-local.yml` 파일을 생성합니다
 ### Build
 
 ```bash
-./gradlew build -x test
+./gradlew build -x test -Pprofile=local
 ```
 
 애플리케이션은 다음 명령어를 통해 빌드할 수 있습니다.

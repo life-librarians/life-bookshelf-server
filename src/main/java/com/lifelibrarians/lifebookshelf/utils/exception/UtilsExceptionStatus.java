@@ -17,7 +17,9 @@ public enum UtilsExceptionStatus implements ExceptionStatus {
 	INVALID_FILE_URL(400, "UTILS003", "올바르지 않은 파일 경로입니다."),
 	INVALID_IMAGE_TYPE(400, "UTILS004", "올바르지 않은 이미지 타입입니다."),
 	NON_MAPPED_TARGET(500, "UTILS005", "매핑되지 않은 타겟입니다."),
-	NON_MAPPED_FIELD(500, "UTILS006", "매핑되지 않은 필드입니다.");
+	NON_MAPPED_FIELD(500, "UTILS006", "매핑되지 않은 필드입니다."),
+	STORAGE_UPLOAD_ERROR(502, "UTILS007", "스토리지 파일 업로드 요청 중 오류가 발생했습니다."),
+	STORAGE_DELETE_ERROR(502, "UTILS008", "스토리지 파일 삭제 요청 중 오류가 발생했습니다.");
 
 	private final int statusCode;
 	private final String code;

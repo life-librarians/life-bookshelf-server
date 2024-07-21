@@ -39,3 +39,5 @@ bin/
 
 application-*.yml
 !application-*yml.example
+
+localstack

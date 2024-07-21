@@ -6,6 +6,7 @@ import com.lifelibrarians.lifebookshelf.exception.status.CommunityExceptionStatu
 import com.lifelibrarians.lifebookshelf.exception.status.InterviewExceptionStatus;
 import com.lifelibrarians.lifebookshelf.exception.status.MemberExceptionStatus;
 import com.lifelibrarians.lifebookshelf.exception.status.PublicationExceptionStatus;
+import com.lifelibrarians.lifebookshelf.utils.exception.UtilsExceptionStatus;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -45,4 +46,6 @@ public @interface ApiErrorCodeExample {
 	PublicationExceptionStatus[] publicationExceptionStatuses() default {};
 
 	CommunityExceptionStatus[] communityExceptionStatuses() default {};
+
+	UtilsExceptionStatus[] utilsExceptionStatuses() default {};
 }

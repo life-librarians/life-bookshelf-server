@@ -18,6 +18,19 @@ spring:
         globally_quoted_identifiers: true
         dialect: org.hibernate.dialect.H2Dialect
 
+cloud:
+  aws:
+    s3:
+      bucket: lifebookshelf-image-bucket
+      expiration: 3600000
+    credentials:
+      access-key: test
+      secret-key: test
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
+
 jwt:
   key: blablablablablablablablablablablabla
   expiration:
@@ -46,4 +59,8 @@ management:
 swagger:
   base-url: http://localhost:8080
 
-
+images:
+  path:
+    profile: profile-images/
+    bio-cover: bio-cover-images/
+    book-cover: book-cover-images/

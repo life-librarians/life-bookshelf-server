@@ -110,6 +110,7 @@ public class SwaggerConfig {
 		exceptionStatusList.addAll(
 				Arrays.asList(apiErrorCodeExample.publicationExceptionStatuses()));
 		exceptionStatusList.addAll(Arrays.asList(apiErrorCodeExample.communityExceptionStatuses()));
+		exceptionStatusList.addAll(Arrays.asList(apiErrorCodeExample.utilsExceptionStatuses()));
 		return exceptionStatusList;
 	}
 
