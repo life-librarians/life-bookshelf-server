@@ -22,7 +22,8 @@ public enum InterviewExceptionStatus implements ExceptionStatus {
 	INTERVIEW_QUESTION_NOT_IN_INTERVIEW(403, "INTERVIEW007", "인터뷰 질문 ID가 해당 인터뷰에 속하지 않습니다."),
 	INTERVIEW_QUESTION_UPDATE_NOT_FOUND(404, "INTERVIEW008", "갱신하려는 인터뷰 질문 ID가 존재하지 않습니다."),
 	INTERVIEW_QUESTION_UPDATE_NOT_IN_INTERVIEW(404, "INTERVIEW009",
-			"갱신하려는 인터뷰 질문 ID가 해당 인터뷰에 속하지 않습니다.");
+			"갱신하려는 인터뷰 질문 ID가 해당 인터뷰에 속하지 않습니다."),
+	INTERVIEW_QUESTION_ORDER_DUPLICATED(400, "INTERVIEW010", "인터뷰 질문의 순서는 중복될 수 없습니다.");
 
 	private final int statusCode;
 	private final String code;

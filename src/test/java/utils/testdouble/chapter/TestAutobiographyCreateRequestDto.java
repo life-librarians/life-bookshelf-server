@@ -2,7 +2,6 @@ package utils.testdouble.chapter;
 
 import com.lifelibrarians.lifebookshelf.autobiography.dto.request.AutobiographyCreateRequestDto;
 import com.lifelibrarians.lifebookshelf.autobiography.dto.request.InterviewQuestionRequestDto;
-import com.lifelibrarians.lifebookshelf.interview.domain.InterviewQuestion;
 import java.util.List;
 import utils.testdouble.autobiography.TestAutobiography;
 
@@ -58,6 +57,15 @@ public class TestAutobiographyCreateRequestDto {
 				.build();
 	}
 
+	public static AutobiographyCreateRequestDto createDuplicatedOrderInterviewQuestionAutobiography() {
+		return AutobiographyCreateRequestDto.builder()
+				.title(TestAutobiography.DEFAULT_TITLE)
+				.content(TestAutobiography.DEFAULT_CONTENT)
+				.preSignedCoverImageUrl(EMPTY_VALUE)
+				.interviewQuestions(TestAutobiographyCreateRequestDto.createDuplicatedInterviewQuestions())
+				.build();
+	}
+
 	public static AutobiographyCreateRequestDto createValidAutobiography() {
 		return AutobiographyCreateRequestDto.builder()
 				.title(TestAutobiography.DEFAULT_TITLE)
@@ -75,6 +83,19 @@ public class TestAutobiographyCreateRequestDto {
 						.build(),
 				InterviewQuestionRequestDto.builder()
 						.order(2)
+						.questionText("What is your favorite color?")
+						.build()
+		);
+	}
+
+	public static List<InterviewQuestionRequestDto> createDuplicatedInterviewQuestions() {
+		return List.of(
+				InterviewQuestionRequestDto.builder()
+						.order(1)
+						.questionText("What is your name?")
+						.build(),
+				InterviewQuestionRequestDto.builder()
+						.order(1)
 						.questionText("What is your favorite color?")
 						.build()
 		);

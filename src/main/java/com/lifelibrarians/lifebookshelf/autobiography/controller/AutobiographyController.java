@@ -114,6 +114,7 @@ public class AutobiographyController {
 			},
 			interviewExceptionStatuses = {
 					InterviewExceptionStatus.INTERVIEW_QUESTION_TEXT_LENGTH_EXCEEDED,
+					InterviewExceptionStatus.INTERVIEW_QUESTION_ORDER_DUPLICATED,
 			}
 	)
 	@PreAuthorize("isAuthenticated()")

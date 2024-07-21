@@ -529,6 +529,37 @@ public class AutobiographyControllerTest extends E2EMvcTest {
 		}
 
 		@Test
+		@DisplayName("실패 - 인터뷰 질문의 순서는 중복될 수 없음")
+		void 실패_인터뷰_질문의_순서는_중복될_수_없음() throws Exception {
+			// given
+			List<Chapter> chapters = TestChapter.asDefaultEntities(loginMember);
+			persistHelper.persist(chapters);
+			List<Chapter> subchapters = new ArrayList<>();
+			for (Chapter chapter : chapters) {
+				subchapters.addAll(TestChapter.asDefaultSubchapterEntities(chapter, loginMember));
+			}
+			persistHelper.persist(subchapters);
+			persistHelper.persist(TestChapterStatus.asDefaultEntity(loginMember, subchapters.get(0)));
+
+			AutobiographyCreateRequestDto autobiographyCreateRequestDto = TestAutobiographyCreateRequestDto
+					.createDuplicatedOrderInterviewQuestionAutobiography();
+
+			// when
+			MockHttpServletRequestBuilder requestBuilder = post(url)
+					.header(AUTHORIZE_VALUE, BEARER + token)
+					.contentType(MediaType.APPLICATION_JSON_VALUE)
+					.content(objectMapper.writeValueAsString(autobiographyCreateRequestDto));
+			ResultActions resultActions = mockMvc.perform(requestBuilder);
+
+			// then
+			JsonMatcher response = JsonMatcher.create();
+			resultActions
+					.andExpect(status().isBadRequest())
+					.andExpect(response.get("code").isEquals("INTERVIEW010"))
+					.andDo(print());
+		}
+
+		@Test
 		@DisplayName("성공 - 유효한 자서전 생성 요청 (최초 자서전 생성)")
 		void 성공_유효한_자서전_생성_요청_최초_자서전_생성() throws Exception {
 			// given

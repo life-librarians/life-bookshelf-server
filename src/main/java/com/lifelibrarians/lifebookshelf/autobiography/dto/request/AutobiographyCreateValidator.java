@@ -26,6 +26,22 @@ public class AutobiographyCreateValidator implements
 			return false;
 		}
 
+		// 인터뷰 질문 순서 중복 테스트
+		if (value.getInterviewQuestions() != null) {
+			for (int i = 0; i < value.getInterviewQuestions().size(); i++) {
+				for (int j = i + 1; j < value.getInterviewQuestions().size(); j++) {
+					if (value.getInterviewQuestions().get(i).getOrder()
+							== value.getInterviewQuestions().get(j)
+							.getOrder()) {
+						context.buildConstraintViolationWithTemplate(
+										"INTERVIEW010")
+								.addConstraintViolation();
+						return false;
+					}
+				}
+			}
+		}
+
 		// 인터뷰 질문 길이 제한 테스트
 		if (value.getInterviewQuestions() != null) {
 			for (InterviewQuestionRequestDto interviewQuestion : value.getInterviewQuestions()) {
