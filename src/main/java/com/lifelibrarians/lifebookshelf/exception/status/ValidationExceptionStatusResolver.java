@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
@@ -50,9 +51,8 @@ public class ValidationExceptionStatusResolver {
 		return null;
 	}
 
-	public ExceptionStatus findByErrorCode(String code) {
-		return Objects.requireNonNull(exceptionStatusMap.get(code),
-				() -> "Invalid error code: " + code);
+	public Optional<ExceptionStatus> findByErrorCode(String code) {
+		return Optional.ofNullable(exceptionStatusMap.get(code));
 	}
 }
 

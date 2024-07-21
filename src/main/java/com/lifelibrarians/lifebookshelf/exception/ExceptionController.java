@@ -4,10 +4,7 @@ import com.lifelibrarians.lifebookshelf.exception.status.ErrorReason;
 import com.lifelibrarians.lifebookshelf.exception.status.ErrorReason.ErrorReasonBuilder;
 import com.lifelibrarians.lifebookshelf.exception.status.ExceptionStatus;
 import com.lifelibrarians.lifebookshelf.exception.status.ValidationExceptionStatusResolver;
-import java.time.LocalDateTime;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -79,9 +76,13 @@ public class ExceptionController extends ResponseEntityExceptionHandler {
 	private ResponseEntity<Object> handleValidationExceptions(
 			BindException e) {
 		BindingResult result = e.getBindingResult();
-		String code = result.getAllErrors().get(0).getDefaultMessage();
-		ExceptionStatus status = validationExceptionStatusResolver.findByErrorCode(
-				Objects.requireNonNull(code));
+		// 에러 목록에서 첫 번째 유효한 ExceptionStatus를 찾는다
+		ExceptionStatus status = result.getAllErrors().stream()
+				.map(error -> validationExceptionStatusResolver.findByErrorCode(error.getDefaultMessage()))
+				.filter(Optional::isPresent)
+				.map(Optional::get)
+				.findFirst()
+				.orElseThrow(() -> new IllegalArgumentException("유효한 ExceptionStatus를 찾을 수 없습니다."));
 
 		log.warn("[BindException] {}", status.getErrorReason().getMessage());
 
@@ -103,11 +104,11 @@ public class ExceptionController extends ResponseEntityExceptionHandler {
 		ErrorReasonBuilder errorReasonBuilder = ErrorReason.builder()
 				.statusCode(status.value())
 				.code("SPRINGMVC")
-				.message(e.getMessage());
+				.message(e.getLocalizedMessage());
 		ErrorReason errorReason;
 
 		if (status.is5xxServerError()) {
-//			TODO: 프러덕션 환경에서 알림을 보내는 로직을 추가해야 합니다.
+			// TODO: 프러덕션 환경에서 알림을 보내는 로직을 추가해야 합니다.
 			errorReasonBuilder.message(DEFAULT_SPRING_MVC_ERROR_MESSAGE_VALUE);
 			log.error("[SpringMVCServerError] {}: {} at {}",
 					status.getReasonPhrase(),
@@ -115,13 +116,13 @@ public class ExceptionController extends ResponseEntityExceptionHandler {
 					requestUri);
 			errorReason = errorReasonBuilder.build();
 			log.error("Exception stack trace: ", e);
-//			discordWebhookErrorSender.sendWebErrorMessage(
-//					DiscordWebErrorMessage.fromWebRequest(
-//							request,
-//							DEFAULT_SPRING_MVC_ERROR_MESSAGE_VALUE,
-//							errorReason.toString()
-//					)
-//			);
+			// discordWebhookErrorSender.sendWebErrorMessage(
+			// DiscordWebErrorMessage.fromWebRequest(
+			// request,
+			// DEFAULT_SPRING_MVC_ERROR_MESSAGE_VALUE,
+			// errorReason.toString()
+			// )
+			// );
 		} else {
 			log.warn("[SpringMVCClientError] {}: {} at {}",
 					status.getReasonPhrase(),
@@ -147,14 +148,14 @@ public class ExceptionController extends ResponseEntityExceptionHandler {
 				.code("UNKNOWN")
 				.message(DEFAULT_ERROR_MESSAGE_VALUE)
 				.build();
-//      TODO: 프러덕션 환경에서 알림을 보내는 로직을 추가해야 합니다.
-//		discordWebhookErrorSender.sendWebErrorMessage(
-//				DiscordWebErrorMessage.fromHttpServletRequest(
-//						request,
-//						DEFAULT_ERROR_MESSAGE_VALUE,
-//						errorReason.toString()
-//				)
-//		);
+		// TODO: 프러덕션 환경에서 알림을 보내는 로직을 추가해야 합니다.
+		// discordWebhookErrorSender.sendWebErrorMessage(
+		// DiscordWebErrorMessage.fromHttpServletRequest(
+		// request,
+		// DEFAULT_ERROR_MESSAGE_VALUE,
+		// errorReason.toString()
+		// )
+		// );
 		return ResponseEntity
 				.status(HttpStatus.INTERNAL_SERVER_ERROR)
 				.body(errorReason);
