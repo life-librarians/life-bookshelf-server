@@ -1,16 +1,20 @@
 package com.lifelibrarians.lifebookshelf.autobiography;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import com.lifelibrarians.lifebookshelf.autobiography.domain.Autobiography;
 import com.lifelibrarians.lifebookshelf.autobiography.dto.request.AutobiographyCreateRequestDto;
 import com.lifelibrarians.lifebookshelf.autobiography.dto.request.ChapterCreateRequestDto;
 import com.lifelibrarians.lifebookshelf.chapter.domain.Chapter;
+import com.lifelibrarians.lifebookshelf.interview.domain.Interview;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import javax.persistence.TypedQuery;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
@@ -32,6 +36,8 @@ import utils.testdouble.chapter.TestAutobiographyCreateRequestDto;
 import utils.testdouble.chapter.TestChapter;
 import utils.testdouble.chapter.TestChapterCreateRequestDto;
 import utils.testdouble.chapter.TestChapterStatus;
+import utils.testdouble.interview.TestInterview;
+import utils.testdouble.interview.TestInterviewQuestion;
 import utils.testdouble.member.TestMember;
 
 public class AutobiographyControllerTest extends E2EMvcTest {
@@ -519,6 +525,111 @@ public class AutobiographyControllerTest extends E2EMvcTest {
 			resultActions
 					.andExpect(status().isBadRequest())
 					.andExpect(response.get("code").isEquals("INTERVIEW005"))
+					.andDo(print());
+		}
+
+		@Test
+		@DisplayName("성공 - 유효한 자서전 생성 요청 (최초 자서전 생성)")
+		void 성공_유효한_자서전_생성_요청_최초_자서전_생성() throws Exception {
+			// given
+			List<Chapter> chapters = TestChapter.asDefaultEntities(loginMember);
+			persistHelper.persist(chapters);
+			List<Chapter> subchapters = new ArrayList<>();
+			for (Chapter chapter : chapters) {
+				subchapters.addAll(TestChapter.asDefaultSubchapterEntities(chapter, loginMember));
+			}
+			persistHelper.persist(subchapters);
+			persistHelper.persist(TestChapterStatus.asDefaultEntity(loginMember, subchapters.get(0)));
+
+			AutobiographyCreateRequestDto autobiographyCreateRequestDto = TestAutobiographyCreateRequestDto
+					.createValidAutobiography();
+
+			// when
+			MockHttpServletRequestBuilder requestBuilder = post(url)
+					.header(AUTHORIZE_VALUE, BEARER + token)
+					.contentType(MediaType.APPLICATION_JSON_VALUE)
+					.content(objectMapper.writeValueAsString(autobiographyCreateRequestDto));
+			ResultActions resultActions = mockMvc.perform(requestBuilder);
+
+			// then
+			TypedQuery<Interview> targetCheckQuery = em.createQuery(
+					"SELECT i FROM Interview i "
+							+ "JOIN FETCH i.autobiography a "
+							+ "JOIN FETCH i.chapter c "
+							+ "JOIN FETCH i.currentQuestion cq ",
+					Interview.class);
+
+			resultActions
+					.andExpect(status().isCreated())
+					.andDo(ignore -> {
+						Interview interview = targetCheckQuery
+								.getResultList().get(0);
+						assertThat(interview.getAutobiography().getMember().getId())
+								.isEqualTo(loginMember.getId());
+						assertThat(interview.getChapter().getId())
+								.isEqualTo(subchapters.get(0).getId());
+						assertThat(interview.getCurrentQuestion().getQuestionText())
+								.isEqualTo(
+										autobiographyCreateRequestDto.getInterviewQuestions().get(0).getQuestionText());
+					})
+					.andDo(print());
+		}
+
+		@Test
+		@DisplayName("성공 - 유효한 자서전 생성 요청 (마지막 자서전 생성)")
+		void 성공_유효한_자서전_생성_요청_마지막_자서전_생성() throws Exception {
+			// given
+			List<Chapter> chapters = TestChapter.asDefaultEntities(loginMember);
+			persistHelper.persist(chapters);
+			List<Chapter> subchapters = new ArrayList<>();
+			for (Chapter chapter : chapters) {
+				subchapters.addAll(TestChapter.asDefaultSubchapterEntities(chapter, loginMember));
+			}
+			List<Chapter> subChapterList = persistHelper.persistAndReturn(subchapters);
+			Autobiography autobiography = persistHelper.persistAndReturn(
+					TestAutobiography.asDefaultEntity(loginMember, subChapterList.get(0)));
+			System.out.println("autobiography = " + autobiography);
+
+			persistHelper.persist(TestChapterStatus.asDefaultEntity(loginMember, subChapterList.get(1)));
+			persistHelper.persist(TestInterview.asDefaultEntity(
+							autobiography,
+							subChapterList.get(0),
+							loginMember,
+							persistHelper.persistAndReturn(TestInterviewQuestion.asDefaultEntity(0, "질문1"))
+					)
+			);
+
+			AutobiographyCreateRequestDto autobiographyCreateRequestDto = TestAutobiographyCreateRequestDto
+					.createValidAutobiography();
+
+			// when
+			MockHttpServletRequestBuilder requestBuilder = post(url)
+					.header(AUTHORIZE_VALUE, BEARER + token)
+					.contentType(MediaType.APPLICATION_JSON_VALUE)
+					.content(objectMapper.writeValueAsString(autobiographyCreateRequestDto));
+			ResultActions resultActions = mockMvc.perform(requestBuilder);
+
+			// then
+			TypedQuery<Interview> targetCheckQuery = em.createQuery(
+					"SELECT i FROM Interview i "
+							+ "JOIN FETCH i.autobiography a "
+							+ "JOIN FETCH i.chapter c "
+							+ "JOIN FETCH i.currentQuestion cq ",
+					Interview.class);
+
+			resultActions
+					.andExpect(status().isCreated())
+					.andDo(ignore -> {
+						Interview interview = targetCheckQuery
+								.getResultList().get(1);
+						assertThat(interview.getAutobiography().getMember().getId())
+								.isEqualTo(loginMember.getId());
+						assertThat(interview.getChapter().getId())
+								.isEqualTo(subchapters.get(1).getId());
+						assertThat(interview.getCurrentQuestion().getQuestionText())
+								.isEqualTo(
+										autobiographyCreateRequestDto.getInterviewQuestions().get(0).getQuestionText());
+					})
 					.andDo(print());
 		}
 	}

@@ -21,8 +21,14 @@ public class TestInterviewQuestion implements TestEntity<InterviewQuestion, Long
 	@Builder.Default
 	private LocalDateTime createdAt = DEFAULT_TIME;
 
-	public static InterviewQuestion asDefaultEntity() {
-		return TestInterviewQuestion.builder().build().asEntity();
+	public static InterviewQuestion asDefaultEntity(
+			Integer order,
+			String question
+	) {
+		return TestInterviewQuestion.builder()
+				.order(order)
+				.question(question)
+				.build().asEntity();
 	}
 
 	@Override
