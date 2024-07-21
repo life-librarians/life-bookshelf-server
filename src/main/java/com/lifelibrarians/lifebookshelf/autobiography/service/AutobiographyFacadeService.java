@@ -7,9 +7,9 @@ import com.lifelibrarians.lifebookshelf.autobiography.dto.response.Autobiography
 import com.lifelibrarians.lifebookshelf.autobiography.dto.response.AutobiographyListResponseDto;
 import com.lifelibrarians.lifebookshelf.autobiography.dto.response.ChapterListResponseDto;
 import com.lifelibrarians.lifebookshelf.chapter.domain.Chapter;
-import com.lifelibrarians.lifebookshelf.exception.status.AutobiographyExceptionStatus;
 import com.lifelibrarians.lifebookshelf.log.Logging;
 import com.lifelibrarians.lifebookshelf.member.domain.Member;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -40,15 +40,10 @@ public class AutobiographyFacadeService {
 		return autobiographyQueryService.getAutobiographies(memberId);
 	}
 
-	public void createAutobiography(Long memberId, AutobiographyCreateRequestDto requestDto,
-			Long chapterId) {
-		Member member = autobiographyQueryService.findMemberById(memberId);
-		if (autobiographyQueryService.isChapterHasAutobiography(
-				chapterId)) {
-			throw AutobiographyExceptionStatus.CHAPTER_ALREADY_HAS_AUTOBIOGRAPHY.toServiceException();
-		}
-		Chapter chapter = autobiographyQueryService.findChapterById(chapterId);
-		autobiographyCommandService.createAutobiography(member, requestDto, chapter);
+	public void createAutobiography(Long memberId, AutobiographyCreateRequestDto requestDto) {
+		Member member = autobiographyQueryService.getMemberWithAutobiographiesById(memberId);
+		List<Chapter> chaptersNotRoot = autobiographyQueryService.findAllChaptersNotRoot(memberId);
+		autobiographyCommandService.createAutobiography(member, requestDto, chaptersNotRoot);
 	}
 
 	public AutobiographyDetailResponseDto getAutobiography(Long memberId, Long autobiographyId) {

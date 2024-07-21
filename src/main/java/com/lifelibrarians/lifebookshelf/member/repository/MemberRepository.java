@@ -12,4 +12,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
 	@Query("SELECT m FROM Member m LEFT OUTER JOIN FETCH m.memberMemberMetadata WHERE m.id = :memberId")
 	Optional<Member> findByIdWithMetadata(Long memberId);
+
+	@Query("SELECT m FROM Member m LEFT OUTER JOIN FETCH m.memberAutobiographies WHERE m.id = :memberId")
+	Optional<Member> findMemberWithAutobiographiesByMemberId(Long memberId);
 }

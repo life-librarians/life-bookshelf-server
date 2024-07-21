@@ -18,4 +18,7 @@ public interface ChapterRepository extends JpaRepository<Chapter, Long> {
 
 	@Query("SELECT c FROM Chapter c WHERE c.parentChapterId = :parentChapterId")
 	List<Chapter> findByParentChapterId(Long parentChapterId);
+
+	@Query("SELECT c FROM Chapter c WHERE c.parentChapterId is not null and c.member.id = :memberId")
+	List<Chapter> findAllByParentChapterIdIsNotNullByMemberId(Long memberId);
 }

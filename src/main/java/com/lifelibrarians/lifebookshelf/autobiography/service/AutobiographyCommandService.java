@@ -10,11 +10,14 @@ import com.lifelibrarians.lifebookshelf.chapter.domain.ChapterStatus;
 import com.lifelibrarians.lifebookshelf.chapter.repository.ChapterRepository;
 import com.lifelibrarians.lifebookshelf.chapter.repository.ChapterStatusRepository;
 import com.lifelibrarians.lifebookshelf.exception.status.AutobiographyExceptionStatus;
+import com.lifelibrarians.lifebookshelf.interview.domain.Interview;
 import com.lifelibrarians.lifebookshelf.interview.domain.InterviewQuestion;
 import com.lifelibrarians.lifebookshelf.interview.repository.InterviewQuestionRepository;
+import com.lifelibrarians.lifebookshelf.interview.repository.InterviewRepository;
 import com.lifelibrarians.lifebookshelf.log.Logging;
 import com.lifelibrarians.lifebookshelf.member.domain.Member;
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -33,6 +36,7 @@ public class AutobiographyCommandService {
 	private final ChapterStatusRepository chapterStatusRepository;
 	private final AutobiographyRepository autobiographyRepository;
 	private final InterviewQuestionRepository interviewQuestionRepository;
+	private final InterviewRepository interviewRepository;
 
 	public void createChapters(Member member, ChapterCreateRequestDto chapterCreateRequestDto) {
 
@@ -68,25 +72,60 @@ public class AutobiographyCommandService {
 
 		chapterRepository.saveAll(subChapters);
 
-		ChapterStatus chapterStatus = ChapterStatus.of(now, member, rootChapters.get(0));
+		// 서브 챕터 중 ID가 가장 작은 챕터를 찾음
+		ChapterStatus chapterStatus = subChapters.stream()
+				.min(Comparator.comparing(Chapter::getId))
+				.map(chapter -> ChapterStatus.of(now, member, chapter))
+				.orElseThrow(AutobiographyExceptionStatus.CHAPTER_NOT_FOUND::toServiceException);
+
 		chapterStatusRepository.save(chapterStatus);
 	}
 
 	public void createAutobiography(Member member, AutobiographyCreateRequestDto requestDto,
-			Chapter chapter) {
+			List<Chapter> chaptersNotRoot) {
+		ChapterStatus chapterStatus = chapterStatusRepository.findByMemberId(
+				member.getId()).orElseThrow(
+				AutobiographyExceptionStatus.CHAPTER_NOT_FOUND::toServiceException);
+
+		// parent_chapter_id가 null이 아닌 챕터만, 자서전이 작성되지 않은 챕터만 필터링
+		List<Chapter> chapterFiltered = chaptersNotRoot.stream()
+				.filter(chapter -> chapter.getId() >= chapterStatus.getCurrentChapter().getId())
+				.filter(chapter -> chapter.getParentChapterId() != null)
+				.filter(chapter -> member.getMemberAutobiographies().stream()
+						.noneMatch(autobiography -> Objects.equals(autobiography.getChapter().getId(),
+								chapter.getId())))
+				.sorted(Comparator.comparing(Chapter::getId))
+				.collect(Collectors.toList());
+
+		if (chapterFiltered.isEmpty()) {
+			throw AutobiographyExceptionStatus.NEXT_CHAPTER_NOT_FOUND.toServiceException();
+		}
+
+		// 자서전 생성
+		Chapter currentChapter = chapterFiltered.get(0); // 현재 챕터는 필터링된 리스트의 첫 번째 챕터
 		LocalDateTime now = LocalDateTime.now();
 		Autobiography autobiography = Autobiography.of(
 				requestDto.getTitle(),
 				requestDto.getContent(),
-				// FIXME: 이미지 처리 필요
 				requestDto.getPreSignedCoverImageUrl(),
 				now,
 				now,
-				chapter,
+				currentChapter,
 				member
 		);
 		autobiographyRepository.save(autobiography);
 
+		// 다음 챕터를 찾아서 챕터 상태 업데이트
+		Optional<Chapter> nextChapter = chapterFiltered.stream()
+				.filter(chapter -> chapter.getId() > currentChapter.getId())
+				.findFirst();
+
+		if (nextChapter.isPresent()) {
+			chapterStatus.updateChapter(nextChapter.get(), now);
+			chapterStatusRepository.save(chapterStatus);
+		}
+
+		// 인터뷰 질문 생성
 		List<InterviewQuestion> interviewQuestions = requestDto.getInterviewQuestions().stream()
 				.map(interviewDto -> InterviewQuestion.of(
 						interviewDto.getOrder(),
@@ -97,14 +136,15 @@ public class AutobiographyCommandService {
 
 		interviewQuestionRepository.saveAll(interviewQuestions);
 
-		Optional<ChapterStatus> chapterStatusOptional = chapterStatusRepository.findByMemberId(
-				member.getId());
-		if (chapterStatusOptional.isPresent()) {
-			ChapterStatus chapterStatus = chapterStatusOptional.get();
-			if (chapterStatus.getCurrentChapter().getId() + 1 == chapter.getId()) {
-				chapterStatus.updateChapter(chapter, now);
-			}
-		}
+		// 인터뷰 생성
+		Interview interview = Interview.of(
+				now,
+				autobiography,
+				currentChapter,
+				member,
+				interviewQuestions.get(0)
+		);
+		interviewRepository.save(interview);
 	}
 
 	public void patchAutobiography(Long memberId, Long autobiographyId,

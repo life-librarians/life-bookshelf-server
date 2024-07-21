@@ -44,19 +44,13 @@ public class AutobiographyQueryService {
 				.orElseThrow(AuthExceptionStatus.MEMBER_NOT_FOUND::toServiceException);
 	}
 
-	public Autobiography findAutobiographyChapterById(Long chapterId) {
-		return autobiographyRepository.findByChapterId(chapterId)
-				.orElseThrow(
-						AutobiographyExceptionStatus.AUTOBIOGRAPHY_NOT_FOUND::toServiceException);
+	public Member getMemberWithAutobiographiesById(Long memberId) {
+		return memberRepository.findMemberWithAutobiographiesByMemberId(memberId)
+				.orElseThrow(AuthExceptionStatus.MEMBER_NOT_FOUND::toServiceException);
 	}
 
-	public boolean isChapterHasAutobiography(Long chapterId) {
-		return autobiographyRepository.findByChapterId(chapterId).isPresent();
-	}
-
-	public Chapter findChapterById(Long chapterId) {
-		return chapterRepository.findById(chapterId)
-				.orElseThrow(AutobiographyExceptionStatus.CHAPTER_NOT_FOUND::toServiceException);
+	public List<Chapter> findAllChaptersNotRoot(Long memberId) {
+		return chapterRepository.findAllByParentChapterIdIsNotNullByMemberId(memberId);
 	}
 
 

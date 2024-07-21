@@ -23,7 +23,11 @@ public class TestInterview implements TestEntity<Interview, Long> {
 	@Override
 	public Interview asEntity() {
 		return Interview.of(
-				this.createdAt
+				this.createdAt,
+				null,
+				null,
+				null,
+				null
 		);
 	}
 

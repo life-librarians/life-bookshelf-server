@@ -113,21 +113,20 @@ public class AutobiographyController {
 					AutobiographyExceptionStatus.CHAPTER_NOT_FOUND,
 					AutobiographyExceptionStatus.CHAPTER_NOT_OWNER,
 					AutobiographyExceptionStatus.CHAPTER_ALREADY_HAS_AUTOBIOGRAPHY,
+					AutobiographyExceptionStatus.NEXT_CHAPTER_NOT_FOUND
 			},
 			interviewExceptionStatuses = {
 					InterviewExceptionStatus.INTERVIEW_QUESTION_TEXT_LENGTH_EXCEEDED,
 			}
 	)
 	@PreAuthorize("isAuthenticated()")
-	@PostMapping("/chapters/{chapterId}")
+	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public void createAutobiography(
 			@LoginMemberInfo MemberSessionDto memberSessionDto,
-			@Valid @RequestBody AutobiographyCreateRequestDto requestDto,
-			@PathVariable("chapterId") @Parameter(description = "챕터 ID") Long chapterId
+			@Valid @RequestBody AutobiographyCreateRequestDto requestDto
 	) {
-		autobiographyFacadeService.createAutobiography(memberSessionDto.getMemberId(), requestDto,
-				chapterId);
+		autobiographyFacadeService.createAutobiography(memberSessionDto.getMemberId(), requestDto);
 	}
 
 	@Operation(summary = "특정 자서전 상세 조회", description = "특정 자서전의 상세 정보를 조회합니다.")

@@ -1,6 +1,8 @@
 package com.lifelibrarians.lifebookshelf.interview.domain;
 
 import com.lifelibrarians.lifebookshelf.autobiography.domain.Autobiography;
+import com.lifelibrarians.lifebookshelf.chapter.domain.Chapter;
+import com.lifelibrarians.lifebookshelf.member.domain.Member;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -33,11 +35,11 @@ public class Interview {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "chapter_id", nullable = false)
-	private Autobiography chapter;
+	private Chapter chapter;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "member_id", nullable = false)
-	private Autobiography member;
+	private Member member;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "current_question_id", nullable = false)
@@ -48,12 +50,34 @@ public class Interview {
 	/* } 연관 정보 */
 
 	/* 생성자 { */
-	protected Interview(LocalDateTime createdAt) {
+	protected Interview(
+			LocalDateTime createdAt,
+			Autobiography autobiography,
+			Chapter chapter,
+			Member member,
+			InterviewQuestion currentQuestion
+	) {
 		this.createdAt = createdAt;
+		this.autobiography = autobiography;
+		this.chapter = chapter;
+		this.member = member;
+		this.currentQuestion = currentQuestion;
 	}
 
-	public static Interview of(LocalDateTime createdAt) {
-		return new Interview(createdAt);
+	public static Interview of(
+			LocalDateTime createdAt,
+			Autobiography autobiography,
+			Chapter chapter,
+			Member member,
+			InterviewQuestion currentQuestion
+	) {
+		return new Interview(
+				createdAt,
+				autobiography,
+				chapter,
+				member,
+				currentQuestion
+		);
 	}
 	/* } 생성자 */
 }

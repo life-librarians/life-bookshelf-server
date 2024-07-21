@@ -33,6 +33,25 @@ public class TestChapter implements TestEntity<Chapter, Long> {
 		return TestChapter.builder().build().asEntity();
 	}
 
+	public static List<Chapter> asDefaultEntities(Member member) {
+		return Arrays.asList(
+				TestChapter.builder().number("1").name("1장").member(member).build().asEntity(),
+				TestChapter.builder().number("2").name("2장").member(member).build().asEntity(),
+				TestChapter.builder().number("3").name("3장").member(member).build().asEntity()
+		);
+	}
+
+	public static List<Chapter> asDefaultSubchapterEntities(Chapter chapter, Member loginMember) {
+		return Arrays.asList(
+				TestChapter.builder().number(chapter.getNumber() + ".1").name(chapter.getNumber() + ".1절")
+						.member(loginMember).parentChapterId(chapter.getId()).build().asEntity(),
+				TestChapter.builder().number(chapter.getNumber() + ".2").name(chapter.getNumber() + ".2절")
+						.member(loginMember).parentChapterId(chapter.getId()).build().asEntity(),
+				TestChapter.builder().number(chapter.getNumber() + ".3").name(chapter.getNumber() + ".3절")
+						.member(loginMember).parentChapterId(chapter.getId()).build().asEntity()
+		);
+	}
+
 	@Override
 	public Chapter asEntity() {
 		return Chapter.of(

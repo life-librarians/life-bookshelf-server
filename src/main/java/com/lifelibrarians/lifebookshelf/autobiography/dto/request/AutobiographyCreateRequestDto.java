@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
@@ -15,6 +14,7 @@ import lombok.experimental.FieldNameConstants;
 @Schema(description = "자서전 생성 요청 DTO")
 @ToString
 @FieldNameConstants
+@AutobiographyCreateValidation
 public class AutobiographyCreateRequestDto {
 
 	@Schema(description = "자서전 제목", example = "My New Autobiography")
