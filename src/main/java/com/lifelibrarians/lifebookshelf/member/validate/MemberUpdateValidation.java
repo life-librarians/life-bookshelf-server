@@ -1,4 +1,5 @@
-package com.lifelibrarians.lifebookshelf.autobiography.dto.request;
+package com.lifelibrarians.lifebookshelf.member.validate;
+
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -9,10 +10,10 @@ import javax.validation.Payload;
 
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = AutobiographyCreateValidator.class)
-public @interface AutobiographyCreateValidation {
+@Constraint(validatedBy = MemberUpdateValidator.class)
+public @interface MemberUpdateValidation {
 
-	String message() default "자서전 생성 요청 데이터 형식이 올바르지 않습니다.";
+	String message() default "회원 정보 수정 요청 데이터 형식이 올바르지 않습니다.";
 
 	Class<?>[] groups() default {};
 

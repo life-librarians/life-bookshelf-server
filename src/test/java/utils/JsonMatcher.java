@@ -3,12 +3,14 @@ package utils;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 import java.util.Map;
+import lombok.ToString;
 import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.result.JsonPathResultMatchers;
 
 /**
  * E2ETest의 ResultMatcher, JsonPath를 편하게 사용하기 위해 추상화한 Util 클래스입니다.
  */
+@ToString
 public class JsonMatcher {
 
 	private final static String JSON_ROOT = "$";

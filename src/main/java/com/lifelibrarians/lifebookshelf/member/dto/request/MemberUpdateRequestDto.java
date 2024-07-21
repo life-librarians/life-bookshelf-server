@@ -1,6 +1,7 @@
 package com.lifelibrarians.lifebookshelf.member.dto.request;
 
 import com.lifelibrarians.lifebookshelf.member.domain.GenderType;
+import com.lifelibrarians.lifebookshelf.member.validate.MemberUpdateValidation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDate;
 import lombok.AllArgsConstructor;
@@ -16,6 +17,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Schema(description = "회원 정보 수정 요청 DTO")
 @ToString
 @FieldNameConstants
+@MemberUpdateValidation
 public class MemberUpdateRequestDto {
 
 	@Schema(description = "이름", example = "John Doe")

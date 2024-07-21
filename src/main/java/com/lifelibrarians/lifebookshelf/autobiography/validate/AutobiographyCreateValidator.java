@@ -1,5 +1,7 @@
-package com.lifelibrarians.lifebookshelf.autobiography.dto.request;
+package com.lifelibrarians.lifebookshelf.autobiography.validate;
 
+import com.lifelibrarians.lifebookshelf.autobiography.dto.request.AutobiographyCreateRequestDto;
+import com.lifelibrarians.lifebookshelf.autobiography.dto.request.InterviewQuestionRequestDto;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 

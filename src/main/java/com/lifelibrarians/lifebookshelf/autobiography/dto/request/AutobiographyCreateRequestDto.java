@@ -1,6 +1,7 @@
 package com.lifelibrarians.lifebookshelf.autobiography.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.lifelibrarians.lifebookshelf.autobiography.validate.AutobiographyCreateValidation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;

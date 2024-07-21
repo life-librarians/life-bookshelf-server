@@ -34,8 +34,10 @@ public class TestMemberMetadata implements TestEntity<MemberMetadata, Long> {
 	@Builder.Default
 	private Member member = null;
 
-	public static MemberMetadata asDefaultEntity() {
-		return TestMemberMetadata.builder().build().asEntity();
+	public static MemberMetadata asDefaultEntity(Member member) {
+		return TestMemberMetadata.builder()
+				.member(member)
+				.build().asEntity();
 	}
 
 	@Override

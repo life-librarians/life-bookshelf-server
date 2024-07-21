@@ -23,7 +23,6 @@ import org.junit.jupiter.api.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.lifelibrarians.lifebookshelf.auth.jwt.JwtTokenProvider;
@@ -54,8 +53,6 @@ public class AutobiographyControllerTest extends E2EMvcTest {
 	@Autowired
 	private JwtTokenProvider jwtTokenProvider;
 	private String token;
-	@Autowired
-	private PasswordEncoder passwordEncoder;
 
 	@BeforeEach
 	void setUp(WebApplicationContext webApplicationContext) {
@@ -797,6 +794,50 @@ public class AutobiographyControllerTest extends E2EMvcTest {
 					.andExpect(status().isNotFound())
 					.andDo(print());
 		}
+
+		@Test
+		@DisplayName("성공 - 유효한 자서전 수정 요청")
+		void 성공_유효한_자서전_수정_요청() throws Exception {
+			// given
+			List<Chapter> chapters = persistHelper
+					.persistAndReturn(TestChapter.asDefaultEntities(loginMember));
+			Autobiography autobiography = persistHelper
+					.persistAndReturn(TestAutobiography.asDefaultEntity(loginMember, chapters.get(0)));
+			AutobiographyUpdateRequestDto autobiographyCreateRequestDto = TestAutobiographyUpdateRequestDto
+					.createValidAutobiography();
+
+			// when
+			MockHttpServletRequestBuilder requestBuilder = multipart(
+					url + "/" + autobiography.getId())
+					.header(AUTHORIZE_VALUE, BEARER + token)
+					.contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
+					.param("title", autobiographyCreateRequestDto.getTitle())
+					.param("content", autobiographyCreateRequestDto.getContent())
+					.param("preSignedCoverImageUrl",
+							autobiographyCreateRequestDto.getPreSignedCoverImageUrl());
+			ResultActions resultActions = mockMvc.perform(requestBuilder);
+
+			// then
+			TypedQuery<Autobiography> targetCheckQuery = em.createQuery(
+							"SELECT a FROM Autobiography a "
+									+ "WHERE a.id = :autobiographyId",
+							Autobiography.class)
+					.setParameter("autobiographyId", autobiography.getId());
+
+			resultActions
+					.andExpect(status().isOk())
+					.andDo(ignore -> {
+						Autobiography updatedAutobiography = targetCheckQuery
+								.getSingleResult();
+						assertThat(updatedAutobiography.getTitle())
+								.isEqualTo(autobiographyCreateRequestDto.getTitle());
+						assertThat(updatedAutobiography.getContent())
+								.isEqualTo(autobiographyCreateRequestDto.getContent());
+						assertThat(updatedAutobiography.getCoverImageUrl())
+								.isEqualTo(autobiographyCreateRequestDto.getPreSignedCoverImageUrl());
+					})
+					.andDo(print());
+		}
 	}
 
 	@Nested
@@ -852,6 +893,34 @@ public class AutobiographyControllerTest extends E2EMvcTest {
 			// then
 			resultActions
 					.andExpect(status().isNotFound())
+					.andDo(print());
+		}
+
+		@Test
+		@DisplayName("성공 - 유효한 자서전 삭제 요청")
+		void 성공_유효한_자서전_삭제_요청() throws Exception {
+			// given
+			List<Chapter> chapters = persistHelper
+					.persistAndReturn(TestChapter.asDefaultEntities(loginMember));
+			Autobiography autobiography = persistHelper
+					.persistAndReturn(TestAutobiography.asDefaultEntity(loginMember, chapters.get(0)));
+
+			// when
+			MockHttpServletRequestBuilder requestBuilder = delete(
+					URL_PREFIX + "/" + autobiography.getId())
+					.header(AUTHORIZE_VALUE, BEARER + token);
+			ResultActions resultActions = mockMvc.perform(requestBuilder);
+
+			// then
+			TypedQuery<Interview> targetCheckQuery = em.createQuery(
+					"SELECT i FROM Interview i "
+							+ "JOIN FETCH i.autobiography a "
+							+ "JOIN FETCH i.chapter c "
+							+ "JOIN FETCH i.currentQuestion cq ",
+					Interview.class);
+
+			resultActions.andExpect(status().isOk());
+			resultActions.andDo(ignore -> assertThat(targetCheckQuery.getResultList().isEmpty()).isTrue())
 					.andDo(print());
 		}
 	}
