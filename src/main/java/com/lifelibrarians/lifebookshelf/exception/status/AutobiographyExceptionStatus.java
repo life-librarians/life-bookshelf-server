@@ -20,7 +20,7 @@ public enum AutobiographyExceptionStatus implements ExceptionStatus {
 	AUTOBIOGRAPHY_NOT_OWNER(403, "BIO009", "해당 자서전의 주인이 아닙니다."),
 	CHAPTER_ALREADY_HAS_AUTOBIOGRAPHY(
 			409, "BIO010", "해당 챕터는 이미 다른 자서전을 가지고 있습니다."),
-	SUBCHAPTER_NUMBER_INVALID(400, "BIO011", "챕터의 subchapter의 number가 부모 chapter의 number로 시작해야 합니다."),
+	SUBCHAPTER_NUMBER_INVALID(400, "BIO011", "챕터의 서브챕터의 번호가 부모 챕터의 번호로 시작해야 합니다."),
 	CHAPTER_NUMBER_FORMAT_INVALID(400, "BIO012", "챕터 번호는 1, 1.1, 1.1.1과 같은 형식이어야 합니다."),
 	CHAPTER_SIZE_EXCEEDED(400, "BIO013", "챕터는 최소 1개, 최대 16개까지 생성할 수 있습니다."),
 	CHAPTER_NUMBER_DUPLICATED(400, "BIO014", "챕터 번호는 중복될 수 없습니다.");
