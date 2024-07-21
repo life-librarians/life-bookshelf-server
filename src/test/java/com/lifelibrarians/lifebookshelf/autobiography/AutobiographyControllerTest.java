@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.lifelibrarians.lifebookshelf.autobiography.domain.Autobiography;
 import com.lifelibrarians.lifebookshelf.autobiography.dto.request.AutobiographyCreateRequestDto;
+import com.lifelibrarians.lifebookshelf.autobiography.dto.request.AutobiographyUpdateRequestDto;
 import com.lifelibrarians.lifebookshelf.autobiography.dto.request.ChapterCreateRequestDto;
 import com.lifelibrarians.lifebookshelf.chapter.domain.Chapter;
 import com.lifelibrarians.lifebookshelf.interview.domain.Interview;
@@ -32,7 +33,8 @@ import utils.JsonMatcher;
 import utils.PersistHelper;
 import utils.test.E2EMvcTest;
 import utils.testdouble.autobiography.TestAutobiography;
-import utils.testdouble.chapter.TestAutobiographyCreateRequestDto;
+import utils.testdouble.autobiography.TestAutobiographyUpdateRequestDto;
+import utils.testdouble.autobiography.TestAutobiographyCreateRequestDto;
 import utils.testdouble.chapter.TestChapter;
 import utils.testdouble.chapter.TestChapterCreateRequestDto;
 import utils.testdouble.chapter.TestChapterStatus;
@@ -665,9 +667,138 @@ public class AutobiographyControllerTest extends E2EMvcTest {
 		}
 	}
 
-//3. 자서전 수정 요청
-//    1. 자서전 제목 길이 제한 테스트
-//    2. 자서전 내용 길이 제한 테스트
+	//3. 자서전 수정 요청
+	@Nested
+	@DisplayName("자서전 수정 요청 (POST /api/v1/autobiographies/{autobiographyId}")
+	class UpdateAutobiography {
+
+		private final String url = URL_PREFIX;
+		private Member loginMember;
+
+		@BeforeEach
+		void setUp() {
+			loginMember = persistHelper
+					.persistAndReturn(TestMember.asDefaultEntity());
+			token = jwtTokenProvider.createMemberAccessToken(
+					loginMember.getId()).getTokenValue();
+		}
+
+		@Test
+		@DisplayName("실패 - 자서전 제목은 64자를 초과할 수 없음")
+		void 실패_자서전_제목은_64자를_초과할_수_없음() throws Exception {
+			// given
+			List<Chapter> chapters = persistHelper
+					.persistAndReturn(TestChapter.asDefaultEntities(loginMember));
+			Autobiography autobiography = persistHelper
+					.persistAndReturn(TestAutobiography.asDefaultEntity(loginMember, chapters.get(0)));
+			AutobiographyUpdateRequestDto autobiographyCreateRequestDto = TestAutobiographyUpdateRequestDto
+					.createTooLongTitleAutobiography();
+
+			// when
+			MockHttpServletRequestBuilder requestBuilder = multipart(
+					url + "/" + autobiography.getId())
+					.header(AUTHORIZE_VALUE, BEARER + token)
+					.contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
+					.param("title", autobiographyCreateRequestDto.getTitle())
+					.param("content", autobiographyCreateRequestDto.getContent())
+					.param("preSignedCoverImageUrl",
+							autobiographyCreateRequestDto.getPreSignedCoverImageUrl());
+			ResultActions resultActions = mockMvc.perform(requestBuilder);
+
+			// then
+			JsonMatcher response = JsonMatcher.create();
+			resultActions
+					.andExpect(status().isBadRequest())
+					.andExpect(response.get("code").isEquals("BIO005"))
+					.andDo(print());
+		}
+
+		@Test
+		@DisplayName("실패 - 자서전 내용은 30000자를 초과할 수 없음")
+		void 실패_자서전_내용은_30000자를_초과할_수_없음() throws Exception {
+			// given
+			List<Chapter> chapters = persistHelper
+					.persistAndReturn(TestChapter.asDefaultEntities(loginMember));
+			Autobiography autobiography = persistHelper
+					.persistAndReturn(TestAutobiography.asDefaultEntity(loginMember, chapters.get(0)));
+			AutobiographyUpdateRequestDto autobiographyCreateRequestDto = TestAutobiographyUpdateRequestDto
+					.createTooLongContentAutobiography();
+
+			// when
+			MockHttpServletRequestBuilder requestBuilder = multipart(
+					url + "/" + autobiography.getId())
+					.header(AUTHORIZE_VALUE, BEARER + token)
+					.contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
+					.param("title", autobiographyCreateRequestDto.getTitle())
+					.param("content", autobiographyCreateRequestDto.getContent())
+					.param("preSignedCoverImageUrl",
+							autobiographyCreateRequestDto.getPreSignedCoverImageUrl());
+			ResultActions resultActions = mockMvc.perform(requestBuilder);
+
+			// then
+			JsonMatcher response = JsonMatcher.create();
+			resultActions
+					.andExpect(status().isBadRequest())
+					.andExpect(response.get("code").isEquals("BIO006"))
+					.andDo(print());
+		}
+
+		@Test
+		@DisplayName("실패 - 자신의 자서전이 아닌 경우, 자서전을 수정할 수 없음")
+		void 실패_자신의_자서전이_아닌_경우_자서전을_수정할_수_없음() throws Exception {
+			// given
+			Member otherMember = persistHelper
+					.persistAndReturn(TestMember.asDefaultEntity());
+			List<Chapter> chapters = persistHelper
+					.persistAndReturn(TestChapter.asDefaultEntities(otherMember));
+			Autobiography autobiography = persistHelper
+					.persistAndReturn(TestAutobiography.asDefaultEntity(otherMember, chapters.get(0)));
+			AutobiographyUpdateRequestDto autobiographyCreateRequestDto = TestAutobiographyUpdateRequestDto
+					.createValidAutobiography();
+
+			// when
+			MockHttpServletRequestBuilder requestBuilder = multipart(
+					url + "/" + autobiography.getId())
+					.header(AUTHORIZE_VALUE, BEARER + token)
+					.contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
+					.param("title", autobiographyCreateRequestDto.getTitle())
+					.param("content", autobiographyCreateRequestDto.getContent())
+					.param("preSignedCoverImageUrl",
+							autobiographyCreateRequestDto.getPreSignedCoverImageUrl());
+			ResultActions resultActions = mockMvc.perform(requestBuilder);
+
+			// then
+			resultActions
+					.andExpect(status().isForbidden())
+					.andDo(print());
+		}
+
+		@Test
+		@DisplayName("실패 - 존재하지 않는 자서전을 수정할 수 없음")
+		void 실패_존재하지_않는_자서전을_수정할_수_없음() throws Exception {
+			// given
+			AutobiographyUpdateRequestDto autobiographyCreateRequestDto = TestAutobiographyUpdateRequestDto
+					.createValidAutobiography();
+			Long notExistAutobiographyId = 0L;
+
+			// when
+			MockHttpServletRequestBuilder requestBuilder = multipart(
+					url + "/" + notExistAutobiographyId)
+					.header(AUTHORIZE_VALUE, BEARER + token)
+					.contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
+					.param("title", autobiographyCreateRequestDto.getTitle())
+					.param("content", autobiographyCreateRequestDto.getContent())
+					.param("preSignedCoverImageUrl",
+							autobiographyCreateRequestDto.getPreSignedCoverImageUrl());
+			ResultActions resultActions = mockMvc.perform(requestBuilder);
+
+			// then
+			resultActions
+					.andExpect(status().isNotFound())
+					.andDo(print());
+		}
+	}
+
 //    3. 자서전의 주인이 아닌 경우 테스트
 //    4. 존재하지 않는 자서전 테스트
 //4. 자서전 삭제 요청

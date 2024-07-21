@@ -1,9 +1,8 @@
-package utils.testdouble.chapter;
+package utils.testdouble.autobiography;
 
 import com.lifelibrarians.lifebookshelf.autobiography.dto.request.AutobiographyCreateRequestDto;
 import com.lifelibrarians.lifebookshelf.autobiography.dto.request.InterviewQuestionRequestDto;
 import java.util.List;
-import utils.testdouble.autobiography.TestAutobiography;
 
 public class TestAutobiographyCreateRequestDto {
 
