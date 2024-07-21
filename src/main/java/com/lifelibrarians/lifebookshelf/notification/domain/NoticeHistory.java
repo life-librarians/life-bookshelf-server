@@ -24,7 +24,7 @@ public class NoticeHistory {
 	@Column(nullable = false)
 	private String title;
 
-	@Column(length = 65535)
+	@Lob
 	private String content;
 
 	@Column(nullable = false)

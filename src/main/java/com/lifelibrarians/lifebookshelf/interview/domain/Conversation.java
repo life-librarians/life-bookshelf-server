@@ -21,7 +21,7 @@ public class Conversation {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(length = 65535)
+	@Lob
 	private String content;
 
 	@Column(nullable = false)

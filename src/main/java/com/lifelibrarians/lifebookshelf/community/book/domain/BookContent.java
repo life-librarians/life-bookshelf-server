@@ -23,7 +23,7 @@ public class BookContent {
 	@Column(nullable = false)
 	private Integer pageNumber;
 
-	@Column(length = 65535)
+	@Lob
 	private String pageContent;
 	/* } 고유 정보 */
 

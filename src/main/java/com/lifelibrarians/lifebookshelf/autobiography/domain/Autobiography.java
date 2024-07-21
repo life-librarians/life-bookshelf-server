@@ -27,7 +27,7 @@ public class Autobiography {
 	@Column
 	private String title;
 
-	@Column(length = 65535)
+	@Lob
 	private String content;
 
 	@Column
