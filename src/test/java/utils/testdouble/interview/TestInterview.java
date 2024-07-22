@@ -42,6 +42,14 @@ public class TestInterview implements TestEntity<Interview, Long> {
 				.build().asEntity();
 	}
 
+	public static Interview asDefaultEntity(
+			Member member
+	) {
+		return TestInterview.builder()
+				.member(member)
+				.build().asEntity();
+	}
+
 	@Override
 	public Interview asEntity() {
 		return Interview.of(
