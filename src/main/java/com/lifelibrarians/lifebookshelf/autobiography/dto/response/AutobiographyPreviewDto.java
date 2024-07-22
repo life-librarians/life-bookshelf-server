@@ -26,7 +26,7 @@ public class AutobiographyPreviewDto {
 	@Schema(description = "미리보기 내용", example = "This is the story of my early life...")
 	private final String contentPreview;
 
-	@Schema(description = "표지 이미지 URL", example = "https://example.com/image1.jpg")
+	@Schema(description = "표지 이미지 URL", example = "https://example.com/bio-cover-images/random-string/image1.jpg")
 	private final String coverImageUrl;
 
 	@Schema(description = "생성일", example = "2023-01-01T00:00:00Z")

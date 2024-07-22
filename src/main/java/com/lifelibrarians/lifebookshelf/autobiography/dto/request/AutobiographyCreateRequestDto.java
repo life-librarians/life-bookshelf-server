@@ -24,7 +24,7 @@ public class AutobiographyCreateRequestDto {
 	@Schema(description = "자서전 내용", example = "This is the content of my new autobiography.")
 	private final String content;
 
-	@Schema(description = "사전지정 커버 이미지 URL", example = "covers-images/random-string/image.png")
+	@Schema(description = "사전지정 커버 이미지 URL", example = "bio-cover-images/random-string/image.png")
 	private final String preSignedCoverImageUrl;
 
 	@ArraySchema(schema = @Schema(implementation = InterviewQuestionRequestDto.class))

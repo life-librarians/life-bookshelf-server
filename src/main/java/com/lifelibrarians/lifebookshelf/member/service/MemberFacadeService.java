@@ -18,16 +18,8 @@ public class MemberFacadeService {
 
 
 	/*-----------------------------------------READ-----------------------------------------*/
-	public void updateMember(Long memberId, MemberUpdateRequestDto requestDto) {
-		memberCommandService.updateMember(memberId, requestDto);
-	}
-
 	public MemberBasicResponseDto getMember(Long memberId) {
 		return memberQueryService.getMember(memberId);
-	}
-
-	public void updateMemberProfile(Long memberId, MemberProfileUpdateRequestDto requestDto) {
-		memberCommandService.updateMemberProfile(memberId, requestDto);
 	}
 
 	public MemberProfileResponseDto getMemberProfile(Long memberId) {
@@ -36,4 +28,11 @@ public class MemberFacadeService {
 
 
 	/*-----------------------------------------CUD-----------------------------------------*/
+	public void updateMember(Long memberId, MemberUpdateRequestDto requestDto) {
+		memberCommandService.updateMember(memberId, requestDto);
+	}
+
+	public void updateMemberProfile(Long memberId, MemberProfileUpdateRequestDto requestDto) {
+		memberCommandService.updateMemberProfile(memberId, requestDto);
+	}
 }

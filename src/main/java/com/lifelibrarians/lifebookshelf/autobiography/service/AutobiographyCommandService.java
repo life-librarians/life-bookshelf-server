@@ -10,6 +10,7 @@ import com.lifelibrarians.lifebookshelf.chapter.domain.ChapterStatus;
 import com.lifelibrarians.lifebookshelf.chapter.repository.ChapterRepository;
 import com.lifelibrarians.lifebookshelf.chapter.repository.ChapterStatusRepository;
 import com.lifelibrarians.lifebookshelf.exception.status.AutobiographyExceptionStatus;
+import com.lifelibrarians.lifebookshelf.image.service.ImageService;
 import com.lifelibrarians.lifebookshelf.interview.domain.Interview;
 import com.lifelibrarians.lifebookshelf.interview.domain.InterviewQuestion;
 import com.lifelibrarians.lifebookshelf.interview.repository.InterviewQuestionRepository;
@@ -23,6 +24,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,6 +39,9 @@ public class AutobiographyCommandService {
 	private final AutobiographyRepository autobiographyRepository;
 	private final InterviewQuestionRepository interviewQuestionRepository;
 	private final InterviewRepository interviewRepository;
+	private final ImageService imageService;
+	@Value("${images.path.bio-cover}")
+	public String BIO_COVER_IMAGE_DIR;
 
 	public void createChapters(Member member, ChapterCreateRequestDto chapterCreateRequestDto) {
 
@@ -104,10 +109,18 @@ public class AutobiographyCommandService {
 		// 자서전 생성
 		Chapter currentChapter = chapterFiltered.get(0); // 현재 챕터는 필터링된 리스트의 첫 번째 챕터
 		LocalDateTime now = LocalDateTime.now();
+		String preSignedImageUrl = null;
+		if (!Objects.isNull(requestDto.getPreSignedCoverImageUrl())
+				&& !requestDto.getPreSignedCoverImageUrl().isBlank()) {
+			preSignedImageUrl = imageService.parseImageUrl(
+					requestDto.getPreSignedCoverImageUrl(),
+					BIO_COVER_IMAGE_DIR);
+		}
+
 		Autobiography autobiography = Autobiography.of(
 				requestDto.getTitle(),
 				requestDto.getContent(),
-				requestDto.getPreSignedCoverImageUrl(),
+				preSignedImageUrl,
 				now,
 				now,
 				currentChapter,
@@ -155,8 +168,15 @@ public class AutobiographyCommandService {
 		if (!autobiography.getMember().getId().equals(memberId)) {
 			throw AutobiographyExceptionStatus.AUTOBIOGRAPHY_NOT_OWNER.toServiceException();
 		}
+		String preSignedImageUrl = null;
+		if (!Objects.isNull(requestDto.getPreSignedCoverImageUrl())
+				&& !requestDto.getPreSignedCoverImageUrl().isBlank()) {
+			preSignedImageUrl = imageService.parseImageUrl(
+					requestDto.getPreSignedCoverImageUrl(),
+					BIO_COVER_IMAGE_DIR);
+		}
 		autobiography.updateAutoBiography(requestDto.getTitle(), requestDto.getContent(),
-				requestDto.getPreSignedCoverImageUrl(), LocalDateTime.now());
+				preSignedImageUrl, LocalDateTime.now());
 	}
 
 	public void deleteAutobiography(Long memberId, Long autobiographyId) {
