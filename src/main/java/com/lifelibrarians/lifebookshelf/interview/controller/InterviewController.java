@@ -17,6 +17,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,9 +43,9 @@ public class InterviewController {
 			@ApiResponse(responseCode = "200", description = "ok"),
 	})
 	@ApiErrorCodeExample(
-			autobiographyExceptionStatuses = {
-					AutobiographyExceptionStatus.AUTOBIOGRAPHY_NOT_FOUND,
-					AutobiographyExceptionStatus.AUTOBIOGRAPHY_NOT_OWNER,
+			interviewExceptionStatuses = {
+					InterviewExceptionStatus.INTERVIEW_NOT_FOUND,
+					InterviewExceptionStatus.INTERVIEW_NOT_OWNER,
 			}
 	)
 	@PreAuthorize("isAuthenticated()")
@@ -55,7 +56,8 @@ public class InterviewController {
 			@RequestParam(value = "page", defaultValue = "0") int page,
 			@RequestParam(value = "size", defaultValue = "10") int size
 	) {
-		return InterviewConversationResponseDto.builder().build();
+		return interviewFacadeService.getConversations(memberSessionDto.getMemberId(), interviewId,
+				PageRequest.of(page, size));
 	}
 
 	@Operation(summary = "인터뷰 질문 목록 조회", description = "인터뷰 질문 목록을 조회합니다.")
@@ -74,7 +76,7 @@ public class InterviewController {
 			@LoginMemberInfo MemberSessionDto memberSessionDto,
 			@PathVariable("interviewId") @Parameter(description = "인터뷰 ID", example = "1") Long interviewId
 	) {
-		return InterviewQuestionResponseDto.builder().build();
+		return interviewFacadeService.getQuestions(memberSessionDto.getMemberId(), interviewId);
 	}
 
 	@Operation(summary = "챗봇과의 대화 내역 전송 요청", description = "챗봇과의 대화 내역을 전송합니다.")
