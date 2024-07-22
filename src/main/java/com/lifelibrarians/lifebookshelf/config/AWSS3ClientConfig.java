@@ -7,8 +7,6 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
-import org.springframework.context.annotation.Profile;
 
 
 @Configuration
@@ -24,9 +22,7 @@ public class AWSS3ClientConfig {
 	private String region;
 
 	@Bean
-	@Profile({"local", "test"})
-	@Primary
-	public AmazonS3Client amazonS3ClientLocal() {
+	public AmazonS3Client amazonS3Client() {
 		AwsClientBuilder.EndpointConfiguration endpointConfiguration =
 				new AwsClientBuilder.EndpointConfiguration(endpoint, region);
 
@@ -35,17 +31,6 @@ public class AWSS3ClientConfig {
 				.withPathStyleAccessEnabled(true)
 				.withCredentials(
 						new AWSStaticCredentialsProvider(new BasicAWSCredentials(accessKey, secretKey)))
-				.build();
-	}
-
-	@Bean
-	@Profile("prod")
-	public AmazonS3Client amazonS3ClientProd() {
-		return (AmazonS3Client) AmazonS3Client.builder()
-				.withRegion(region)
-				.withPathStyleAccessEnabled(true)
-				.withCredentials(new AWSStaticCredentialsProvider(
-						new BasicAWSCredentials(accessKey, secretKey)))
 				.build();
 	}
 }

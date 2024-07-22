@@ -22,12 +22,13 @@ cloud:
   aws:
     s3:
       bucket: lifebookshelf-image-bucket
+      endpoint: http://localhost:4566
       expiration: 3600000
     credentials:
       access-key: test
       secret-key: test
     region:
-      static: ap-northeast-2
+      static: us-east-1
     stack:
       auto: false
 

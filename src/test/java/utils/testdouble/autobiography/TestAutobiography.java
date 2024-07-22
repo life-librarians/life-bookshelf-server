@@ -16,7 +16,7 @@ public class TestAutobiography implements TestEntity<Autobiography, Long> {
 			LocalTime.MIDNIGHT);
 	public static final String DEFAULT_TITLE = "테스트 자서전 제목";
 	public static final String DEFAULT_CONTENT = "테스트 자서전 내용";
-	public static final String DEFAULT_COVER_IMAGE_URL = "https://test.com/cover.jpg";
+	public static final String DEFAULT_COVER_IMAGE_URL = "bio-cover-images/RANDOM_STRING/image.jpg";
 
 	@Builder.Default
 	private String title = DEFAULT_TITLE;
