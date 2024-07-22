@@ -5,6 +5,7 @@ import com.lifelibrarians.lifebookshelf.interview.domain.InterviewQuestion;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 import lombok.Builder;
 import utils.testdouble.TestEntity;
 
@@ -34,6 +35,14 @@ public class TestInterviewQuestion implements TestEntity<InterviewQuestion, Long
 				.question(question)
 				.interview(interview)
 				.build().asEntity();
+	}
+
+	public static List<InterviewQuestion> asDefaultEntities(Interview interview) {
+		return List.of(
+				asDefaultEntity(1, "질문 1", interview),
+				asDefaultEntity(2, "질문 2", interview),
+				asDefaultEntity(3, "질문 3", interview)
+		);
 	}
 
 	@Override

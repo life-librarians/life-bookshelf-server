@@ -109,10 +109,6 @@ public class InterviewController {
 			interviewExceptionStatuses = {
 					InterviewExceptionStatus.INTERVIEW_NOT_FOUND,
 					InterviewExceptionStatus.INTERVIEW_NOT_OWNER,
-//					InterviewExceptionStatus.INTERVIEW_QUESTION_NOT_FOUND,
-//					InterviewExceptionStatus.INTERVIEW_QUESTION_NOT_IN_INTERVIEW,
-//					InterviewExceptionStatus.INTERVIEW_QUESTION_UPDATE_NOT_FOUND,
-//					InterviewExceptionStatus.INTERVIEW_QUESTION_UPDATE_NOT_IN_INTERVIEW,
 					InterviewExceptionStatus.NEXT_INTERVIEW_QUESTION_NOT_FOUND,
 			}
 	)

@@ -11,7 +11,7 @@ import lombok.ToString;
 @Entity
 @Table(name = "interviewQuestions")
 @Getter
-@ToString(callSuper = true)
+@ToString(callSuper = true, exclude = {"interview"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class InterviewQuestion {
 
@@ -32,7 +32,7 @@ public class InterviewQuestion {
 	/* } 고유 정보 */
 
 	/* 연관 정보 { */
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "interview_id", nullable = false)
 	private Interview interview;
 	/* } 연관 정보 */
@@ -54,6 +54,10 @@ public class InterviewQuestion {
 			Interview interview
 	) {
 		return new InterviewQuestion(order, questionText, createdAt, interview);
+	}
+
+	public void setInterview(Interview interview) {
+		this.interview = interview;
 	}
 	/* } 생성자 */
 }

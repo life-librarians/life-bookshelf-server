@@ -2,10 +2,8 @@ package com.lifelibrarians.lifebookshelf.interview.service;
 
 import com.lifelibrarians.lifebookshelf.exception.status.InterviewExceptionStatus;
 import com.lifelibrarians.lifebookshelf.interview.domain.Interview;
-import com.lifelibrarians.lifebookshelf.interview.domain.InterviewQuestion;
 import com.lifelibrarians.lifebookshelf.interview.dto.request.InterviewConversationCreateRequestDto;
 import com.lifelibrarians.lifebookshelf.log.Logging;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -36,7 +34,6 @@ public class InterviewFacadeService {
 		if (!interview.getMember().getId().equals(memberId)) {
 			throw InterviewExceptionStatus.INTERVIEW_NOT_OWNER.toServiceException();
 		}
-		List<InterviewQuestion> questions = interviewQueryService.getInterviewQuestions(interviewId);
 		interviewCommandService.updateCurrentQuestion(interview);
 	}
 }

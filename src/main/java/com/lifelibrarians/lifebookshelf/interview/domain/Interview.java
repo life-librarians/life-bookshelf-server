@@ -16,8 +16,7 @@ import lombok.ToString;
 @Entity
 @Table(name = "interviews")
 @Getter
-@ToString(callSuper = true, exclude = {"autobiography", "chapter", "member",
-		"currentQuestion", "questions", "interviewConversations"})
+@ToString(callSuper = true, exclude = {"autobiography", "chapter", "member"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Interview {
 
@@ -44,7 +43,7 @@ public class Interview {
 	@JoinColumn(name = "member_id", nullable = false)
 	private Member member;
 
-	@OneToMany(mappedBy = "interview", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "interview", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<InterviewQuestion> questions = new ArrayList<>();
 
 	@OneToOne(fetch = FetchType.LAZY)
@@ -91,6 +90,14 @@ public class Interview {
 	/* 연관 관계 편의 메소드 { */
 	public void setCurrentQuestion(InterviewQuestion interviewQuestion) {
 		this.currentQuestion = interviewQuestion;
+		interviewQuestion.setInterview(this);
+	}
+
+	public void setQuestions(List<InterviewQuestion> interviewQuestions) {
+		this.questions = interviewQuestions;
+		for (InterviewQuestion interviewQuestion : interviewQuestions) {
+			interviewQuestion.setInterview(this);
+		}
 	}
 	/* } 연관 관계 편의 메소드 */
 }
