@@ -2,6 +2,7 @@ package utils.testdouble.interview;
 
 import com.lifelibrarians.lifebookshelf.interview.domain.Conversation;
 import com.lifelibrarians.lifebookshelf.interview.domain.ConversationType;
+import com.lifelibrarians.lifebookshelf.interview.domain.Interview;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -20,10 +21,16 @@ public class TestConversation implements TestEntity<Conversation, Long> {
 	@Builder.Default
 	private ConversationType type = ConversationType.BOT;
 	@Builder.Default
+	private Interview interview = null;
+	@Builder.Default
 	private LocalDateTime createdAt = DEFAULT_TIME;
 
-	public static Conversation asDefaultEntity() {
-		return TestConversation.builder().build().asEntity();
+	public static Conversation asDefaultEntity(
+			Interview interview
+	) {
+		return TestConversation.builder()
+				.interview(interview)
+				.build().asEntity();
 	}
 
 	@Override
@@ -31,6 +38,7 @@ public class TestConversation implements TestEntity<Conversation, Long> {
 		return Conversation.of(
 				this.content,
 				this.type,
+				this.interview,
 				this.createdAt
 		);
 	}

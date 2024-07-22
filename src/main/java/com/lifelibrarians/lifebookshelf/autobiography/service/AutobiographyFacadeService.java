@@ -24,14 +24,6 @@ public class AutobiographyFacadeService {
 
 
 	/*-----------------------------------------READ-----------------------------------------*/
-
-	/*-----------------------------------------CUD-----------------------------------------*/
-
-	public void createChapters(Long memberId, ChapterCreateRequestDto requestDto) {
-		Member member = autobiographyQueryService.findMemberById(memberId);
-		autobiographyCommandService.createChapters(member, requestDto);
-	}
-
 	public ChapterListResponseDto getChapters(Long memberId, Pageable pageable) {
 		return autobiographyQueryService.getChapters(memberId, pageable);
 	}
@@ -40,14 +32,20 @@ public class AutobiographyFacadeService {
 		return autobiographyQueryService.getAutobiographies(memberId);
 	}
 
+	public AutobiographyDetailResponseDto getAutobiography(Long memberId, Long autobiographyId) {
+		return autobiographyQueryService.getAutobiography(memberId, autobiographyId);
+	}
+
+	/*-----------------------------------------CUD-----------------------------------------*/
+	public void createChapters(Long memberId, ChapterCreateRequestDto requestDto) {
+		Member member = autobiographyQueryService.findMemberById(memberId);
+		autobiographyCommandService.createChapters(member, requestDto);
+	}
+
 	public void createAutobiography(Long memberId, AutobiographyCreateRequestDto requestDto) {
 		Member member = autobiographyQueryService.getMemberWithAutobiographiesById(memberId);
 		List<Chapter> chaptersNotRoot = autobiographyQueryService.findAllChaptersNotRoot(memberId);
 		autobiographyCommandService.createAutobiography(member, requestDto, chaptersNotRoot);
-	}
-
-	public AutobiographyDetailResponseDto getAutobiography(Long memberId, Long autobiographyId) {
-		return autobiographyQueryService.getAutobiography(memberId, autobiographyId);
 	}
 
 	public void patchAutobiography(Long memberId, Long autobiographyId,

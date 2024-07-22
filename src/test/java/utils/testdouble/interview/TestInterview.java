@@ -8,8 +8,13 @@ import com.lifelibrarians.lifebookshelf.member.domain.Member;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Builder;
 import utils.testdouble.TestEntity;
+import utils.testdouble.autobiography.TestAutobiography;
+import utils.testdouble.chapter.TestChapter;
+import utils.testdouble.chapter.TestChapterStatus;
 
 @Builder
 public class TestInterview implements TestEntity<Interview, Long> {

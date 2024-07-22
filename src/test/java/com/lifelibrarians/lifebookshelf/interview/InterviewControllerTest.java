@@ -5,7 +5,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import com.lifelibrarians.lifebookshelf.autobiography.domain.Autobiography;
+import com.lifelibrarians.lifebookshelf.chapter.domain.Chapter;
 import com.lifelibrarians.lifebookshelf.interview.domain.Interview;
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
@@ -21,8 +25,12 @@ import org.junit.jupiter.api.*;
 import utils.JsonMatcher;
 import utils.PersistHelper;
 import utils.test.E2EMvcTest;
+import utils.testdouble.autobiography.TestAutobiography;
+import utils.testdouble.chapter.TestChapter;
+import utils.testdouble.chapter.TestChapterStatus;
 import utils.testdouble.interview.TestInterview;
 import utils.testdouble.interview.TestInterviewConversationCreateRequestDto;
+import utils.testdouble.interview.TestInterviewQuestion;
 import utils.testdouble.member.TestMember;
 
 public class InterviewControllerTest extends E2EMvcTest {
@@ -33,6 +41,26 @@ public class InterviewControllerTest extends E2EMvcTest {
 	private final String AUTHORIZE_VALUE = "Authorization";
 
 	private PersistHelper persistHelper;
+
+	private Interview createInterview(Member member) {
+		List<Chapter> chapters = TestChapter.asDefaultEntities(member);
+		persistHelper.persist(chapters);
+		List<Chapter> subchapters = new ArrayList<>();
+		for (Chapter chapter : chapters) {
+			subchapters.addAll(TestChapter.asDefaultSubchapterEntities(chapter, member));
+		}
+		List<Chapter> subChapterList = persistHelper.persistAndReturn(subchapters);
+		Autobiography autobiography = persistHelper.persistAndReturn(
+				TestAutobiography.asDefaultEntity(member, subChapterList.get(0)));
+		persistHelper.persist(TestChapterStatus.asDefaultEntity(member, subChapterList.get(1)));
+		return persistHelper.persistAndReturn(TestInterview.asDefaultEntity(
+						autobiography,
+						subChapterList.get(0),
+						member,
+						persistHelper.persistAndReturn(TestInterviewQuestion.asDefaultEntity(0, "질문1"))
+				)
+		);
+	}
 
 	@Autowired
 	private JwtTokenProvider jwtTokenProvider;
@@ -45,9 +73,8 @@ public class InterviewControllerTest extends E2EMvcTest {
 	}
 
 	@Nested
-	@Disabled
 	@DisplayName("챗봇과의 대화 내역 전송 요청 (POST /api/v1/interviews/{interviewId}/conversations)")
-	class GetInterviewConversations {
+	class SendInterviewConversations {
 
 		private final String url = URL_PREFIX;
 		private Member loginMember;
@@ -78,8 +105,8 @@ public class InterviewControllerTest extends E2EMvcTest {
 			// then
 			JsonMatcher response = JsonMatcher.create();
 			resultActions
-//					.andExpect(status().isNotFound())
-//					.andExpect(response.get("code").isEquals("INTERVIEW001"))
+					.andExpect(status().isNotFound())
+					.andExpect(response.get("code").isEquals("INTERVIEW001"))
 					.andDo(print());
 		}
 
@@ -90,8 +117,7 @@ public class InterviewControllerTest extends E2EMvcTest {
 			InterviewConversationCreateRequestDto requestDto = TestInterviewConversationCreateRequestDto.createValidInterviewConversationCreateRequestDto();
 			Member otherMember = persistHelper
 					.persistAndReturn(TestMember.asDefaultEntity());
-			Interview interview = persistHelper.persistAndReturn(
-					TestInterview.asDefaultEntity(otherMember));
+			Interview interview = createInterview(otherMember);
 
 			// when
 			MockHttpServletRequestBuilder requestBuilder = post(
@@ -104,8 +130,8 @@ public class InterviewControllerTest extends E2EMvcTest {
 			// then
 			JsonMatcher response = JsonMatcher.create();
 			resultActions
-//					.andExpect(status().isForbidden())
-//					.andExpect(response.get("code").isEquals("INTERVIEW002"))
+					.andExpect(status().isForbidden())
+					.andExpect(response.get("code").isEquals("INTERVIEW002"))
 					.andDo(print());
 		}
 
@@ -114,8 +140,7 @@ public class InterviewControllerTest extends E2EMvcTest {
 		void 실패_대화는_20개를_초과하여_전송할_수_없음() throws Exception {
 			// given
 			InterviewConversationCreateRequestDto requestDto = TestInterviewConversationCreateRequestDto.createTooManyConversationsInterviewConversationCreateRequestDto();
-			Interview interview = persistHelper.persistAndReturn(
-					TestInterview.asDefaultEntity(loginMember));
+			Interview interview = createInterview(loginMember);
 
 			// when
 			MockHttpServletRequestBuilder requestBuilder = post(
@@ -128,8 +153,8 @@ public class InterviewControllerTest extends E2EMvcTest {
 			// then
 			JsonMatcher response = JsonMatcher.create();
 			resultActions
-//					.andExpect(status().isBadRequest())
-//					.andExpect(response.get("code").isEquals("INTERVIEW003"))
+					.andExpect(status().isBadRequest())
+					.andExpect(response.get("code").isEquals("INTERVIEW003"))
 					.andDo(print());
 		}
 
@@ -138,8 +163,7 @@ public class InterviewControllerTest extends E2EMvcTest {
 		void 실패_대화_내용은_512자를_초과하여_전송할_수_없음() throws Exception {
 			// given
 			InterviewConversationCreateRequestDto requestDto = TestInterviewConversationCreateRequestDto.createTooLongContentInterviewConversationCreateRequestDto();
-			Interview interview = persistHelper.persistAndReturn(
-					TestInterview.asDefaultEntity(loginMember));
+			Interview interview = createInterview(loginMember);
 
 			// when
 			MockHttpServletRequestBuilder requestBuilder = post(
@@ -152,12 +176,31 @@ public class InterviewControllerTest extends E2EMvcTest {
 			// then
 			JsonMatcher response = JsonMatcher.create();
 			resultActions
-//					.andExpect(status().isBadRequest())
-//					.andExpect(response.get("code").isEquals("INTERVIEW004"))
+					.andExpect(status().isBadRequest())
+					.andExpect(response.get("code").isEquals("INTERVIEW004"))
 					.andDo(print());
 		}
 
-//	성공 - 유효한 대화 내역 전송 요청
+		@Test
+		@DisplayName("성공 - 유효한 대화 내역 전송 요청")
+		void 성공_유효한_대화_내역_전송_요청() throws Exception {
+			// given
+			InterviewConversationCreateRequestDto requestDto = TestInterviewConversationCreateRequestDto.createValidInterviewConversationCreateRequestDto();
+			Interview interview = createInterview(loginMember);
+
+			// when
+			MockHttpServletRequestBuilder requestBuilder = post(
+					url + "/" + interview.getId() + "/conversations")
+					.header(AUTHORIZE_VALUE, BEARER + token)
+					.contentType(MediaType.APPLICATION_JSON_VALUE)
+					.content(objectMapper.writeValueAsString(requestDto));
+			ResultActions resultActions = mockMvc.perform(requestBuilder);
+
+			// then
+			resultActions
+					.andExpect(status().isCreated())
+					.andDo(print());
+		}
 	}
 
 	@Nested

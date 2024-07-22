@@ -618,7 +618,6 @@ public class AutobiographyControllerTest extends E2EMvcTest {
 			List<Chapter> subChapterList = persistHelper.persistAndReturn(subchapters);
 			Autobiography autobiography = persistHelper.persistAndReturn(
 					TestAutobiography.asDefaultEntity(loginMember, subChapterList.get(0)));
-			System.out.println("autobiography = " + autobiography);
 
 			persistHelper.persist(TestChapterStatus.asDefaultEntity(loginMember, subChapterList.get(1)));
 			persistHelper.persist(TestInterview.asDefaultEntity(

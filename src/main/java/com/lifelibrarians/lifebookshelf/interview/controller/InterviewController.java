@@ -9,6 +9,7 @@ import com.lifelibrarians.lifebookshelf.interview.dto.request.InterviewConversat
 import com.lifelibrarians.lifebookshelf.interview.dto.response.InterviewConversationResponseDto;
 import com.lifelibrarians.lifebookshelf.interview.dto.response.InterviewQuestionResponseDto;
 import com.lifelibrarians.lifebookshelf.exception.status.InterviewExceptionStatus;
+import com.lifelibrarians.lifebookshelf.interview.service.InterviewFacadeService;
 import com.lifelibrarians.lifebookshelf.log.Logging;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -34,6 +35,8 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "인터뷰 (Interview)", description = "인터뷰 관련 API")
 @Logging
 public class InterviewController {
+
+	private final InterviewFacadeService interviewFacadeService;
 
 	@Operation(summary = "인터뷰 대화 조회", description = "인터뷰 대화 내역을 조회합니다.")
 	@ApiResponses(value = {
@@ -95,7 +98,8 @@ public class InterviewController {
 			@PathVariable("interviewId") @Parameter(description = "인터뷰 ID", example = "1") Long interviewId,
 			@Valid @RequestBody InterviewConversationCreateRequestDto requestDto
 	) {
-
+		interviewFacadeService.createConversations(memberSessionDto.getMemberId(), interviewId,
+				requestDto);
 	}
 
 	@Operation(summary = "현재 진행중인 인터뷰 질문을 다음 질문으로 갱신 요청", description = "현재 진행중인 인터뷰 질문을 다음 질문으로 갱신합니다.")
@@ -106,18 +110,18 @@ public class InterviewController {
 			interviewExceptionStatuses = {
 					InterviewExceptionStatus.INTERVIEW_NOT_FOUND,
 					InterviewExceptionStatus.INTERVIEW_NOT_OWNER,
-					InterviewExceptionStatus.INTERVIEW_QUESTION_NOT_FOUND,
-					InterviewExceptionStatus.INTERVIEW_QUESTION_NOT_IN_INTERVIEW,
-					InterviewExceptionStatus.INTERVIEW_QUESTION_UPDATE_NOT_FOUND,
-					InterviewExceptionStatus.INTERVIEW_QUESTION_UPDATE_NOT_IN_INTERVIEW,
+//					InterviewExceptionStatus.INTERVIEW_QUESTION_NOT_FOUND,
+//					InterviewExceptionStatus.INTERVIEW_QUESTION_NOT_IN_INTERVIEW,
+//					InterviewExceptionStatus.INTERVIEW_QUESTION_UPDATE_NOT_FOUND,
+//					InterviewExceptionStatus.INTERVIEW_QUESTION_UPDATE_NOT_IN_INTERVIEW,
+					InterviewExceptionStatus.NEXT_INTERVIEW_QUESTION_NOT_FOUND,
 			}
 	)
 	@PreAuthorize("isAuthenticated()")
-	@PostMapping("/{interviewId}/questions/{questionId}/current-question")
+	@PostMapping("/{interviewId}/questions/current-question")
 	public void updateCurrentQuestion(
 			@LoginMemberInfo MemberSessionDto memberSessionDto,
 			@PathVariable("interviewId") @Parameter(description = "인터뷰 ID", example = "1") Long interviewId,
-			@PathVariable("questionId") @Parameter(description = "질문 ID", example = "1") Long questionId,
 			@Valid @RequestBody InterviewQuestionUpdateCurrentQuestionRequestDto requestDto
 	) {
 

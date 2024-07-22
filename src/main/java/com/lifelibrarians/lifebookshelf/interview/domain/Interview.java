@@ -14,7 +14,8 @@ import lombok.ToString;
 @Entity
 @Table(name = "interviews")
 @Getter
-@ToString(callSuper = true)
+@ToString(callSuper = true, exclude = {"autobiography", "chapter", "member",
+		"currentQuestion"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Interview {
 

@@ -39,16 +39,24 @@ public class Conversation {
 	/* } 연관 정보 */
 
 	/* 생성자 { */
-	protected Conversation(String content, ConversationType conversationType,
-			LocalDateTime createdAt) {
+	protected Conversation(
+			String content, ConversationType conversationType,
+			Interview interview,
+			LocalDateTime createdAt
+	) {
 		this.content = content;
 		this.conversationType = conversationType;
+		this.interview = interview;
 		this.createdAt = createdAt;
+
 	}
 
-	public static Conversation of(String content, ConversationType conversationType,
-			LocalDateTime createdAt) {
-		return new Conversation(content, conversationType, createdAt);
+	public static Conversation of(
+			String content, ConversationType conversationType,
+			Interview interview,
+			LocalDateTime createdAt
+	) {
+		return new Conversation(content, conversationType, interview, createdAt);
 	}
 	/* } 생성자 */
 }
