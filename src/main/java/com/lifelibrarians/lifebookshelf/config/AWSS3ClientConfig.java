@@ -32,16 +32,18 @@ public class AWSS3ClientConfig {
 
 		return (AmazonS3Client) AmazonS3Client.builder()
 				.withEndpointConfiguration(endpointConfiguration)
+				.withPathStyleAccessEnabled(true)
 				.withCredentials(
 						new AWSStaticCredentialsProvider(new BasicAWSCredentials(accessKey, secretKey)))
 				.build();
 	}
-	
+
 	@Bean
 	@Profile("prod")
 	public AmazonS3Client amazonS3ClientProd() {
 		return (AmazonS3Client) AmazonS3Client.builder()
 				.withRegion(region)
+				.withPathStyleAccessEnabled(true)
 				.withCredentials(new AWSStaticCredentialsProvider(
 						new BasicAWSCredentials(accessKey, secretKey)))
 				.build();

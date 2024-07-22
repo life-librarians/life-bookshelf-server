@@ -9,6 +9,7 @@ import com.lifelibrarians.lifebookshelf.community.like.domain.Like;
 import com.lifelibrarians.lifebookshelf.notification.domain.NoticeHistory;
 import com.lifelibrarians.lifebookshelf.notification.domain.NotificationSubscribe;
 
+import java.util.Objects;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -137,6 +138,29 @@ public class Member {
 	public void setMemberMemberMetadata(MemberMetadata memberMetadata) {
 		this.memberMemberMetadata = memberMetadata;
 		memberMetadata.setMember(this);
+	}
+
+	public void changeDefaultProfileImage() {
+		this.profileImageUrl = null;
+	}
+
+	public boolean isEqualProfileImageUrl(String profileImageUrl) {
+		if (Objects.isNull(this.profileImageUrl)) {
+			return Objects.isNull(profileImageUrl);
+		}
+		return profileImageUrl.equals(this.profileImageUrl);
+	}
+
+	public void updateProfileImageUrl(String profileImageUrl) {
+		this.profileImageUrl = profileImageUrl;
+	}
+
+	public void updateNickname(String nickname, LocalDateTime now) {
+		if (nickname == null || nickname.isEmpty() || nickname.equals(this.nickname)) {
+			return;
+		}
+		this.nickname = nickname;
+		this.nicknameUpdatedAt = now;
 	}
 
 	/* } 연관 관계 편의 메서드 */
