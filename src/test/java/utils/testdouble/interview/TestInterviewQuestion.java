@@ -1,5 +1,6 @@
 package utils.testdouble.interview;
 
+import com.lifelibrarians.lifebookshelf.interview.domain.Interview;
 import com.lifelibrarians.lifebookshelf.interview.domain.InterviewQuestion;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -20,14 +21,18 @@ public class TestInterviewQuestion implements TestEntity<InterviewQuestion, Long
 	private String question = DEFAULT_QUESTION;
 	@Builder.Default
 	private LocalDateTime createdAt = DEFAULT_TIME;
+	@Builder.Default
+	private Interview interview = null;
 
 	public static InterviewQuestion asDefaultEntity(
 			Integer order,
-			String question
+			String question,
+			Interview interview
 	) {
 		return TestInterviewQuestion.builder()
 				.order(order)
 				.question(question)
+				.interview(interview)
 				.build().asEntity();
 	}
 
@@ -36,7 +41,8 @@ public class TestInterviewQuestion implements TestEntity<InterviewQuestion, Long
 		return InterviewQuestion.of(
 				this.order,
 				this.question,
-				this.createdAt
+				this.createdAt,
+				this.interview
 		);
 	}
 

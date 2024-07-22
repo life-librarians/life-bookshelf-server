@@ -138,25 +138,30 @@ public class AutobiographyCommandService {
 			chapterStatusRepository.save(chapterStatus);
 		}
 
-		// 인터뷰 질문 생성
-		List<InterviewQuestion> interviewQuestions = requestDto.getInterviewQuestions().stream()
-				.map(interviewDto -> InterviewQuestion.of(
-						interviewDto.getOrder(),
-						interviewDto.getQuestionText(),
-						now
-				))
-				.collect(Collectors.toList());
-
-		interviewQuestionRepository.saveAll(interviewQuestions);
-
 		// 인터뷰 생성
 		Interview interview = Interview.of(
 				now,
 				autobiography,
 				currentChapter,
 				member,
-				interviewQuestions.get(0)
+				null
 		);
+		interviewRepository.save(interview);
+
+		// 인터뷰 질문 생성
+		List<InterviewQuestion> interviewQuestions = requestDto.getInterviewQuestions().stream()
+				.map(interviewDto -> InterviewQuestion.of(
+						interviewDto.getOrder(),
+						interviewDto.getQuestionText(),
+						now,
+						interview
+				))
+				.collect(Collectors.toList());
+
+		interviewQuestionRepository.saveAll(interviewQuestions);
+
+		// 인터뷰 업데이트 (현재 질문 설정)
+		interview.setCurrentQuestion(interviewQuestions.get(0));
 		interviewRepository.save(interview);
 	}
 

@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.lifelibrarians.lifebookshelf.autobiography.domain.Autobiography;
 import com.lifelibrarians.lifebookshelf.chapter.domain.Chapter;
 import com.lifelibrarians.lifebookshelf.interview.domain.Interview;
+import com.lifelibrarians.lifebookshelf.interview.domain.InterviewQuestion;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,13 +54,17 @@ public class InterviewControllerTest extends E2EMvcTest {
 		Autobiography autobiography = persistHelper.persistAndReturn(
 				TestAutobiography.asDefaultEntity(member, subChapterList.get(0)));
 		persistHelper.persist(TestChapterStatus.asDefaultEntity(member, subChapterList.get(1)));
-		return persistHelper.persistAndReturn(TestInterview.asDefaultEntity(
+		Interview interview = persistHelper.persistAndReturn(TestInterview.asDefaultEntity(
 						autobiography,
 						subChapterList.get(0),
 						member,
-						persistHelper.persistAndReturn(TestInterviewQuestion.asDefaultEntity(0, "질문1"))
+						null
 				)
 		);
+		InterviewQuestion interviewQuestion = persistHelper.persistAndReturn(
+				TestInterviewQuestion.asDefaultEntity(0, "질문1", interview));
+		interview.setCurrentQuestion(interviewQuestion);
+		return interview;
 	}
 
 	@Autowired

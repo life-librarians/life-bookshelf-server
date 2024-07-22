@@ -3,6 +3,8 @@ package com.lifelibrarians.lifebookshelf.interview.domain;
 import com.lifelibrarians.lifebookshelf.autobiography.domain.Autobiography;
 import com.lifelibrarians.lifebookshelf.chapter.domain.Chapter;
 import com.lifelibrarians.lifebookshelf.member.domain.Member;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -15,7 +17,7 @@ import lombok.ToString;
 @Table(name = "interviews")
 @Getter
 @ToString(callSuper = true, exclude = {"autobiography", "chapter", "member",
-		"currentQuestion"})
+		"currentQuestion", "questions", "interviewConversations"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Interview {
 
@@ -42,9 +44,13 @@ public class Interview {
 	@JoinColumn(name = "member_id", nullable = false)
 	private Member member;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "current_question_id", nullable = false)
+	@OneToMany(mappedBy = "interview", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<InterviewQuestion> questions = new ArrayList<>();
+
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "current_question_id")
 	private InterviewQuestion currentQuestion;
+
 
 	@OneToMany(mappedBy = "interview")
 	private Set<Conversation> interviewConversations;
@@ -81,4 +87,10 @@ public class Interview {
 		);
 	}
 	/* } 생성자 */
+
+	/* 연관 관계 편의 메소드 { */
+	public void setCurrentQuestion(InterviewQuestion interviewQuestion) {
+		this.currentQuestion = interviewQuestion;
+	}
+	/* } 연관 관계 편의 메소드 */
 }

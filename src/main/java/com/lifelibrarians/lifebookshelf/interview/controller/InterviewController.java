@@ -4,7 +4,6 @@ import com.lifelibrarians.lifebookshelf.auth.dto.MemberSessionDto;
 import com.lifelibrarians.lifebookshelf.auth.jwt.LoginMemberInfo;
 import com.lifelibrarians.lifebookshelf.exception.status.AutobiographyExceptionStatus;
 import com.lifelibrarians.lifebookshelf.exception.annotation.ApiErrorCodeExample;
-import com.lifelibrarians.lifebookshelf.interview.dto.request.InterviewQuestionUpdateCurrentQuestionRequestDto;
 import com.lifelibrarians.lifebookshelf.interview.dto.request.InterviewConversationCreateRequestDto;
 import com.lifelibrarians.lifebookshelf.interview.dto.response.InterviewConversationResponseDto;
 import com.lifelibrarians.lifebookshelf.interview.dto.response.InterviewQuestionResponseDto;
@@ -121,9 +120,8 @@ public class InterviewController {
 	@PostMapping("/{interviewId}/questions/current-question")
 	public void updateCurrentQuestion(
 			@LoginMemberInfo MemberSessionDto memberSessionDto,
-			@PathVariable("interviewId") @Parameter(description = "인터뷰 ID", example = "1") Long interviewId,
-			@Valid @RequestBody InterviewQuestionUpdateCurrentQuestionRequestDto requestDto
+			@PathVariable("interviewId") @Parameter(description = "인터뷰 ID", example = "1") Long interviewId
 	) {
-
+		interviewFacadeService.updateCurrentQuestion(memberSessionDto.getMemberId(), interviewId);
 	}
 }

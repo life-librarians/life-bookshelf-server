@@ -11,6 +11,7 @@ import com.lifelibrarians.lifebookshelf.autobiography.dto.request.AutobiographyU
 import com.lifelibrarians.lifebookshelf.autobiography.dto.request.ChapterCreateRequestDto;
 import com.lifelibrarians.lifebookshelf.chapter.domain.Chapter;
 import com.lifelibrarians.lifebookshelf.interview.domain.Interview;
+import com.lifelibrarians.lifebookshelf.interview.domain.InterviewQuestion;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -620,13 +621,16 @@ public class AutobiographyControllerTest extends E2EMvcTest {
 					TestAutobiography.asDefaultEntity(loginMember, subChapterList.get(0)));
 
 			persistHelper.persist(TestChapterStatus.asDefaultEntity(loginMember, subChapterList.get(1)));
-			persistHelper.persist(TestInterview.asDefaultEntity(
+			Interview interview = persistHelper.persistAndReturn(TestInterview.asDefaultEntity(
 							autobiography,
 							subChapterList.get(0),
 							loginMember,
-							persistHelper.persistAndReturn(TestInterviewQuestion.asDefaultEntity(0, "질문1"))
+							null
 					)
 			);
+			InterviewQuestion interviewQuestion = persistHelper.persistAndReturn(
+					TestInterviewQuestion.asDefaultEntity(0, "질문1", interview));
+			interview.setCurrentQuestion(interviewQuestion);
 
 			AutobiographyCreateRequestDto autobiographyCreateRequestDto = TestAutobiographyCreateRequestDto
 					.createValidAutobiography();
@@ -649,13 +653,13 @@ public class AutobiographyControllerTest extends E2EMvcTest {
 			resultActions
 					.andExpect(status().isCreated())
 					.andDo(ignore -> {
-						Interview interview = targetCheckQuery
-								.getResultList().get(1);
-						assertThat(interview.getAutobiography().getMember().getId())
+						Interview resultInterview = targetCheckQuery
+								.getResultList().get(0);
+						assertThat(resultInterview.getAutobiography().getMember().getId())
 								.isEqualTo(loginMember.getId());
-						assertThat(interview.getChapter().getId())
+						assertThat(resultInterview.getChapter().getId())
 								.isEqualTo(subchapters.get(1).getId());
-						assertThat(interview.getCurrentQuestion().getQuestionText())
+						assertThat(resultInterview.getCurrentQuestion().getQuestionText())
 								.isEqualTo(
 										autobiographyCreateRequestDto.getInterviewQuestions().get(0).getQuestionText());
 					})

@@ -32,21 +32,28 @@ public class InterviewQuestion {
 	/* } 고유 정보 */
 
 	/* 연관 정보 { */
-	@OneToMany(mappedBy = "currentQuestion")
-	private Set<Interview> currentQuestionInterviews;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "interview_id", nullable = false)
+	private Interview interview;
 	/* } 연관 정보 */
 
 	/* 생성자 { */
-	protected InterviewQuestion(Integer order, String questionText,
-			LocalDateTime createdAt) {
+	protected InterviewQuestion(
+			Integer order, String questionText,
+			LocalDateTime createdAt,
+			Interview interview
+	) {
 		this.order = order;
 		this.questionText = questionText;
 		this.createdAt = createdAt;
+		this.interview = interview;
 	}
 
 	public static InterviewQuestion of(Integer order, String questionText,
-			LocalDateTime createdAt) {
-		return new InterviewQuestion(order, questionText, createdAt);
+			LocalDateTime createdAt,
+			Interview interview
+	) {
+		return new InterviewQuestion(order, questionText, createdAt, interview);
 	}
 	/* } 생성자 */
 }

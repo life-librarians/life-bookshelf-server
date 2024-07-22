@@ -31,4 +31,9 @@ public class InterviewCommandService {
 
 		conversationRepository.saveAll(conversations);
 	}
+
+	public void updateCurrentQuestion(Interview interview) {
+//		interview.getCurrentQuestion();
+//		interview.updateCurrentQuestion();
+	}
 }
