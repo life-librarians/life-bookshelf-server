@@ -54,4 +54,7 @@ public class ChapterStatus {
 	}
 
 
+	public void setChapter(Chapter chapter) {
+		this.currentChapter = chapter;
+	}
 }

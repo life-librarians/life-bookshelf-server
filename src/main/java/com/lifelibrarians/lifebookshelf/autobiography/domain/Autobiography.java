@@ -3,6 +3,7 @@ package com.lifelibrarians.lifebookshelf.autobiography.domain;
 import com.lifelibrarians.lifebookshelf.chapter.domain.Chapter;
 import com.lifelibrarians.lifebookshelf.interview.domain.Interview;
 import com.lifelibrarians.lifebookshelf.member.domain.Member;
+import java.util.List;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -50,7 +51,7 @@ public class Autobiography {
 	private Member member;
 
 	@OneToMany(mappedBy = "autobiography")
-	private Set<Interview> autobiographyInterviews;
+	private List<Interview> autobiographyInterviews;
 
 	@OneToMany(mappedBy = "chapter")
 	private Set<Interview> chapterInterviews;
@@ -89,6 +90,14 @@ public class Autobiography {
 			this.coverImageUrl = preSignedCoverImageUrl;
 		}
 		this.updatedAt = now;
+	}
+
+	public void setChapter(Chapter chapter) {
+		this.chapter = chapter;
+	}
+
+	public void setAutobiographyInterviews(List<Interview> autobiographyInterviews) {
+		this.autobiographyInterviews = autobiographyInterviews;
 	}
 	/* } 생성자 */
 }

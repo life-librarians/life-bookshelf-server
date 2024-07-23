@@ -1,7 +1,7 @@
 package com.lifelibrarians.lifebookshelf.community.book.domain;
 
+import java.util.List;
 import javax.persistence.*;
-import java.util.Set;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,7 +22,7 @@ public class BookChapter {
 	private Long id;
 
 	@Column(nullable = false)
-	private Integer number;
+	private String number;
 
 	@Column(nullable = false)
 	private String name;
@@ -34,17 +34,21 @@ public class BookChapter {
 	private Book book;
 
 	@OneToMany(mappedBy = "bookChapter")
-	private Set<BookContent> bookChapterBookContents;
+	private List<BookContent> bookContents;
 	/* } 연관 정보 */
 
 	/* 생성자 { */
-	protected BookChapter(Integer number, String name) {
+	protected BookChapter(String number, String name) {
 		this.number = number;
 		this.name = name;
 	}
 
-	public static BookChapter of(Integer number, String name) {
+	public static BookChapter of(String number, String name) {
 		return new BookChapter(number, name);
+	}
+
+	public void setBook(Book book) {
+		this.book = book;
 	}
 	/* } 생성자 */
 }

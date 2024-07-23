@@ -19,6 +19,9 @@ import lombok.experimental.FieldNameConstants;
 @FieldNameConstants
 public class PublicationProgressResponseDto {
 
+	@Schema(description = "출판 ID", example = "1")
+	private final Long publicationId;
+
 	@Schema(description = "책 ID", example = "2")
 	private final Long bookId;
 

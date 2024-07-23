@@ -4,6 +4,7 @@ import com.lifelibrarians.lifebookshelf.community.comment.domain.Comment;
 import com.lifelibrarians.lifebookshelf.community.like.domain.Like;
 import com.lifelibrarians.lifebookshelf.member.domain.Member;
 import com.lifelibrarians.lifebookshelf.publication.domain.Publication;
+import java.util.List;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -64,7 +65,7 @@ public class Book {
 	private Set<Publication> bookPublications;
 
 	@OneToMany(mappedBy = "book")
-	private Set<BookChapter> bookBookChapters;
+	private List<BookChapter> bookChapters;
 	/* } 연관 정보 */
 
 	/* 생성자 { */

@@ -4,7 +4,6 @@ import com.lifelibrarians.lifebookshelf.autobiography.domain.Autobiography;
 import com.lifelibrarians.lifebookshelf.member.domain.Member;
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Set;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -66,6 +65,10 @@ public class Chapter {
 	public static Chapter of(String number, String name, LocalDateTime createdAt,
 			Long parentChapterId, Member member) {
 		return new Chapter(number, name, createdAt, parentChapterId, member);
+	}
+
+	public void setChapterAutobiography(Autobiography chapterAutobiography) {
+		this.chapterAutobiography = chapterAutobiography;
 	}
 	/* } 생성자 */
 }

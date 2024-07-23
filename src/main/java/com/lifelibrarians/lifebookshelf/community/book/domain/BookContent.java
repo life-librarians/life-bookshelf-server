@@ -25,6 +25,7 @@ public class BookContent {
 
 	@Lob
 	private String pageContent;
+
 	/* } 고유 정보 */
 
 	/* 연관 정보 { */
@@ -34,13 +35,19 @@ public class BookContent {
 	/* } 연관 정보 */
 
 	/* 생성자 { */
-	protected BookContent(Integer pageNumber, String pageContent) {
+	protected BookContent(
+			Integer pageNumber, String pageContent, BookChapter bookChapter) {
 		this.pageNumber = pageNumber;
 		this.pageContent = pageContent;
+		this.bookChapter = bookChapter;
 	}
 
-	public static BookContent of(Integer pageNumber, String pageContent) {
-		return new BookContent(pageNumber, pageContent);
+	public static BookContent of(Integer pageNumber, String pageContent, BookChapter bookChapter) {
+		return new BookContent(pageNumber, pageContent, bookChapter);
+	}
+
+	public void setBookChapter(BookChapter bookChapter) {
+		this.bookChapter = bookChapter;
 	}
 	/* } 생성자 */
 }

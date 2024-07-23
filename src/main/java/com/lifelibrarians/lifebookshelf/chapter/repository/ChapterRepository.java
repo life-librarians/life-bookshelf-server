@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 
 public interface ChapterRepository extends JpaRepository<Chapter, Long> {
@@ -21,4 +22,8 @@ public interface ChapterRepository extends JpaRepository<Chapter, Long> {
 
 	@Query("SELECT c FROM Chapter c WHERE c.parentChapterId is not null and c.member.id = :memberId")
 	List<Chapter> findAllByParentChapterIdIsNotNullByMemberId(Long memberId);
+
+	@Query("SELECT c FROM Chapter c LEFT JOIN FETCH c.chapterAutobiography a WHERE c.id IN :chapterIds AND c.member.id = :memberId")
+	List<Chapter> findAllByChapterIdsByMemberIdWithAutobiography(
+			@Param("chapterIds") List<Long> chapterIds, Long memberId);
 }
