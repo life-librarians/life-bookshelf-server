@@ -32,8 +32,7 @@ public class PublicationFacadeService {
 
 	/*-----------------------------------------CREATE-----------------------------------------*/
 	public void requestPublication(Long memberId, PublicationCreateRequestDto requestDto) {
-		List<Chapter> chapters = publicationQueryService.getChaptersWithAutobiography(memberId,
-				requestDto.getChapterIds());
+		List<Chapter> chapters = publicationQueryService.getChaptersWithAutobiography(memberId);
 		Member member = publicationQueryService.getMember(memberId);
 		publicationCommandService.createPublication(member, requestDto, chapters);
 	}

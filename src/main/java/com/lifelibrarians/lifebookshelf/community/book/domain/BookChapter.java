@@ -1,5 +1,6 @@
 package com.lifelibrarians.lifebookshelf.community.book.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
 import lombok.AccessLevel;
@@ -34,7 +35,7 @@ public class BookChapter {
 	private Book book;
 
 	@OneToMany(mappedBy = "bookChapter")
-	private List<BookContent> bookContents;
+	private List<BookContent> bookContents = new ArrayList<>();
 	/* } 연관 정보 */
 
 	/* 생성자 { */

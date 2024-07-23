@@ -56,8 +56,8 @@ public class PublicationQueryService {
 		);
 	}
 
-	public List<Chapter> getChaptersWithAutobiography(Long memberId, List<Long> chapterIds) {
-		return chapterRepository.findAllByChapterIdsByMemberIdWithAutobiography(chapterIds, memberId);
+	public List<Chapter> getChaptersWithAutobiography(Long memberId) {
+		return chapterRepository.findAllByMemberIdByParentChapterIdIsNotNullWithAutobiography(memberId);
 	}
 
 	public Member getMember(Long memberId) {

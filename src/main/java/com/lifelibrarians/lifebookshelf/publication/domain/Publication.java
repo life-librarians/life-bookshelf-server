@@ -55,7 +55,7 @@ public class Publication {
 	protected Publication(Integer price, TitlePosition titlePosition,
 			PublishStatus publishStatus,
 			LocalDateTime requestedAt, LocalDateTime willPublishedAt, LocalDateTime publishedAt,
-			LocalDateTime deletedAt) {
+			LocalDateTime deletedAt, Book book) {
 		this.price = price;
 		this.titlePosition = titlePosition;
 		this.publishStatus = publishStatus;
@@ -63,14 +63,15 @@ public class Publication {
 		this.willPublishedAt = willPublishedAt;
 		this.publishedAt = publishedAt;
 		this.deletedAt = deletedAt;
+		this.book = book;
 	}
 
 	public static Publication of(Integer price, TitlePosition titlePosition,
 			PublishStatus publishStatus,
 			LocalDateTime requestedAt, LocalDateTime willPublishedAt, LocalDateTime publishedAt,
-			LocalDateTime deletedAt) {
+			LocalDateTime deletedAt, Book book) {
 		return new Publication(price, titlePosition, publishStatus, requestedAt, willPublishedAt,
-				publishedAt, deletedAt);
+				publishedAt, deletedAt, book);
 	}
 	/* } 생성자 */
 }
