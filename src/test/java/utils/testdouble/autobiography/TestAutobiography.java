@@ -39,6 +39,9 @@ public class TestAutobiography implements TestEntity<Autobiography, Long> {
 
 	public static Autobiography asDefaultEntity(Member member, Chapter chapter) {
 		return TestAutobiography.builder()
+				.title(DEFAULT_TITLE)
+				.content(DEFAULT_CONTENT)
+				.coverImageUrl(DEFAULT_COVER_IMAGE_URL)
 				.member(member)
 				.chapter(chapter)
 				.build().asEntity();

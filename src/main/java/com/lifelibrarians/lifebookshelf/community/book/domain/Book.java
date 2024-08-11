@@ -18,7 +18,8 @@ import lombok.ToString;
 @Entity
 @Table(name = "books")
 @Getter
-@ToString(callSuper = true)
+@ToString(callSuper = true, exclude = {"bookComments", "authorMemberComments", "bookLikes",
+		"bookPublications", "bookChapters"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Book {
 
@@ -84,6 +85,10 @@ public class Book {
 	public static Book of(String title, String coverImageUrl, VisibleScope visibleScope, Integer page,
 			LocalDateTime createdAt, LocalDateTime deletedAt, Member member) {
 		return new Book(title, coverImageUrl, visibleScope, page, createdAt, deletedAt, member);
+	}
+
+	public void setBookChapters(List<BookChapter> chapters) {
+		this.bookChapters = chapters;
 	}
 	/* } 생성자 */
 }

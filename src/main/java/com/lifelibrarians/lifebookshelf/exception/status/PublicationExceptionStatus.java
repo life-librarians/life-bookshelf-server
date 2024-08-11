@@ -13,7 +13,10 @@ import lombok.ToString;
 public enum PublicationExceptionStatus implements ExceptionStatus {
 
 	PUBLICATION_NOT_FOUND(404, "PUB001", "존재하지 않는 출판 ID입니다."),
-	PUBLICATION_NOT_OWNER(403, "PUB002", "해당 출판에 대한 권한이 없습니다.");
+	PUBLICATION_NOT_OWNER(403, "PUB002", "해당 출판에 대한 권한이 없습니다."),
+	PUBLICATION_TITLE_LENGTH_EXCEEDED(400, "PUB003", "제목은 최소 2자, 최대 64자까지 입력할 수 있습니다."),
+	NO_CHAPTERS_FOR_PUBLICATION(400, "PUB004", "출판을 위한 챕터가 존재하지 않습니다.");
+
 
 	private final int statusCode;
 	private final String code;

@@ -60,9 +60,8 @@ public class PublicationController {
 			@ApiResponse(responseCode = "201", description = "created")
 	})
 	@ApiErrorCodeExample(
-			autobiographyExceptionStatuses = {
-					AutobiographyExceptionStatus.CHAPTER_NOT_FOUND,
-					AutobiographyExceptionStatus.CHAPTER_NOT_OWNER
+			publicationExceptionStatuses = {
+					PublicationExceptionStatus.PUBLICATION_TITLE_LENGTH_EXCEEDED
 			}
 	)
 	@PreAuthorize("isAuthenticated()")

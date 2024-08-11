@@ -161,6 +161,7 @@ public class PublicationCommandService {
 				.collect(Collectors.toList()));
 
 		// FIXME: 추후 비용 계산 로직을 적용해야 합니다.
+		// FIXME: 추후 예상 출판일 계산 로직을 적용해야 합니다.
 		Publication publication = Publication.of(
 				100 * totalPages,
 				requestDto.getTitlePosition(),

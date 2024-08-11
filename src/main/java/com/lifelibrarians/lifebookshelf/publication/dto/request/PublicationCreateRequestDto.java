@@ -1,6 +1,7 @@
 package com.lifelibrarians.lifebookshelf.publication.dto.request;
 
 import com.lifelibrarians.lifebookshelf.publication.domain.TitlePosition;
+import com.lifelibrarians.lifebookshelf.publication.validation.PublicationCreateValidation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,6 +15,7 @@ import lombok.experimental.FieldNameConstants;
 @ToString
 @AllArgsConstructor
 @FieldNameConstants
+@PublicationCreateValidation
 public class PublicationCreateRequestDto {
 
 	@Schema(description = "출판 책 제목", example = "나의 인생")

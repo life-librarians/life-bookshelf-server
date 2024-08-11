@@ -3,6 +3,7 @@ package com.lifelibrarians.lifebookshelf.publication.service;
 import com.lifelibrarians.lifebookshelf.chapter.domain.Chapter;
 import com.lifelibrarians.lifebookshelf.community.book.domain.Book;
 import com.lifelibrarians.lifebookshelf.exception.status.CommunityExceptionStatus;
+import com.lifelibrarians.lifebookshelf.exception.status.PublicationExceptionStatus;
 import com.lifelibrarians.lifebookshelf.log.Logging;
 import com.lifelibrarians.lifebookshelf.member.domain.Member;
 import com.lifelibrarians.lifebookshelf.publication.dto.request.PublicationCreateRequestDto;
@@ -33,6 +34,9 @@ public class PublicationFacadeService {
 	/*-----------------------------------------CREATE-----------------------------------------*/
 	public void requestPublication(Long memberId, PublicationCreateRequestDto requestDto) {
 		List<Chapter> chapters = publicationQueryService.getChaptersWithAutobiography(memberId);
+		if (chapters.isEmpty()) {
+			throw PublicationExceptionStatus.NO_CHAPTERS_FOR_PUBLICATION.toServiceException();
+		}
 		Member member = publicationQueryService.getMember(memberId);
 		publicationCommandService.createPublication(member, requestDto, chapters);
 	}
