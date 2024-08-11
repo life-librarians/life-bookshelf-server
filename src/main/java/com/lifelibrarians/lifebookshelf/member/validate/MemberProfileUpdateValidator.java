@@ -1,6 +1,6 @@
 package com.lifelibrarians.lifebookshelf.member.validate;
 
-import com.lifelibrarians.lifebookshelf.member.controller.MemberProfileUpdateRequestDto;
+import com.lifelibrarians.lifebookshelf.member.dto.request.MemberProfileUpdateRequestDto;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 

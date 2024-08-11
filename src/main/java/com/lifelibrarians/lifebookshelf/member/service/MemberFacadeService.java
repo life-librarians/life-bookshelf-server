@@ -1,7 +1,7 @@
 package com.lifelibrarians.lifebookshelf.member.service;
 
 import com.lifelibrarians.lifebookshelf.log.Logging;
-import com.lifelibrarians.lifebookshelf.member.controller.MemberProfileUpdateRequestDto;
+import com.lifelibrarians.lifebookshelf.member.dto.request.MemberProfileUpdateRequestDto;
 import com.lifelibrarians.lifebookshelf.member.dto.request.MemberUpdateRequestDto;
 import com.lifelibrarians.lifebookshelf.member.dto.response.MemberBasicResponseDto;
 import com.lifelibrarians.lifebookshelf.member.dto.response.MemberProfileResponseDto;

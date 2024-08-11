@@ -1,4 +1,4 @@
-package com.lifelibrarians.lifebookshelf.member.controller;
+package com.lifelibrarians.lifebookshelf.member.dto.request;
 
 import com.lifelibrarians.lifebookshelf.member.validate.MemberProfileUpdateValidation;
 import io.swagger.v3.oas.annotations.media.Schema;

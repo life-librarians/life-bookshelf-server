@@ -4,7 +4,7 @@ import com.lifelibrarians.lifebookshelf.exception.status.AuthExceptionStatus;
 import com.lifelibrarians.lifebookshelf.image.domain.ImageDeleteEvent;
 import com.lifelibrarians.lifebookshelf.image.service.ImageService;
 import com.lifelibrarians.lifebookshelf.log.Logging;
-import com.lifelibrarians.lifebookshelf.member.controller.MemberProfileUpdateRequestDto;
+import com.lifelibrarians.lifebookshelf.member.dto.request.MemberProfileUpdateRequestDto;
 import com.lifelibrarians.lifebookshelf.member.domain.Member;
 import com.lifelibrarians.lifebookshelf.member.domain.MemberMetadata;
 import com.lifelibrarians.lifebookshelf.member.dto.request.MemberUpdateRequestDto;

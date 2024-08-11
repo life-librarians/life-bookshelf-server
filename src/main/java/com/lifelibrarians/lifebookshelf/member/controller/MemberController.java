@@ -4,6 +4,7 @@ import com.lifelibrarians.lifebookshelf.auth.dto.MemberSessionDto;
 import com.lifelibrarians.lifebookshelf.auth.jwt.LoginMemberInfo;
 import com.lifelibrarians.lifebookshelf.exception.annotation.ApiErrorCodeExample;
 import com.lifelibrarians.lifebookshelf.log.Logging;
+import com.lifelibrarians.lifebookshelf.member.dto.request.MemberProfileUpdateRequestDto;
 import com.lifelibrarians.lifebookshelf.member.dto.request.MemberUpdateRequestDto;
 import com.lifelibrarians.lifebookshelf.member.dto.response.MemberBasicResponseDto;
 import com.lifelibrarians.lifebookshelf.exception.status.MemberExceptionStatus;
