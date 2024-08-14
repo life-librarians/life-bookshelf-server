@@ -28,70 +28,71 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class AuthService {
 
-    private final JwtTokenProvider jwtTokenProvider;
-    private final MemberRepository memberRepository;
-    private final PasswordMemberRepository passwordMemberRepository;
+	private final JwtTokenProvider jwtTokenProvider;
+	private final MemberRepository memberRepository;
+	private final PasswordMemberRepository passwordMemberRepository;
 
-    public void registerEmail(EmailRegisterRequestDto requestDto) {
+	public void registerEmail(EmailRegisterRequestDto requestDto) {
 //		1. 이메일 중복 확인
-        if (memberRepository.findByEmail(requestDto.getEmail()).isPresent()) {
-            throw AuthExceptionStatus.MEMBER_ALREADY_EXISTS.toServiceException();
-        }
+		if (memberRepository.findByEmail(requestDto.getEmail()).isPresent()) {
+			throw AuthExceptionStatus.MEMBER_ALREADY_EXISTS.toServiceException();
+		}
 
 //		2. 회원가입
-        LocalDateTime now = LocalDateTime.now();
-        PasswordMember passwordMember = PasswordMember.of(
-                requestDto.getPassword()
-        );
-        passwordMemberRepository.save(passwordMember);
-        Member member = Member.of(
-                LoginType.PASSWORD,
-                requestDto.getEmail(),
-                MemberRole.PRE_MEMBER,
-                null,
+		LocalDateTime now = LocalDateTime.now();
+		PasswordMember passwordMember = PasswordMember.of(
+				requestDto.getPassword()
+		);
+		passwordMemberRepository.save(passwordMember);
+		Member member = Member.of(
+				LoginType.PASSWORD,
+				requestDto.getEmail(),
+				MemberRole.MEMBER,
+				null,
 //              이메일 @ 앞 부분 + 6자리 랜덤 문자열
-                requestDto.getEmail().split("@")[0] + UUID.randomUUID().toString().substring(0, 6),
-                now,
-                now,
-                null
-        );
-        member.addPasswordMember(passwordMember);
-        memberRepository.save(member);
-    }
+				requestDto.getEmail().split("@")[0] + UUID.randomUUID().toString().substring(0, 6),
+				now,
+				now,
+				null
+		);
+		member.addPasswordMember(passwordMember);
+		memberRepository.save(member);
+	}
 
-    public JwtLoginTokenDto loginEmail(EmailLoginRequestDto requestDto) {
+	public JwtLoginTokenDto loginEmail(EmailLoginRequestDto requestDto) {
 //		1. 이메일로 회원 조회
-        Optional<Member> member = memberRepository.findByEmail(requestDto.getEmail());
+		Optional<Member> member = memberRepository.findByEmail(requestDto.getEmail());
 
 //		2. 이메일 혹은 비밀번호가 틀린 경우
-        if (member.isEmpty() || !member.get().getPasswordMember().matchPassword(requestDto.getPassword())) {
-            throw AuthExceptionStatus.EMAIL_OR_PASSWORD_INCORRECT.toServiceException();
-        }
+		if (member.isEmpty() || !member.get().getPasswordMember()
+				.matchPassword(requestDto.getPassword())) {
+			throw AuthExceptionStatus.EMAIL_OR_PASSWORD_INCORRECT.toServiceException();
+		}
 
 //      3. 이메일 인증이 되지 않은 회원인 경우
-        if (member.get().getRole() == MemberRole.PRE_MEMBER) {
-            throw AuthExceptionStatus.EMAIL_NOT_VERIFIED.toServiceException();
-        }
+		if (member.get().getRole() == MemberRole.PRE_MEMBER) {
+			throw AuthExceptionStatus.EMAIL_NOT_VERIFIED.toServiceException();
+		}
 
 //	    4. 이미 탈퇴한 회원인 경우
-        if (member.get().getDeletedAt() != null) {
-            throw AuthExceptionStatus.MEMBER_ALREADY_WITHDRAWN.toServiceException();
-        }
+		if (member.get().getDeletedAt() != null) {
+			throw AuthExceptionStatus.MEMBER_ALREADY_WITHDRAWN.toServiceException();
+		}
 
 //		5. JWT 토큰 생성
-        Jwt jwt = jwtTokenProvider.createMemberAccessToken(member.get().getId());
-        return JwtLoginTokenDto.builder()
-                .accessToken(jwt.getTokenValue())
-                .build();
-    }
+		Jwt jwt = jwtTokenProvider.createMemberAccessToken(member.get().getId());
+		return JwtLoginTokenDto.builder()
+				.accessToken(jwt.getTokenValue())
+				.build();
+	}
 
-    public void unregister(Long memberId) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(AuthExceptionStatus.MEMBER_NOT_FOUND::toServiceException);
+	public void unregister(Long memberId) {
+		Member member = memberRepository.findById(memberId)
+				.orElseThrow(AuthExceptionStatus.MEMBER_NOT_FOUND::toServiceException);
 //		TODO: Soft Delete를 적용하여, 추후 영구 삭제 스케줄러를 적용할 수 있도록 함.
 //		LocalDateTime now = LocalDateTime.now();
 //		member.softDelete(now);
 //		memberRepository.save(member);
-        memberRepository.delete(member);
-    }
+		memberRepository.delete(member);
+	}
 }
