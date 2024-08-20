@@ -24,12 +24,16 @@ public abstract class AutobiographyMapper {
 	@Mapping(source = "autobiography.content", target = "contentPreview", qualifiedByName = "truncate")
 	@Mapping(source = "autobiography.coverImageUrl", target = "coverImageUrl", qualifiedByName = "mapImageUrl")
 	public abstract AutobiographyPreviewDto toAutobiographyPreviewDto(Autobiography autobiography,
-			Long chapterId);
+			Long chapterId,
+			Long interviewId
+	);
 
 	@Mapping(source = "autobiography.id", target = "autobiographyId")
 	@Mapping(source = "autobiography.coverImageUrl", target = "coverImageUrl", qualifiedByName = "mapImageUrl")
 	public abstract AutobiographyDetailResponseDto toAutobiographyDetailResponseDto(
-			Autobiography autobiography);
+			Autobiography autobiography,
+			Long interviewId
+	);
 
 	@Named("truncate")
 	String truncateContent(String content) {

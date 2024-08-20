@@ -98,11 +98,14 @@ public class AutobiographyQueryService {
 	}
 
 	public AutobiographyListResponseDto getAutobiographies(Long memberId) {
-		List<Autobiography> autobiographies = autobiographyRepository.findByMemberId(memberId);
+		List<Autobiography> autobiographies = autobiographyRepository.findWithInterviewByMemberId(
+				memberId);
 		List<AutobiographyPreviewDto> autobiographyPreviewDtos = autobiographies.stream()
 				.map((Autobiography autobiography) -> autobiographyMapper.toAutobiographyPreviewDto(
 						autobiography,
-						autobiography.getChapter().getId()))
+						autobiography.getChapter().getId(),
+						autobiography.getAutobiographyInterviews().get(0).getId()
+				))
 				.collect(Collectors.toList());
 		return AutobiographyListResponseDto.builder()
 				.results(autobiographyPreviewDtos)
@@ -110,12 +113,13 @@ public class AutobiographyQueryService {
 	}
 
 	public AutobiographyDetailResponseDto getAutobiography(Long memberId, Long autobiographyId) {
-		Autobiography autobiography = autobiographyRepository.findById(autobiographyId)
+		Autobiography autobiography = autobiographyRepository.findWithInterviewById(autobiographyId)
 				.orElseThrow(
 						AutobiographyExceptionStatus.AUTOBIOGRAPHY_NOT_FOUND::toServiceException);
 		if (!autobiography.getMember().getId().equals(memberId)) {
 			throw AutobiographyExceptionStatus.AUTOBIOGRAPHY_NOT_OWNER.toServiceException();
 		}
-		return autobiographyMapper.toAutobiographyDetailResponseDto(autobiography);
+		return autobiographyMapper.toAutobiographyDetailResponseDto(autobiography,
+				autobiography.getAutobiographyInterviews().get(0).getId());
 	}
 }
