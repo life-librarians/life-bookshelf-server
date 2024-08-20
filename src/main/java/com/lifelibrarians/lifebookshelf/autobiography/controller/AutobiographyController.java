@@ -73,7 +73,7 @@ public class AutobiographyController {
 			@ApiResponse(responseCode = "200", description = "ok"),
 	})
 	@PreAuthorize("isAuthenticated()")
-	@GetMapping("/chapeters")
+	@GetMapping("/chapters")
 	// FIXME: 페이지네이션 지원 여부에 대해 고민이 필요합니다. 우선, page와 size를 제공하더라도 페이지네이션 관련 응답을 제공하지 않습니다.
 	public ChapterListResponseDto getChapters(
 			@LoginMemberInfo MemberSessionDto memberSessionDto,
