@@ -23,6 +23,9 @@ public class SubchapterDto {
 	@Schema(description = "서브챕터 이름", example = "Subchapter 1: Childhood")
 	private final String chapterName;
 
+	@Schema(description = "서브챕터 설명", example = "This subchapter is about my childhood.")
+	private final String chapterDescription;
+
 	@Schema(description = "서브챕터 생성 날짜", example = "2023-01-01T01:00:00")
 	private final LocalDateTime chapterCreatedAt;
 }

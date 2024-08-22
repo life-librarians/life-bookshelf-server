@@ -196,6 +196,30 @@ public class AutobiographyControllerTest extends E2EMvcTest {
 		}
 
 		@Test
+		@DisplayName("실패 - 챕터 설명이 64자를 초과하는 챕터는 생성할 수 없음")
+		void 실패_챕터_설명이_64자를_초과하는_챕터는_생성할_수_없음() throws Exception {
+			// given
+			ChapterCreateRequestDto chapterCreateRequestDto = ChapterCreateRequestDto.builder()
+					.chapters(TestChapterCreateRequestDto.createTooLongDescriptionChapters())
+					.build();
+
+			// when
+			MockHttpServletRequestBuilder requestBuilder = post(
+					url)
+					.header(AUTHORIZE_VALUE, BEARER + token)
+					.contentType(MediaType.APPLICATION_JSON_VALUE)
+					.content(objectMapper.writeValueAsString(chapterCreateRequestDto));
+			ResultActions resultActions = mockMvc.perform(requestBuilder);
+
+			// then
+			JsonMatcher response = JsonMatcher.create();
+			resultActions
+					.andExpect(status().isBadRequest())
+					.andExpect(response.get("code").isEquals("BIO016"))
+					.andDo(print());
+		}
+
+		@Test
 		@DisplayName("실패 - 챕터 번호가 중복되는 서브챕터는 생성할 수 없음")
 		void 실패_챕터_번호가_중복되는_서브챕터는_생성할_수_없음() throws Exception {
 			// given

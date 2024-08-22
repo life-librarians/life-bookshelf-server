@@ -52,7 +52,8 @@ public class AutobiographyCommandService {
 
 		LocalDateTime now = LocalDateTime.now();
 		List<Chapter> rootChapters = chapterCreateRequestDto.getChapters().stream()
-				.map(chapterDto -> Chapter.of(chapterDto.getNumber(), chapterDto.getName(), now,
+				.map(chapterDto -> Chapter.of(chapterDto.getNumber(), chapterDto.getName(),
+						chapterDto.getDescription(), now,
 						null, member))
 				.collect(Collectors.toList());
 
@@ -69,6 +70,7 @@ public class AutobiographyCommandService {
 											AutobiographyExceptionStatus.CHAPTER_NOT_FOUND::toServiceException)
 									.getId();
 							return Chapter.of(subchapterDto.getNumber(), subchapterDto.getName(),
+									subchapterDto.getDescription(),
 									now,
 									parentChapterId, member);
 						})

@@ -51,6 +51,13 @@ public class ChapterCreateValidator implements
 				return false;
 			}
 
+			// 챕터 설명 길이 검사
+			if (chapter.getDescription() != null && chapter.getDescription().length() > 64) {
+				context.buildConstraintViolationWithTemplate("BIO016")
+						.addConstraintViolation();
+				return false;
+			}
+
 			Set<String> subChapterNumbers = new HashSet<>();
 			if (chapter.getSubchapters() != null) {
 				for (SubchapterRequestDto subChapter : chapter.getSubchapters()) {

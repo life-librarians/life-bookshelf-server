@@ -20,6 +20,7 @@ public class TestChapterCreateRequestDto {
 				.mapToObj(i -> ChapterRequestDto.builder()
 						.number(String.valueOf(i + 1))
 						.name("Chapter " + (i + 1))
+						.description("This is chapter " + (i + 1) + ".")
 						.build())
 				.collect(Collectors.toList());
 	}
@@ -30,6 +31,7 @@ public class TestChapterCreateRequestDto {
 				ChapterRequestDto.builder()
 						.number("blabla")
 						.name("Chapter 1")
+						.description("This is chapter 1.")
 						.build()
 		);
 	}
@@ -40,10 +42,12 @@ public class TestChapterCreateRequestDto {
 				ChapterRequestDto.builder()
 						.number("1")
 						.name("Chapter 1")
+						.description("This is chapter 1.")
 						.build(),
 				ChapterRequestDto.builder()
 						.number("1")
 						.name("Chapter 2")
+						.description("This is chapter 2.")
 						.build()
 		);
 	}
@@ -54,6 +58,18 @@ public class TestChapterCreateRequestDto {
 				ChapterRequestDto.builder()
 						.number("1")
 						.name("a".repeat(65))
+						.description("This is chapter 1.")
+						.build()
+		);
+	}
+
+	// 챕터 설명이 64자를 초과하는 챕터를 생성하는 메소드
+	public static List<ChapterRequestDto> createTooLongDescriptionChapters() {
+		return List.of(
+				ChapterRequestDto.builder()
+						.number("1")
+						.name("Chapter 1")
+						.description("a".repeat(65))
 						.build()
 		);
 	}
@@ -64,14 +80,17 @@ public class TestChapterCreateRequestDto {
 				ChapterRequestDto.builder()
 						.number("1")
 						.name("Chapter 1")
+						.description("This is chapter 1.")
 						.subchapters(Arrays.asList(
 								SubchapterRequestDto.builder()
 										.number("1.1")
 										.name("Subchapter 1")
+										.description("This is subchapter 1.")
 										.build(),
 								SubchapterRequestDto.builder()
 										.number("1.1")
 										.name("Subchapter 2")
+										.description("This is subchapter 2.")
 										.build()
 						))
 						.build()
@@ -84,10 +103,12 @@ public class TestChapterCreateRequestDto {
 				ChapterRequestDto.builder()
 						.number("1")
 						.name("Chapter 1")
+						.description("This is chapter 1.")
 						.subchapters(List.of(
 								SubchapterRequestDto.builder()
 										.number("1.1")
 										.name("a".repeat(65))
+										.description("This is subchapter 1.")
 										.build()
 						))
 						.build()
@@ -100,10 +121,12 @@ public class TestChapterCreateRequestDto {
 				ChapterRequestDto.builder()
 						.number("1")
 						.name("Chapter 1")
+						.description("This is chapter 1.")
 						.subchapters(List.of(
 								SubchapterRequestDto.builder()
 										.number("2.1")
 										.name("Subchapter 1")
+										.description("This is subchapter 1.")
 										.build()
 						))
 						.build()
@@ -116,28 +139,34 @@ public class TestChapterCreateRequestDto {
 				ChapterRequestDto.builder()
 						.number("1")
 						.name("나의 첫번째 챕터")
+						.description("나의 첫번째 챕터 설명")
 						.subchapters(Arrays.asList(
 								SubchapterRequestDto.builder()
 										.number("1.1")
 										.name("나의 첫번째 서브챕터")
+										.description("나의 첫번째 서브챕터 설명")
 										.build(),
 								SubchapterRequestDto.builder()
 										.number("1.2")
 										.name("나의 두번째 서브챕터")
+										.description("나의 두번째 서브챕터 설명")
 										.build()
 						))
 						.build(),
 				ChapterRequestDto.builder()
 						.number("2")
 						.name("나의 두번째 챕터")
+						.description("나의 두번째 챕터 설명")
 						.subchapters(Arrays.asList(
 								SubchapterRequestDto.builder()
 										.number("2.1")
 										.name("나의 첫번째 서브챕터")
+										.description("나의 첫번째 서브챕터 설명")
 										.build(),
 								SubchapterRequestDto.builder()
 										.number("2.2")
 										.name("나의 두번째 서브챕터")
+										.description("나의 두번째 서브챕터 설명")
 										.build()
 						))
 						.build()

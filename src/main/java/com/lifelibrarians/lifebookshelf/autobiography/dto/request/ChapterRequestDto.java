@@ -23,15 +23,20 @@ public class ChapterRequestDto {
 	@Schema(description = "챕터 이름", example = "나의 첫번째 챕터")
 	private final String name;
 
+	@Schema(description = "챕터 설명", example = "나의 첫번째 챕터에 대한 설명")
+	private final String description;
+
 	@ArraySchema(schema = @Schema(implementation = SubchapterRequestDto.class))
 	private final List<SubchapterRequestDto> subchapters;
 
 	@JsonCreator
 	public ChapterRequestDto(@JsonProperty("number") String number,
 			@JsonProperty("name") String name,
+			@JsonProperty("description") String description,
 			@JsonProperty("subchapters") List<SubchapterRequestDto> subchapters) {
 		this.number = number;
 		this.name = name;
+		this.description = description;
 		this.subchapters = subchapters;
 	}
 }

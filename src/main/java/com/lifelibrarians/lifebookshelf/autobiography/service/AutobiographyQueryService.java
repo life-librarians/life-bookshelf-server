@@ -69,6 +69,7 @@ public class AutobiographyQueryService {
 					.chapterId(chapter.getId())
 					.chapterNumber(chapter.getNumber())
 					.chapterName(chapter.getName())
+					.chapterDescription(chapter.getDescription())
 					.chapterCreatedAt(chapter.getCreatedAt())
 					.subChapters(subchapterDtos)
 					.build();
@@ -92,6 +93,7 @@ public class AutobiographyQueryService {
 				.chapterId(subchapter.getId())
 				.chapterNumber(subchapter.getNumber())
 				.chapterName(subchapter.getName())
+				.chapterDescription(subchapter.getDescription())
 				.chapterCreatedAt(subchapter.getCreatedAt())
 				.build()
 		).collect(Collectors.toList());

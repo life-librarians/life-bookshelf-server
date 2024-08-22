@@ -24,7 +24,8 @@ public enum AutobiographyExceptionStatus implements ExceptionStatus {
 	CHAPTER_NUMBER_FORMAT_INVALID(400, "BIO012", "챕터 번호는 1, 1.1, 1.1.1과 같은 형식이어야 합니다."),
 	CHAPTER_SIZE_EXCEEDED(400, "BIO013", "챕터는 최소 1개, 최대 16개까지 생성할 수 있습니다."),
 	CHAPTER_NUMBER_DUPLICATED(400, "BIO014", "챕터 번호는 중복될 수 없습니다."),
-	NEXT_CHAPTER_NOT_FOUND(404, "BIO015", "다음 챕터가 존재하지 않습니다.");
+	NEXT_CHAPTER_NOT_FOUND(404, "BIO015", "다음 챕터가 존재하지 않습니다."),
+	CHAPTER_DESCRIPTION_LENGTH_EXCEEDED(400, "BIO016", "챕터 설명은 최대 64자까지 입력할 수 있습니다.");
 
 
 	private final int statusCode;

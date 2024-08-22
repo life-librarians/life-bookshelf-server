@@ -53,6 +53,7 @@ public class AutobiographyController {
 					AutobiographyExceptionStatus.SUBCHAPTER_NUMBER_INVALID,
 					AutobiographyExceptionStatus.CHAPTER_NUMBER_FORMAT_INVALID,
 					AutobiographyExceptionStatus.CHAPTER_NAME_LENGTH_EXCEEDED,
+					AutobiographyExceptionStatus.CHAPTER_DESCRIPTION_LENGTH_EXCEEDED,
 					AutobiographyExceptionStatus.CHAPTER_ALREADY_EXISTS,
 					AutobiographyExceptionStatus.CHAPTER_SIZE_EXCEEDED,
 					AutobiographyExceptionStatus.CHAPTER_NUMBER_DUPLICATED,

@@ -37,6 +37,10 @@ public class Chapter {
 
 	@Column(nullable = false)
 	@Setter
+	private String description;
+
+	@Column(nullable = false)
+	@Setter
 	private LocalDateTime createdAt;
 	/* } 고유 정보 */
 
@@ -53,18 +57,20 @@ public class Chapter {
 	/* } 연관 정보 */
 
 	/* 생성자 { */
-	protected Chapter(String number, String name, LocalDateTime createdAt, Long parentChapterId,
+	protected Chapter(String number, String name, String description, LocalDateTime createdAt,
+			Long parentChapterId,
 			Member member) {
 		this.number = number;
 		this.name = name;
+		this.description = description;
 		this.createdAt = createdAt;
 		this.parentChapterId = parentChapterId;
 		this.member = member;
 	}
 
-	public static Chapter of(String number, String name, LocalDateTime createdAt,
+	public static Chapter of(String number, String name, String description, LocalDateTime createdAt,
 			Long parentChapterId, Member member) {
-		return new Chapter(number, name, createdAt, parentChapterId, member);
+		return new Chapter(number, name, description, createdAt, parentChapterId, member);
 	}
 
 	public void setChapterAutobiography(Autobiography chapterAutobiography) {
