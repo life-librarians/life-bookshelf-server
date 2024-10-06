@@ -56,4 +56,11 @@ public class AutobiographyFacadeService {
 	public void deleteAutobiography(Long memberId, Long autobiographyId) {
 		autobiographyCommandService.deleteAutobiography(memberId, autobiographyId);
 	}
+
+	public void updateCurrentChapter(Long memberId) {
+		Member member = autobiographyQueryService.findMemberById(memberId);
+		List<Chapter> chaptersNotRoot = autobiographyQueryService.findAllChaptersNotRoot(memberId);
+
+		autobiographyCommandService.updateCurrentChapter(member, chaptersNotRoot);
+	}
 }

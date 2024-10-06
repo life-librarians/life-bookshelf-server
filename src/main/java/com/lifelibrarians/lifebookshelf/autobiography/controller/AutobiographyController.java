@@ -85,6 +85,25 @@ public class AutobiographyController {
 				PageRequest.of(page, size));
 	}
 
+	@Operation(summary = "현재 진행중인 챕터를 다음 챕터로 갱신 요청", description = "현재 진행중인 챕터를 다음 챕터로 갱신합니다.")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "ok"),
+	})
+	@ApiErrorCodeExample(
+			autobiographyExceptionStatuses = {
+					AutobiographyExceptionStatus.CHAPTER_NOT_EXISTS,
+					AutobiographyExceptionStatus.NEXT_CHAPTER_NOT_FOUND,
+					AutobiographyExceptionStatus.AUTOBIOGRAPHY_NOT_EXISTS
+			}
+	)
+	@PreAuthorize("isAuthenticated()")
+	@PostMapping("/chapters/current-chapter")
+	public void updateCurrentChapter(
+			@LoginMemberInfo MemberSessionDto memberSessionDto
+	) {
+		autobiographyFacadeService.updateCurrentChapter(memberSessionDto.getMemberId());
+	}
+
 	@Operation(summary = "전체 자서전 목록 조회", description = "자서전 목록을 조회합니다.")
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "ok"),

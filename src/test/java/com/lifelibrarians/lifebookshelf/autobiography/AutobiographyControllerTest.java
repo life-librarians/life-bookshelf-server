@@ -10,6 +10,7 @@ import com.lifelibrarians.lifebookshelf.autobiography.dto.request.AutobiographyC
 import com.lifelibrarians.lifebookshelf.autobiography.dto.request.AutobiographyUpdateRequestDto;
 import com.lifelibrarians.lifebookshelf.autobiography.dto.request.ChapterCreateRequestDto;
 import com.lifelibrarians.lifebookshelf.chapter.domain.Chapter;
+import com.lifelibrarians.lifebookshelf.chapter.domain.ChapterStatus;
 import com.lifelibrarians.lifebookshelf.interview.domain.Interview;
 import com.lifelibrarians.lifebookshelf.interview.domain.InterviewQuestion;
 import java.util.ArrayList;
@@ -688,6 +689,145 @@ public class AutobiographyControllerTest extends E2EMvcTest {
 										autobiographyCreateRequestDto.getInterviewQuestions().get(0).getQuestionText());
 					})
 					.andDo(print());
+		}
+	}
+
+	@Nested
+	@DisplayName("자서전 챕터 갱신 요청 (POST /api/v1/autobiographies/chapters/current-chapter)")
+	class UpdateCurrentChapter {
+
+		private final String url = URL_PREFIX + "/chapters/current-chapter";
+		private Member loginMember;
+
+		@BeforeEach
+		void setUp() {
+			loginMember = persistHelper
+					.persistAndReturn(TestMember.asDefaultEntity());
+			token = jwtTokenProvider.createMemberAccessToken(
+					loginMember.getId()).getTokenValue();
+		}
+
+		@Test
+		@DisplayName("실패 - 존재하지 않는 챕터를 갱신할 수 없음")
+		void 실패_존재하지_않는_챕터를_갱신할_수_없음() throws Exception {
+			// given
+
+			// when
+			MockHttpServletRequestBuilder requestBuilder = post(url)
+					.header(AUTHORIZE_VALUE, BEARER + token)
+					.contentType(MediaType.APPLICATION_JSON_VALUE);
+
+			ResultActions resultActions = mockMvc.perform(requestBuilder);
+
+			// then
+			JsonMatcher response = JsonMatcher.create();
+			resultActions
+					.andExpect(status().isNotFound())
+					.andExpect(response.get("code").isEquals("BIO018"))
+					.andDo(print());
+		}
+
+		@Test
+		@DisplayName("실패 - 자서전이 존재하지 않는 경우 챕터를 갱신할 수 없음")
+		void 실패_자서전이_존재하지_않는_경우_챕터를_갱신할_수_없음() throws Exception {
+			// given
+			List<Chapter> chapters = TestChapter.asDefaultEntities(loginMember);
+			persistHelper.persist(chapters);
+			List<Chapter> subchapters = new ArrayList<>();
+			for (Chapter chapter : chapters) {
+				subchapters.addAll(TestChapter.asDefaultSubchapterEntities(chapter, loginMember));
+			}
+			persistHelper.persist(subchapters);
+			persistHelper.persist(TestChapterStatus.asDefaultEntity(loginMember, subchapters.get(0)));
+
+			// when
+			MockHttpServletRequestBuilder requestBuilder = post(url)
+					.header(AUTHORIZE_VALUE, BEARER + token)
+					.contentType(MediaType.APPLICATION_JSON_VALUE);
+
+			ResultActions resultActions = mockMvc.perform(requestBuilder);
+
+			// then
+			JsonMatcher response = JsonMatcher.create();
+			resultActions
+					.andExpect(status().isNotFound())
+					.andExpect(response.get("code").isEquals("BIO017"))
+					.andDo(print());
+		}
+
+		@Test
+		@DisplayName("실패 - 다음 챕터가 존재하지 않는 경우, 챕터를 갱신할 수 없음")
+		void 실패_다음_챕터가_존재하지_않는_경우_챕터를_갱신할_수_없음() throws Exception {
+			// given
+			List<Chapter> chapters = TestChapter.asDefaultEntities(loginMember);
+			persistHelper.persist(chapters);
+			List<Chapter> subchapters = new ArrayList<>();
+			for (Chapter chapter : chapters) {
+				subchapters.addAll(TestChapter.asDefaultSubchapterEntities(chapter, loginMember));
+			}
+			persistHelper.persist(subchapters);
+			persistHelper.persist(
+					TestChapterStatus.asDefaultEntity(loginMember, subchapters.get(subchapters.size() - 1)));
+
+			List<Autobiography> autobiographies = subchapters.stream()
+					.map(subchapter -> TestAutobiography.asDefaultEntity(loginMember, subchapter))
+					.collect(Collectors.toList());
+			persistHelper.persist(autobiographies);
+
+			// when
+			MockHttpServletRequestBuilder requestBuilder = post(url)
+					.header(AUTHORIZE_VALUE, BEARER + token)
+					.contentType(MediaType.APPLICATION_JSON_VALUE);
+
+			ResultActions resultActions = mockMvc.perform(requestBuilder);
+
+			// then
+			JsonMatcher response = JsonMatcher.create();
+			resultActions
+					.andExpect(status().isNotFound())
+					.andExpect(response.get("code").isEquals("BIO015"))
+					.andDo(print());
+		}
+
+		@Test
+		@DisplayName("성공 - 유효한 챕터 갱신 요청")
+		void 성공_유효한_챕터_갱신_요청() throws Exception {
+			// given
+			List<Chapter> chapters = TestChapter.asDefaultEntities(loginMember);
+			persistHelper.persist(chapters);
+			List<Chapter> subchapters = new ArrayList<>();
+			for (Chapter chapter : chapters) {
+				subchapters.addAll(TestChapter.asDefaultSubchapterEntities(chapter, loginMember));
+			}
+			persistHelper.persist(subchapters);
+			persistHelper.persist(
+					TestChapterStatus.asDefaultEntity(loginMember, subchapters.get(0)));
+
+			List<Autobiography> autobiographies = subchapters.stream()
+					.map(subchapter -> TestAutobiography.asDefaultEntity(loginMember, subchapter))
+					.collect(Collectors.toList());
+			persistHelper.persist(autobiographies);
+
+			// when
+			MockHttpServletRequestBuilder requestBuilder = post(url)
+					.header(AUTHORIZE_VALUE, BEARER + token)
+					.contentType(MediaType.APPLICATION_JSON_VALUE);
+
+			ResultActions resultActions = mockMvc.perform(requestBuilder);
+
+			// then
+			resultActions
+					.andExpect(status().isOk())
+					.andDo(ignore -> {
+						ChapterStatus chapterStatus = em.createQuery(
+										"SELECT cs FROM ChapterStatus cs "
+												+ "WHERE cs.member.id = :memberId",
+										ChapterStatus.class)
+								.setParameter("memberId", loginMember.getId())
+								.getSingleResult();
+						assertThat(chapterStatus.getCurrentChapter().getId())
+								.isEqualTo(subchapters.get(1).getId());
+					});
 		}
 	}
 

@@ -130,16 +130,6 @@ public class AutobiographyCommandService {
 		);
 		autobiographyRepository.save(autobiography);
 
-		// 다음 챕터를 찾아서 챕터 상태 업데이트
-		Optional<Chapter> nextChapter = chapterFiltered.stream()
-				.filter(chapter -> chapter.getId() > currentChapter.getId())
-				.findFirst();
-
-		if (nextChapter.isPresent()) {
-			chapterStatus.updateChapter(nextChapter.get(), now);
-			chapterStatusRepository.save(chapterStatus);
-		}
-
 		// 인터뷰 생성
 		Interview interview = Interview.of(
 				now,
@@ -194,5 +184,41 @@ public class AutobiographyCommandService {
 			throw AutobiographyExceptionStatus.AUTOBIOGRAPHY_NOT_OWNER.toServiceException();
 		}
 		autobiographyRepository.delete(autobiography);
+	}
+
+	public void updateCurrentChapter(Member member, List<Chapter> chaptersNotRoot) {
+		ChapterStatus chapterStatus = chapterStatusRepository.findByMemberId(
+				member.getId()).orElseThrow(
+				AutobiographyExceptionStatus.CHAPTER_NOT_EXISTS::toServiceException);
+
+		// 자서전이 존재하지 않는 경우, 다음 챕터를 찾을 수 없음
+		List<Autobiography> autobiographies = autobiographyRepository.findByMemberId(member.getId());
+		if (autobiographies.isEmpty()) {
+			throw AutobiographyExceptionStatus.AUTOBIOGRAPHY_NOT_EXISTS.toServiceException();
+		}
+
+		// parent_chapter_id가 null이 아닌 챕터만 필터링
+		// 현재 챕터 이후의 챕터만 필터링
+		List<Chapter> chapterFiltered = chaptersNotRoot.stream()
+				.filter(chapter -> chapter.getId() > chapterStatus.getCurrentChapter().getId())
+				.filter(chapter -> chapter.getParentChapterId() != null)
+				.sorted(Comparator.comparing(Chapter::getId))
+				.collect(Collectors.toList());
+
+		if (chapterFiltered.isEmpty()) {
+			throw AutobiographyExceptionStatus.NEXT_CHAPTER_NOT_FOUND.toServiceException();
+		}
+
+		Chapter currentChapter = chapterStatus.getCurrentChapter();
+
+		// 다음 챕터를 찾아서 챕터 상태 업데이트
+		Optional<Chapter> nextChapter = chapterFiltered.stream()
+				.filter(chapter -> chapter.getId() > currentChapter.getId())
+				.findFirst();
+
+		if (nextChapter.isPresent()) {
+			chapterStatus.updateChapter(nextChapter.get(), LocalDateTime.now());
+			chapterStatusRepository.save(chapterStatus);
+		}
 	}
 }
