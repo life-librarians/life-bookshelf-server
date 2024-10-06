@@ -14,8 +14,9 @@ public enum AutobiographyExceptionStatus implements ExceptionStatus {
 	CHAPTER_NAME_LENGTH_EXCEEDED(400, "BIO002", "챕터 이름은 비어있을 수 없으며, 최대 64자까지 입력할 수 있습니다."),
 	CHAPTER_NOT_FOUND(404, "BIO003", "챕터 ID가 존재하지 않습니다."),
 	CHAPTER_NOT_OWNER(403, "BIO004", "해당 챕터의 주인이 아닙니다."),
-	AUTOBIOGRAPHY_TITLE_LENGTH_EXCEEDED(400, "BIO005", "자서전 제목은 최대 64자까지 입력할 수 있습니다."),
-	AUTOBIOGRAPHY_CONTENT_LENGTH_EXCEEDED(400, "BIO006", "자서전 내용은 최대 30000자까지 입력할 수 있습니다."),
+	AUTOBIOGRAPHY_TITLE_LENGTH_EXCEEDED(400, "BIO005", "자서전 제목은 비어있을 수 없으며, 최대 64자까지 입력할 수 있습니다."),
+	AUTOBIOGRAPHY_CONTENT_LENGTH_EXCEEDED(400, "BIO006",
+			"자서전 내용은 비어있을 수 없으며, 최대 30000자까지 입력할 수 있습니다."),
 	AUTOBIOGRAPHY_NOT_FOUND(404, "BIO008", "자서전 ID가 존재하지 않습니다."),
 	AUTOBIOGRAPHY_NOT_OWNER(403, "BIO009", "해당 자서전의 주인이 아닙니다."),
 	CHAPTER_ALREADY_HAS_AUTOBIOGRAPHY(
@@ -25,7 +26,7 @@ public enum AutobiographyExceptionStatus implements ExceptionStatus {
 	CHAPTER_SIZE_EXCEEDED(400, "BIO013", "챕터는 최소 1개, 최대 16개까지 생성할 수 있습니다."),
 	CHAPTER_NUMBER_DUPLICATED(400, "BIO014", "챕터 번호는 중복될 수 없습니다."),
 	NEXT_CHAPTER_NOT_FOUND(404, "BIO015", "다음 챕터가 존재하지 않습니다."),
-	CHAPTER_DESCRIPTION_LENGTH_EXCEEDED(400, "BIO016", "챕터 설명은 최대 64자까지 입력할 수 있습니다.");
+	CHAPTER_DESCRIPTION_LENGTH_EXCEEDED(400, "BIO016", "챕터 설명은 비어있을 수 없으며, 최대 64자까지 입력할 수 있습니다.");
 
 
 	private final int statusCode;

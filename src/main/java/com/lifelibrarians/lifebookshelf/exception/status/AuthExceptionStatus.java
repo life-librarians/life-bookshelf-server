@@ -3,8 +3,6 @@ package com.lifelibrarians.lifebookshelf.exception.status;
 import com.lifelibrarians.lifebookshelf.exception.ControllerException;
 import com.lifelibrarians.lifebookshelf.exception.DomainException;
 import com.lifelibrarians.lifebookshelf.exception.ServiceException;
-import com.lifelibrarians.lifebookshelf.exception.status.ErrorReason;
-import com.lifelibrarians.lifebookshelf.exception.status.ExceptionStatus;
 import lombok.AllArgsConstructor;
 import lombok.ToString;
 
@@ -12,7 +10,7 @@ import lombok.ToString;
 @ToString
 public enum AuthExceptionStatus implements ExceptionStatus {
 	INVALID_EMAIL_FORMAT(400, "AUTH001", "이메일 형식이 올바른지 다시 확인해주세요. 옳은 예: john.doe@example.com"),
-	EMAIL_TOO_LONG(400, "AUTH002", "이메일은 최대 64자까지 입력할 수 있습니다."),
+	EMAIL_TOO_LONG(400, "AUTH002", "이메일은 비어있을 수 없으며, 최대 64자까지 입력할 수 있습니다."),
 	PASSWORD_FORMAT_ERROR(400, "AUTH003",
 			"비밀번호는 영문, 숫자, 특수문자를 포함하여 최소 8자이상, 최대 64자이하까지 입력할 수 있습니다."),
 	EMAIL_OR_PASSWORD_INCORRECT(401, "AUTH006", "이메일 또는 비밀번호가 일치하지 않습니다."),
