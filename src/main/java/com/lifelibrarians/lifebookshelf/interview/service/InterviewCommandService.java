@@ -6,6 +6,7 @@ import com.lifelibrarians.lifebookshelf.interview.domain.Interview;
 import com.lifelibrarians.lifebookshelf.interview.domain.InterviewQuestion;
 import com.lifelibrarians.lifebookshelf.interview.dto.request.InterviewConversationCreateRequestDto;
 import com.lifelibrarians.lifebookshelf.interview.repository.ConversationRepository;
+import com.lifelibrarians.lifebookshelf.interview.repository.InterviewRepository;
 import com.lifelibrarians.lifebookshelf.log.Logging;
 import java.time.LocalDateTime;
 import java.util.Comparator;
@@ -22,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class InterviewCommandService {
 
 	private final ConversationRepository conversationRepository;
+	private final InterviewRepository interviewRepository;
 
 	public void createConversations(Interview interview,
 			InterviewConversationCreateRequestDto requestDto) {
@@ -49,5 +51,7 @@ public class InterviewCommandService {
 		}
 		InterviewQuestion nextQuestion = questionsFiltered.get(0);
 		interview.setCurrentQuestion(nextQuestion);
+
+		interviewRepository.save(interview);
 	}
 }
