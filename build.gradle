@@ -43,6 +43,7 @@ dependencies {
     if (project.hasProperty('local') || project.hasProperty('test')) {
         testImplementation 'org.testcontainers:localstack:1.16.0'
     }
+    implementation 'com.amazonaws:aws-java-sdk-lambda:1.11.648'
 
     // JWT
     implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
