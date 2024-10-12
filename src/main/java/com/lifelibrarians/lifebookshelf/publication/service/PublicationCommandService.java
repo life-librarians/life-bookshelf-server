@@ -12,7 +12,7 @@ import com.lifelibrarians.lifebookshelf.community.book.repository.BookRepository
 import com.lifelibrarians.lifebookshelf.log.Logging;
 import com.lifelibrarians.lifebookshelf.member.domain.Member;
 import com.lifelibrarians.lifebookshelf.publication.domain.Publication;
-import com.lifelibrarians.lifebookshelf.publication.domain.PublicationManager;
+import com.lifelibrarians.lifebookshelf.event.PublicationCreatedEvent;
 import com.lifelibrarians.lifebookshelf.publication.domain.PublishStatus;
 import com.lifelibrarians.lifebookshelf.publication.dto.request.PublicationCreateRequestDto;
 import com.lifelibrarians.lifebookshelf.publication.repository.PublicationRepository;
@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,7 +37,8 @@ public class PublicationCommandService {
 	private final EntityManager entityManager;
 	private final BookChapterRepository bookChapterRepository;
 	private final BookContentRepository bookContentRepository;
-	private final PublicationManager publicationManager;
+	private final ApplicationEventPublisher eventPublisher;
+
 
 	private int calculateTotalPages(List<Chapter> chapters, int charactersPerPage) {
 		long totalTextLength = 0;
@@ -176,7 +178,7 @@ public class PublicationCommandService {
 		);
 		publicationRepository.save(publication);
 
-		publicationManager.invokeNewPublicationProcessor(publication.getId());
+		eventPublisher.publishEvent(new PublicationCreatedEvent(publication.getId()));
 
 		deleteAllRelatedData(chapters.stream().map(Chapter::getId).collect(Collectors.toList()),
 				member.getId());

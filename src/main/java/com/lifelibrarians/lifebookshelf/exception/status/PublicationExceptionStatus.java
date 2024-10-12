@@ -17,7 +17,7 @@ public enum PublicationExceptionStatus implements ExceptionStatus {
 	PUBLICATION_TITLE_LENGTH_EXCEEDED(400, "PUB003", "제목은 최소 2자, 최대 64자까지 입력할 수 있습니다."),
 	NO_CHAPTERS_FOR_PUBLICATION(400, "PUB004", "출판을 위한 챕터가 존재하지 않습니다."),
 	NO_AUTOBIOGRAPHY_FOR_CHAPTER(400, "PUB005", "챕터에 대한 자서전이 존재하지 않는 챕터가 있습니다. 모든 챕터에 자서전을 입력해주세요."),
-	;
+	PUBLICATION_PROCESSOR_FAILED(502, "PUB006", "출판 처리 중 오류가 발생했습니다. 다시 시도해주세요.");
 
 
 	private final int statusCode;
