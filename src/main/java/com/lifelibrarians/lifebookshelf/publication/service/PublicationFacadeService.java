@@ -37,6 +37,9 @@ public class PublicationFacadeService {
 		if (chapters.isEmpty()) {
 			throw PublicationExceptionStatus.NO_CHAPTERS_FOR_PUBLICATION.toServiceException();
 		}
+		if (chapters.stream().anyMatch(chapter -> chapter.getChapterAutobiography() == null)) {
+			throw PublicationExceptionStatus.NO_AUTOBIOGRAPHY_FOR_CHAPTER.toServiceException();
+		}
 		Member member = publicationQueryService.getMember(memberId);
 		publicationCommandService.createPublication(member, requestDto, chapters);
 	}

@@ -143,6 +143,37 @@ public class PublicationControllerTest extends E2EMvcTest {
 		}
 
 		@Test
+		@DisplayName("실패 - 출판할 챕터 중 자서전이 없는 챕터가 존재하는 경우")
+		void 실패_출판할_챕터_중_자서전이_없는_챕터가_존재하는_경우() throws Exception {
+			// given
+			List<Chapter> chapters = TestChapter.asDefaultEntities(loginMember);
+			persistHelper.persist(chapters);
+			List<Chapter> subchapters = new ArrayList<>();
+			for (Chapter chapter : chapters) {
+				subchapters.addAll(TestChapter.asDefaultSubchapterEntities(chapter, loginMember));
+			}
+			persistHelper.persistAndReturn(subchapters);
+
+			PublicationCreateRequestDto publicationCreateRequestDto = TestPublicationCreateRequestDto
+					.createValidPublication();
+
+			// when
+			MockHttpServletRequestBuilder requestBuilder = multipart(url)
+					.header(AUTHORIZE_VALUE, BEARER + token)
+					.contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
+					.param("title", publicationCreateRequestDto.getTitle())
+					.param("preSignedCoverImageUrl", publicationCreateRequestDto.getPreSignedCoverImageUrl())
+					.param("titlePosition", publicationCreateRequestDto.getTitlePosition().name());
+			ResultActions resultActions = mockMvc.perform(requestBuilder);
+
+			// then
+			JsonMatcher response = JsonMatcher.create();
+			resultActions.andExpect(status().isBadRequest())
+					.andExpect(response.get("code").isEquals("PUB005"))
+					.andDo(print());
+		}
+
+		@Test
 		@DisplayName("성공 - 유효한 출판 요청 (Book, BookChapter, BookContent, Publication 생성, 관련 데이터들은 삭제)")
 		void 성공_유효한_출판_요청() throws Exception {
 			// given
