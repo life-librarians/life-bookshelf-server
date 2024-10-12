@@ -3,6 +3,7 @@ package com.lifelibrarians.lifebookshelf.publication.service;
 import com.lifelibrarians.lifebookshelf.chapter.domain.Chapter;
 import com.lifelibrarians.lifebookshelf.chapter.repository.ChapterRepository;
 import com.lifelibrarians.lifebookshelf.community.book.domain.Book;
+import com.lifelibrarians.lifebookshelf.community.book.domain.BookChapter;
 import com.lifelibrarians.lifebookshelf.community.book.domain.BookContent;
 import com.lifelibrarians.lifebookshelf.community.book.repository.BookRepository;
 import com.lifelibrarians.lifebookshelf.exception.status.AuthExceptionStatus;
@@ -18,6 +19,8 @@ import com.lifelibrarians.lifebookshelf.publication.dto.response.PublicationPrev
 import com.lifelibrarians.lifebookshelf.publication.dto.response.PublicationProgressResponseDto;
 import com.lifelibrarians.lifebookshelf.publication.repository.PublicationRepository;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -41,11 +44,18 @@ public class PublicationQueryService {
 		Page<Publication> publications = publicationRepository.getAllByMemberId(memberId, pageable);
 		List<PublicationPreviewDto> publicationPreviewDtos = publications.stream()
 				.map(publication -> {
-					BookContent bookContent = publication.getBook().getBookChapters().get(0)
-							.getBookContents().get(0);
+					BookContent bookContent = Optional.ofNullable(publication.getBook().getBookChapters())
+							.filter(chapters -> !chapters.isEmpty())
+							.map(chapters -> chapters.get(0))
+							.map(BookChapter::getBookContents)
+							.filter(contents -> !contents.isEmpty())
+							.map(contents -> contents.get(0))
+							.orElse(null);
 					return publicationMapper.toPublicationPreviewDto(publication, bookContent);
 				})
+				.filter(Objects::nonNull)
 				.collect(Collectors.toList());
+
 		return publicationMapper.toPublicationListResponseDto(
 				publicationPreviewDtos,
 				pageable.getPageNumber(),
