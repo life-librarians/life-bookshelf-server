@@ -13,6 +13,7 @@ import com.lifelibrarians.lifebookshelf.member.domain.PasswordMember;
 import com.lifelibrarians.lifebookshelf.member.repository.MemberRepository;
 import com.lifelibrarians.lifebookshelf.member.repository.PasswordMemberRepository;
 
+import com.lifelibrarians.lifebookshelf.notification.service.NotificationCommandService;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
@@ -31,6 +32,7 @@ public class AuthService {
 	private final JwtTokenProvider jwtTokenProvider;
 	private final MemberRepository memberRepository;
 	private final PasswordMemberRepository passwordMemberRepository;
+	private final NotificationCommandService notificationService;
 
 	public void registerEmail(EmailRegisterRequestDto requestDto) {
 //		1. 이메일 중복 확인
@@ -81,6 +83,12 @@ public class AuthService {
 
 //		5. JWT 토큰 생성
 		Jwt jwt = jwtTokenProvider.createMemberAccessToken(member.get().getId());
+
+//		6. 디바이스 토큰 추가
+		if (requestDto.getDeviceToken() != null && !requestDto.getDeviceToken().isEmpty()) {
+			notificationService.updateDeviceToken(member.get(), requestDto.getDeviceToken(),
+					LocalDateTime.now());
+		}
 		return JwtLoginTokenDto.builder()
 				.accessToken(jwt.getTokenValue())
 				.build();

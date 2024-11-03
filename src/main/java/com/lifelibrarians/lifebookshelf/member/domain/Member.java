@@ -6,6 +6,7 @@ import com.lifelibrarians.lifebookshelf.chapter.domain.Chapter;
 import com.lifelibrarians.lifebookshelf.chapter.domain.ChapterStatus;
 import com.lifelibrarians.lifebookshelf.community.comment.domain.Comment;
 import com.lifelibrarians.lifebookshelf.community.like.domain.Like;
+import com.lifelibrarians.lifebookshelf.notification.domain.DeviceRegistry;
 import com.lifelibrarians.lifebookshelf.notification.domain.NoticeHistory;
 import com.lifelibrarians.lifebookshelf.notification.domain.NotificationSubscribe;
 
@@ -24,7 +25,8 @@ import lombok.ToString;
 @Getter
 @ToString(callSuper = true, exclude = {"memberNotificationSubscribes", "memberAutobiographies",
 		"memberBooks", "memberComments", "memberLikes", "memberChapters", "memberMemberMetadata",
-		"memberNoticeHistories", "memberChapterStatuses", "socialMember", "passwordMember"}
+		"memberNoticeHistories", "memberChapterStatuses", "socialMember", "passwordMember",
+		"memberDeviceRegistries"}
 )
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member {
@@ -89,6 +91,9 @@ public class Member {
 
 	@OneToMany(mappedBy = "member")
 	private Set<ChapterStatus> memberChapterStatuses;
+
+	@OneToMany(mappedBy = "member")
+	private Set<DeviceRegistry> memberDeviceRegistries;
 
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "social_member_id", unique = true)

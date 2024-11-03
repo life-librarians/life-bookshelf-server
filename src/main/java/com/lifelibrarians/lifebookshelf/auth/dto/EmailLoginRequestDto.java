@@ -20,4 +20,7 @@ public class EmailLoginRequestDto {
 
 	@Schema(description = "비밀번호", example = "securepassword")
 	private final String password;
+
+	@Schema(description = "디바이스 토큰 (Optional)", example = "deviceToken", nullable = true)
+	private final String deviceToken;
 }
