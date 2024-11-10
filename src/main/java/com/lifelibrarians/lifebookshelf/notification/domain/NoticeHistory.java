@@ -11,7 +11,7 @@ import lombok.ToString;
 @Entity
 @Table(name = "noticeHistories")
 @Getter
-@ToString(callSuper = true)
+@ToString(callSuper = true, exclude = "member")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class NoticeHistory {
 

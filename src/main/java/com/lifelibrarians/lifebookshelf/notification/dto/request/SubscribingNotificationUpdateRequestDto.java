@@ -18,4 +18,7 @@ public class SubscribingNotificationUpdateRequestDto {
 
 	@Schema(description = "변경할 알림 ID 목록", example = "[1, 3, 5]")
 	private final List<Long> notificationIds;
+
+	@Schema(description = "디바이스 토큰", example = "deviceToken")
+	private final String deviceToken;
 }

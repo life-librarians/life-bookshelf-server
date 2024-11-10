@@ -8,12 +8,14 @@ import com.lifelibrarians.lifebookshelf.notification.dto.request.NotificationHis
 import com.lifelibrarians.lifebookshelf.notification.dto.request.SubscribingNotificationUpdateRequestDto;
 import com.lifelibrarians.lifebookshelf.notification.dto.response.NotificationHistoryListResponseDto;
 import com.lifelibrarians.lifebookshelf.notification.dto.response.SubscribingNotificationListResponseDto;
+import com.lifelibrarians.lifebookshelf.notification.service.NotificationFacadeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +32,8 @@ import org.springframework.web.bind.annotation.RestController;
 @Logging
 public class NotificationController {
 
+	private final NotificationFacadeService notificationFacadeService;
+
 	@Operation(summary = "구독중인 알림 목록 조회", description = "구독중인 알림 목록을 조회합니다.")
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "ok"),
@@ -39,7 +43,7 @@ public class NotificationController {
 	public SubscribingNotificationListResponseDto getSubscriptions(
 			@LoginMemberInfo MemberSessionDto memberSessionDto
 	) {
-		return SubscribingNotificationListResponseDto.builder().build();
+		return notificationFacadeService.getSubscriptions(memberSessionDto.getMemberId());
 	}
 
 	@Operation(summary = "알림 구독 변경", description = "알림 구독을 변경합니다.")
@@ -52,7 +56,8 @@ public class NotificationController {
 			@LoginMemberInfo MemberSessionDto memberSessionDto,
 			@Valid @RequestBody SubscribingNotificationUpdateRequestDto requestDto
 	) {
-		return SubscribingNotificationListResponseDto.builder().build();
+		return notificationFacadeService.updateSubscriptions(memberSessionDto.getMemberId(),
+				requestDto);
 	}
 
 	@Operation(summary = "알림 내역 목록 조회", description = "알림 내역 목록을 조회합니다.")
@@ -66,7 +71,8 @@ public class NotificationController {
 			@RequestParam(value = "page", defaultValue = "0") int page,
 			@RequestParam(value = "size", defaultValue = "10") int size
 	) {
-		return NotificationHistoryListResponseDto.builder().build();
+		return notificationFacadeService.getHistories(memberSessionDto.getMemberId(),
+				PageRequest.of(page, size));
 	}
 
 	@Operation(summary = "알림 내역 읽음 처리", description = "알림 내역을 읽음 처리합니다.")
@@ -75,11 +81,11 @@ public class NotificationController {
 	})
 	@PreAuthorize("isAuthenticated()")
 	@PutMapping("/histories")
-	public NotificationHistoryListResponseDto updateHistories(
+	public void updateHistories(
 			@LoginMemberInfo MemberSessionDto memberSessionDto,
 			@Valid @RequestBody NotificationHistoryReadRequestDto requestDto
 	) {
-		return NotificationHistoryListResponseDto.builder().build();
+		notificationFacadeService.readHistories(memberSessionDto.getMemberId(), requestDto);
 	}
 
 	@Operation(summary = "알림 내역 삭제", description = "알림 내역을 삭제합니다.")
@@ -92,5 +98,6 @@ public class NotificationController {
 			@LoginMemberInfo MemberSessionDto memberSessionDto,
 			@Valid @RequestBody NotificationHistoryDeleteRequestDto requestDto
 	) {
+		notificationFacadeService.deleteHistories(memberSessionDto.getMemberId(), requestDto);
 	}
 }

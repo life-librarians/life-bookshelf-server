@@ -11,7 +11,7 @@ import lombok.ToString;
 @Entity
 @Table(name = "notificationSubscribes")
 @Getter
-@ToString(callSuper = true)
+@ToString(callSuper = true, exclude = {"member", "notification"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class NotificationSubscribe {
 
@@ -36,12 +36,16 @@ public class NotificationSubscribe {
 	/* } 연관 정보 */
 
 	/* 생성자 { */
-	protected NotificationSubscribe(LocalDateTime subscribedAt) {
+	protected NotificationSubscribe(LocalDateTime subscribedAt, Member member,
+			Notification notification) {
 		this.subscribedAt = subscribedAt;
+		this.member = member;
+		this.notification = notification;
 	}
 
-	public static NotificationSubscribe of(LocalDateTime subscribedAt) {
-		return new NotificationSubscribe(subscribedAt);
+	public static NotificationSubscribe of(LocalDateTime subscribedAt, Member member,
+			Notification notification) {
+		return new NotificationSubscribe(subscribedAt, member, notification);
 	}
 	/* } 생성자 */
 }
