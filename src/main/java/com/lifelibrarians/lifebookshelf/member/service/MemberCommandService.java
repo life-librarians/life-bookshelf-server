@@ -44,6 +44,9 @@ public class MemberCommandService {
 					requestDto.getBornedAt(),
 					requestDto.getGender(),
 					requestDto.isHasChildren(),
+					requestDto.getOccupation(),
+					requestDto.getEducationLevel(),
+					requestDto.getMaritalStatus(),
 					now,
 					now,
 					member
@@ -57,7 +60,10 @@ public class MemberCommandService {
 					requestDto.getName(),
 					requestDto.getBornedAt(),
 					requestDto.getGender(),
-					requestDto.isHasChildren()
+					requestDto.isHasChildren(),
+					requestDto.getOccupation(),
+					requestDto.getEducationLevel(),
+					requestDto.getMaritalStatus()
 			);
 		}
 	}

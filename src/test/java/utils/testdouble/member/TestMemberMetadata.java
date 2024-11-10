@@ -18,6 +18,9 @@ public class TestMemberMetadata implements TestEntity<MemberMetadata, Long> {
 	public static final LocalDate DEFAULT_BORNED_AT = LocalDate.EPOCH;
 	public static final GenderType DEFAULT_GENDER = GenderType.MALE;
 	public static final Boolean DEFAULT_HAS_CHILDREN = false;
+	public static final String DEFAULT_OCCUPATION = "테스트 직업";
+	public static final String DEFAULT_EDUCATION_LEVEL = "테스트 학력";
+	public static final String DEFAULT_MARITAL_STATUS = "테스트 결혼 상태";
 
 	@Builder.Default
 	private String name = DEFAULT_NAME;
@@ -27,6 +30,12 @@ public class TestMemberMetadata implements TestEntity<MemberMetadata, Long> {
 	private GenderType gender = DEFAULT_GENDER;
 	@Builder.Default
 	private Boolean hasChildren = DEFAULT_HAS_CHILDREN;
+	@Builder.Default
+	private String occupation = DEFAULT_OCCUPATION;
+	@Builder.Default
+	private String educationLevel = DEFAULT_EDUCATION_LEVEL;
+	@Builder.Default
+	private String maritalStatus = DEFAULT_MARITAL_STATUS;
 	@Builder.Default
 	private LocalDateTime createdAt = DEFAULT_TIME;
 	@Builder.Default
@@ -47,6 +56,9 @@ public class TestMemberMetadata implements TestEntity<MemberMetadata, Long> {
 				this.bornedAt,
 				this.gender,
 				this.hasChildren,
+				this.occupation,
+				this.educationLevel,
+				this.maritalStatus,
 				this.createdAt,
 				this.updatedAt,
 				this.member

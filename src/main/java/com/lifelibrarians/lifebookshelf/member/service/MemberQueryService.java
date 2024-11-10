@@ -33,6 +33,9 @@ public class MemberQueryService {
 				.bornedAt(memberMetadata.getBornedAt())
 				.gender(memberMetadata.getGender())
 				.hasChildren(memberMetadata.getHasChildren())
+				.occupation(memberMetadata.getOccupation())
+				.educationLevel(memberMetadata.getEducationLevel())
+				.maritalStatus(memberMetadata.getMaritalStatus())
 				.build();
 	}
 

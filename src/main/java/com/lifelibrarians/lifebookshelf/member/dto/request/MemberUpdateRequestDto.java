@@ -32,4 +32,13 @@ public class MemberUpdateRequestDto {
 
 	@Schema(description = "자녀 여부", example = "true")
 	private final boolean hasChildren;
+
+	@Schema(description = "직업", example = "Software Engineer")
+	private final String occupation;
+
+	@Schema(description = "학력", example = "Bachelor's Degree")
+	private final String educationLevel;
+
+	@Schema(description = "결혼 여부", example = "미혼")
+	private final String maritalStatus;
 }

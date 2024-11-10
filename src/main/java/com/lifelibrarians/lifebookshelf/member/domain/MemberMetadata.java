@@ -34,6 +34,15 @@ public class MemberMetadata {
 	@Column(nullable = false)
 	private Boolean hasChildren;
 
+	@Column
+	private String occupation;
+
+	@Column
+	private String educationLevel;
+
+	@Column
+	private String maritalStatus;
+
 	@Column(nullable = false)
 	private LocalDateTime createdAt;
 
@@ -48,8 +57,9 @@ public class MemberMetadata {
 	/* } 연관 정보 */
 
 	/* 생성자 { */
-	protected MemberMetadata(String name, LocalDate bornedAt, GenderType gender,
-			Boolean hasChildren,
+	protected MemberMetadata(String name, LocalDate bornedAt,
+			GenderType gender, Boolean hasChildren,
+			String occupation, String educationLevel, String maritalStatus,
 			LocalDateTime createdAt, LocalDateTime updatedAt, Member member) {
 		this.name = name;
 		this.bornedAt = bornedAt;
@@ -60,18 +70,28 @@ public class MemberMetadata {
 		this.member = member;
 	}
 
-	public static MemberMetadata of(String name, LocalDate bornedAt, GenderType gender,
-			Boolean hasChildren, LocalDateTime createdAt, LocalDateTime updatedAt, Member member) {
-		return new MemberMetadata(name, bornedAt, gender, hasChildren, createdAt, updatedAt,
-				member);
+	public static MemberMetadata of(
+			String name, LocalDate bornedAt,
+			GenderType gender, Boolean hasChildren,
+			String occupation, String educationLevel, String maritalStatus,
+			LocalDateTime createdAt, LocalDateTime updatedAt, Member member) {
+		return new MemberMetadata(
+				name, bornedAt, gender, hasChildren,
+				occupation, educationLevel, maritalStatus,
+				createdAt, updatedAt, member
+		);
 	}
 	/* } 생성자 */
 
-	public void update(String name, LocalDate bornedAt, GenderType gender, boolean hasChildren) {
+	public void update(String name, LocalDate bornedAt, GenderType gender, boolean hasChildren,
+			String occupation, String educationLevel, String maritalStatus) {
 		this.name = name;
 		this.bornedAt = bornedAt;
 		this.gender = gender;
 		this.hasChildren = hasChildren;
+		this.occupation = occupation;
+		this.educationLevel = educationLevel;
+		this.maritalStatus = maritalStatus;
 	}
 
 	public void setMember(Member member) {

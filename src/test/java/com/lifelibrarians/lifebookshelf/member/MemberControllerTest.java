@@ -72,6 +72,9 @@ public class MemberControllerTest extends E2EMvcTest {
 					.bornedAt(memberMetadata.getBornedAt())
 					.gender(memberMetadata.getGender())
 					.hasChildren(memberMetadata.getHasChildren())
+					.occupation(memberMetadata.getOccupation())
+					.educationLevel(memberMetadata.getEducationLevel())
+					.maritalStatus(memberMetadata.getMaritalStatus())
 					.build();
 
 			// when
@@ -81,7 +84,10 @@ public class MemberControllerTest extends E2EMvcTest {
 					.param("name", requestDto.getName())
 					.param("bornedAt", requestDto.getBornedAt().toString())
 					.param("gender", requestDto.getGender().toString())
-					.param("hasChildren", String.valueOf(requestDto.isHasChildren()));
+					.param("hasChildren", String.valueOf(requestDto.isHasChildren()))
+					.param("occupation", requestDto.getOccupation())
+					.param("educationLevel", requestDto.getEducationLevel())
+					.param("maritalStatus", requestDto.getMaritalStatus());
 
 			ResultActions resultActions = mockMvc.perform(requestBuilder);
 
@@ -105,6 +111,9 @@ public class MemberControllerTest extends E2EMvcTest {
 					.bornedAt(memberMetadata.getBornedAt())
 					.gender(memberMetadata.getGender())
 					.hasChildren(memberMetadata.getHasChildren())
+					.occupation(memberMetadata.getOccupation())
+					.educationLevel(memberMetadata.getEducationLevel())
+					.maritalStatus(memberMetadata.getMaritalStatus())
 					.build();
 
 			persistHelper.persistAndReturn(TestMemberMetadata.asDefaultEntity(loginMember));
@@ -116,7 +125,10 @@ public class MemberControllerTest extends E2EMvcTest {
 					.param("name", requestDto.getName())
 					.param("bornedAt", requestDto.getBornedAt().toString())
 					.param("gender", requestDto.getGender().toString())
-					.param("hasChildren", String.valueOf(requestDto.isHasChildren()));
+					.param("hasChildren", String.valueOf(requestDto.isHasChildren()))
+					.param("occupation", requestDto.getOccupation())
+					.param("educationLevel", requestDto.getEducationLevel())
+					.param("maritalStatus", requestDto.getMaritalStatus());
 
 			ResultActions resultActions = mockMvc.perform(requestBuilder);
 
