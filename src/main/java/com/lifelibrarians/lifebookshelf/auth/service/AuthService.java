@@ -36,8 +36,14 @@ public class AuthService {
 
 	public void registerEmail(EmailRegisterRequestDto requestDto) {
 //		1. 이메일 중복 확인
-		if (memberRepository.findByEmail(requestDto.getEmail()).isPresent()) {
-			throw AuthExceptionStatus.MEMBER_ALREADY_EXISTS.toServiceException();
+		Optional<Member> optionalMember = memberRepository.findByEmail(requestDto.getEmail());
+		if (optionalMember.isPresent()) {
+			if (optionalMember.get().getDeletedAt() != null) {
+				// 1-1. 이미 탈퇴한 회원인 경우
+				throw AuthExceptionStatus.MEMBER_ALREADY_WITHDRAWN.toServiceException();
+			} else {
+				throw AuthExceptionStatus.MEMBER_ALREADY_EXISTS.toServiceException();
+			}
 		}
 
 //		2. 회원가입
@@ -64,6 +70,11 @@ public class AuthService {
 	public JwtLoginTokenDto loginEmail(EmailLoginRequestDto requestDto) {
 //		1. 이메일로 회원 조회
 		Optional<Member> member = memberRepository.findByEmail(requestDto.getEmail());
+
+//		1-1. 이미 탈퇴한 회원인 경우
+		if (member.isPresent() && member.get().getDeletedAt() != null) {
+			throw AuthExceptionStatus.MEMBER_ALREADY_WITHDRAWN.toServiceException();
+		}
 
 //		2. 이메일 혹은 비밀번호가 틀린 경우
 		if (member.isEmpty() || !member.get().getPasswordMember()
@@ -97,10 +108,8 @@ public class AuthService {
 	public void unregister(Long memberId) {
 		Member member = memberRepository.findById(memberId)
 				.orElseThrow(AuthExceptionStatus.MEMBER_NOT_FOUND::toServiceException);
-//		TODO: Soft Delete를 적용하여, 추후 영구 삭제 스케줄러를 적용할 수 있도록 함.
-//		LocalDateTime now = LocalDateTime.now();
-//		member.softDelete(now);
-//		memberRepository.save(member);
-		memberRepository.delete(member);
+		LocalDateTime now = LocalDateTime.now();
+		member.softDelete(now);
+		memberRepository.save(member);
 	}
 }
